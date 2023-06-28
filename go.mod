@@ -2,7 +2,10 @@ module github.com/itsrever/integration
 
 go 1.19
 
-require golang.org/x/oauth2 v0.9.0
+require (
+	github.com/gorilla/mux v1.8.0
+	golang.org/x/oauth2 v0.9.0
+)
 
 require (
 	github.com/golang/protobuf v1.5.2 // indirect
