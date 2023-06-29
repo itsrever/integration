@@ -23,6 +23,18 @@ func main() {
 	IntegrationApiController := server.NewIntegrationApiController(IntegrationApiService)
 
 	router := server.NewRouter(IntegrationApiController)
+	router.Use(apiKeyAuthMiddleware)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
+}
+
+func apiKeyAuthMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		apiKey := r.Header.Get("x-rever-api-key")
+		if apiKey != "valid-api-key" {
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+		next.ServeHTTP(w, r)
+	})
 }

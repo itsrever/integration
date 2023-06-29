@@ -28,7 +28,7 @@ type Test struct {
 
 type Scenario struct {
 	Name                   string `json:"name"`
-	CustomerOrderPrintedId string `json:"customer_order_printed_id"`
+	CustomerPrintedOrderId string `json:"customer_printed_order_id"`
 }
 
 func configFromEnv() (*Config, error) {
@@ -75,6 +75,6 @@ func (t *Test) Scenario(name string) *Scenario {
 
 func (s *Scenario) Vars() map[string]string {
 	return map[string]string{
-		"customer_order_printed_id": s.CustomerOrderPrintedId,
+		"customer_printed_order_id": s.CustomerPrintedOrderId,
 	}
 }

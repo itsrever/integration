@@ -21,6 +21,30 @@ The steps execute the suite of tests are:
 * Run the docker container with your configuration. This will run the testing scenarios against your implementation and will output the results in the console.
 * Stop your development server.
 
+If all of the test go well, you will see something like this:
+
+``` 
+📦 REVER integration testing framework
+  ...
+  ✅ Test_FindOrderByCustomerOrderPrintedId (10ms)
+  ✅ Test_FindOrderByCustomerOrderPrintedId/FIND00 (0s)
+  ✅ Test_FindOrderByCustomerOrderPrintedId/FIND01 (0s)
+  ✅ Test_FindOrderByCustomerOrderPrintedId/FIND02 (0s)
+  ✅ Test_FindOrderByCustomerOrderPrintedId/FIND03 (0s)
+  ✅ Test_FindOrderByCustomerOrderPrintedId/FIND04 (0s)
+  ...
+```
+
+ If a test fails, you will see the reason why it fails.
+
+```
+  ❌ Test_FindOrderByCustomerOrderPrintedId/FIND04 (0s)
+     Error:  Not equal: 
+                expected: 404
+                actual  : 200
+     Test:   Test_FindOrderByCustomerOrderPrintedId/FIND04
+```
+
 ### Configuring the integration
 
 The [config.json](./test/config.json) file contains a global section, independent of any endpoint. The mimimum configuration is setting where your API lives and how to pass the authentication token. For a development server, an example is:
@@ -42,15 +66,11 @@ Please refer to the [config.json](./test/config.json) file for a complete exampl
 ``` json
 {
     "method":"FindOrderByCustomerOrderPrintedId",
-    "url_pattern": "/integration/orders/find?customer_order_printed_id={customer_order_printed_id}",
+    "url_pattern": "/integration/orders/find?customer_printed_order_id={customer_printed_order_id}",
     "scenarios": [
         {
-            "name": "FIND00",
-            "customer_order_printed_id": "non-empty"
-        },
-        {
-            "name": "FIND01",
-            "customer_order_printed_id": "whatever"
+            "name": "FIND04",
+            "customer_printed_order_id": "your-order-id"
         },
     ...
 }
