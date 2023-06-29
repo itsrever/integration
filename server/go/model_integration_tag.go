@@ -9,6 +9,7 @@
 
 package server
 
+// IntegrationTag - a tag (string) associated to one resource
 type IntegrationTag struct {
 
 	Name string `json:"name"`

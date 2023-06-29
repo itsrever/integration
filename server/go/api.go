@@ -20,7 +20,7 @@ import (
 // The IntegrationApiRouter implementation should parse necessary information from the http request,
 // pass the data to a IntegrationApiServicer to perform the required actions, then write the service results to the http response.
 type IntegrationApiRouter interface { 
-	FindOrderByCustomerOrderPrintedId(http.ResponseWriter, *http.Request)
+	FindOrderByCustomerPrintedOrderId(http.ResponseWriter, *http.Request)
 }
 
 
@@ -29,5 +29,5 @@ type IntegrationApiRouter interface {
 // while the service implementation can be ignored with the .openapi-generator-ignore file
 // and updated with the logic required for the API.
 type IntegrationApiServicer interface { 
-	FindOrderByCustomerOrderPrintedId(context.Context, string) (ImplResponse, error)
+	FindOrderByCustomerPrintedOrderId(context.Context, string) (ImplResponse, error)
 }

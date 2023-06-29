@@ -1,0 +1,35 @@
+{
+    "base_url": "http://localhost:8080",
+    "auth": {
+        "header": "x-rever-api-key",
+        "api_key": "valid-api-key"
+    },
+    "tests": [
+        {
+            "method":"FindOrderByCustomerOrderPrintedId",
+            "url_pattern": "/integration/orders/find?customer_order_printed_id={customer_order_printed_id}",
+            "scenarios": [
+                {
+                    "name": "FIND00",
+                    "customer_order_printed_id": "non-empty"
+                },
+                {
+                    "name": "FIND01",
+                    "customer_order_printed_id": "non-empty"
+                },
+                {
+                    "name": "FIND02",
+                    "customer_order_printed_id": ""
+                },
+                {
+                    "name": "FIND03",
+                    "customer_order_printed_id": "non-existing"
+                },
+                {
+                    "name": "FIND04",
+                    "customer_order_printed_id": "simple_order_1"
+                }
+            ]
+        }
+    ]
+}

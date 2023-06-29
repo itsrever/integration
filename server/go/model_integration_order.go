@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// IntegrationOrder - Model for an Order returned by a custom integration. REVER supports multi-currency with the following restrictions:    * the shop currency must be the same for every order within the same e-commerce   * there must be only one customer currency per order (it can be the same or not than the shop currency)    
+// IntegrationOrder - Model for an Order returned by a custom integration. REVER supports multi-currency with the following restrictions:    * the shop currency must be the same for every order within the same e-commerce   * there must be only one customer currency per order (it can be the same or not than the shop currency)  In addition, discounts are supported as pre-tax calculations.  Gift cards are not considered discounts but a payment method. 
 type IntegrationOrder struct {
 
 	// Date when the Order was created in the e-commerce 
@@ -22,11 +22,18 @@ type IntegrationOrder struct {
 	// Indicates if the taxes should be displayed as included in the total amount of the order or separated 
 	TaxesIncluded bool `json:"taxes_included"`
 
-	TotalAmount IntegrationOrderTotalAmount `json:"total_amount,omitempty"`
+	TotalAmount IntegrationOrderTotalAmount `json:"total_amount"`
 
-	TotalTaxes IntegrationOrderTotalTaxes `json:"total_taxes,omitempty"`
+	TotalTaxes IntegrationOrderTotalTaxes `json:"total_taxes"`
 
-	Fulfillment IntegrationFulfillment `json:"fulfillment"`
+	// List of fulfillment orders per items or groups of items in the order. 
+	FulfillmentOrders []IntegrationFulfillmentOrder `json:"fulfillment_orders"`
+
+	// List of returns already associated to the order 
+	Returns []IntegrationReturnOrder `json:"returns"`
+
+	// List of refunds already associated to the order. Optional, only if OPM is supported. 
+	Refunds []IntegrationRefundOrder `json:"refunds,omitempty"`
 
 	Payment IntegrationPayment `json:"payment"`
 
@@ -49,7 +56,10 @@ func AssertIntegrationOrderRequired(obj IntegrationOrder) error {
 	elements := map[string]interface{}{
 		"date": obj.Date,
 		"taxes_included": obj.TaxesIncluded,
-		"fulfillment": obj.Fulfillment,
+		"total_amount": obj.TotalAmount,
+		"total_taxes": obj.TotalTaxes,
+		"fulfillment_orders": obj.FulfillmentOrders,
+		"returns": obj.Returns,
 		"payment": obj.Payment,
 		"customer": obj.Customer,
 		"shipping": obj.Shipping,
@@ -69,8 +79,20 @@ func AssertIntegrationOrderRequired(obj IntegrationOrder) error {
 	if err := AssertIntegrationOrderTotalTaxesRequired(obj.TotalTaxes); err != nil {
 		return err
 	}
-	if err := AssertIntegrationFulfillmentRequired(obj.Fulfillment); err != nil {
-		return err
+	for _, el := range obj.FulfillmentOrders {
+		if err := AssertIntegrationFulfillmentOrderRequired(el); err != nil {
+			return err
+		}
+	}
+	for _, el := range obj.Returns {
+		if err := AssertIntegrationReturnOrderRequired(el); err != nil {
+			return err
+		}
+	}
+	for _, el := range obj.Refunds {
+		if err := AssertIntegrationRefundOrderRequired(el); err != nil {
+			return err
+		}
 	}
 	if err := AssertIntegrationPaymentRequired(obj.Payment); err != nil {
 		return err

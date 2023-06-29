@@ -24,7 +24,7 @@ type IntegrationVariant struct {
 	// Images associated to the variant
 	Images []IntegrationImage `json:"images,omitempty"`
 
-	// optional inventory quantity. Replaces the one from the product
+	// Optional inventory quantity. Replaces the one from the product. This information must be provided for offering exchanges based in variants. If you don't provide this information, it will be assumed that the variant is not available. 
 	InventoryQuantity int32 `json:"inventory_quantity,omitempty"`
 
 	// Name of the variant

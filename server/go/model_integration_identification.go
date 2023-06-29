@@ -15,7 +15,7 @@ type IntegrationIdentification struct {
 	// This is the `order_id` as seen by the customer (for example, in the email confirmation) 
 	CustomerPrintedOrderId string `json:"customer_printed_order_id"`
 
-	// Unique identifier in the origin platform. Might not be customer-friendly
+	// Unique identifier in the origin platform. Might not be customer-friendly. It can be the same as the `customer_printed_order_id``
 	Id string `json:"id,omitempty"`
 }
 

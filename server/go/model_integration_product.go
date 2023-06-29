@@ -34,7 +34,7 @@ type IntegrationProduct struct {
 	// stock-keeping unit (SKU) is a scannable bar code, most often seen printed on product labels in a retail store. Should be present if there are no variants.
 	Sku string `json:"sku,omitempty"`
 
-	// Optional inventory quantity. Should be present if there are no variants.
+	// Optional inventory quantity. Overridden if there are variants defined. This field is not in use yet but it will be in the future for offering exchanges not based in  variants. 
 	InventoryQuantity int32 `json:"inventory_quantity,omitempty"`
 
 	// Optional tags associated to the product. They can be used to mark it as non-returnable.
