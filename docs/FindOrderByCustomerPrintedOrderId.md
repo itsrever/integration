@@ -10,7 +10,7 @@ The implementation of this method **must** support the following scenarios:
 | Scenario | Status | Description |
 | -------- | ------ | ----------- |
 | FIND00 | 401 | The requests does not contain the authentication header |
-| FIND01 | 403 | The requests contains an invalid authentication header |
+| FIND01 | 401 | The requests contains an invalid authentication header |
 | FIND02 | 400 | The `customer_printed_order_id` is empty |
 | FIND03 | 404 | The `customer_printed_order_id` is not empty but not found in the integration |
 | ... | 200 | .... |

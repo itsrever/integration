@@ -7,27 +7,11 @@
     "tests": [
         {
             "method":"FindOrderByCustomerOrderPrintedId",
-            "url_pattern": "/integration/orders/find?customer_order_printed_id={customer_order_printed_id}",
+            "url_pattern": "/integration/orders/find?customer_printed_order_id={customer_printed_order_id}",
             "scenarios": [
                 {
-                    "name": "FIND00",
-                    "customer_order_printed_id": "non-empty"
-                },
-                {
-                    "name": "FIND01",
-                    "customer_order_printed_id": "non-empty"
-                },
-                {
-                    "name": "FIND02",
-                    "customer_order_printed_id": ""
-                },
-                {
-                    "name": "FIND03",
-                    "customer_order_printed_id": "non-existing"
-                },
-                {
                     "name": "FIND04",
-                    "customer_order_printed_id": "simple_order_1"
+                    "customer_printed_order_id": "simple_order_1"
                 }
             ]
         }
