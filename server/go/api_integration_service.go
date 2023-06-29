@@ -11,6 +11,7 @@ package server
 
 import (
 	"context"
+	"log"
 )
 
 // IntegrationApiService is a service that implements the logic for the IntegrationApiServicer
@@ -26,5 +27,6 @@ func NewIntegrationApiService() IntegrationApiServicer {
 
 // FindOrderByCustomerOrderPrintedId - Find Order by customer_order_id
 func (s *IntegrationApiService) FindOrderByCustomerOrderPrintedId(ctx context.Context, customerOrderPrintedId string) (ImplResponse, error) {
+	log.Printf("CONTEXT %+\n", ctx)
 	return Response(200, IntegrationOrder{}), nil
 }

@@ -3,13 +3,17 @@ OPENAPI_URL=https://api.byrever.com/v1/docs/openapi_integration.yaml
 OPENAPI_LOCAL=tmp/openapi.yaml
 CLIENT_PATH=client
 SERVER_PATH=server
+EXEC_FILE=rever-server-integration
 
 ##############################
-# SERVER MOCK IMPLEMENTATION #
+# TESTING					 #
 ##############################
 
-run-server:
-	go run server/main.go
+unit-test:
+	go build -o ./bin/${EXEC_FILE} server/main.go 
+	./bin/${EXEC_FILE} &
+	sleep 2
+	go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt || pkill -9  ${EXEC_FILE}
 
 ##################
 # API GENERATION #
