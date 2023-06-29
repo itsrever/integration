@@ -33,9 +33,9 @@ The [config.json](./test/config.json) file contains a global section, independen
     },
 ```
 
-Per each endpoint of the integration, below the `tests` section you will have to configure the specific tests and pass the values that matches the scenarios. For example, for the scenario `FIND04` you will need to set the value of `customer_order_printed_id` that matched the described scenario in your platform.
+Per each endpoint of the integration, below the `tests` section you will have to configure the specific tests and pass the values that matches the scenarios. For example, for the scenario `FIND04` you will need to set the value of `customer_order_printed_id` that matches the described scenario in your platform.
 
-> Valid order with multiple `line_items`, referring products/services **without variants**. Implement this case if your e-commerce supports products but has no support for Variants...
+> **FIND04**: Valid order with multiple `line_items`, referring products/services **without variants**. Implement this case if your e-commerce supports products but has no support for Variants...
 
 Please refer to the [config.json](./test/config.json) file for a complete example. All of the supported tests are listed in the section [Methods included in the testing](#methods-included-in-the-testing).
 
