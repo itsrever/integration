@@ -9,7 +9,7 @@
 
 package server
 
-// IntegrationLineItem - One of the line items from the Order
+// IntegrationLineItem - One of the line items from the Order. Consist of a quantity of a product or a product variant, with the associated price, taxes and discounts. For the properties of the item sold, the property `product` should be used. If the item sold is a variant of a product, the property `variant` should be filled additionally, with the variant information, and the properties in there will override the properties in the `product` object. 
 type IntegrationLineItem struct {
 
 	// Optional customer comments/notes for the line item

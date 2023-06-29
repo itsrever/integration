@@ -17,14 +17,24 @@ import (
 type IntegrationPayment struct {
 
 	// Date when the payment for the whole order was made. This field should be present with a valid value if the order has been fully paid (not just partially). 
-	Date time.Time `json:"date,omitempty"`
+	Date time.Time `json:"date"`
 
 	// List of transactions executed as payment for the order.  If the order is `fully_paid`, then this list should have at least one element. 
-	Transactions []IntegrationTransaction `json:"transactions,omitempty"`
+	Transactions []IntegrationTransaction `json:"transactions"`
 }
 
 // AssertIntegrationPaymentRequired checks if the required fields are not zero-ed
 func AssertIntegrationPaymentRequired(obj IntegrationPayment) error {
+	elements := map[string]interface{}{
+		"date": obj.Date,
+		"transactions": obj.Transactions,
+	}
+	for name, el := range elements {
+		if isZero := IsZeroValue(el); isZero {
+			return &RequiredError{Field: name}
+		}
+	}
+
 	for _, el := range obj.Transactions {
 		if err := AssertIntegrationTransactionRequired(el); err != nil {
 			return err

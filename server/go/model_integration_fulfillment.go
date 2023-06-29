@@ -9,24 +9,21 @@
 
 package server
 
-import (
-	"time"
-)
-
-// IntegrationFulfillment - Section to group the fulfillment information of the order
+// IntegrationFulfillment - Line item fulfilled in an order
 type IntegrationFulfillment struct {
 
-	// Date when the order was fulfilled. This field should be present with a valid value if `is_fulfilled` is `true` 
-	Date time.Time `json:"date,omitempty"`
+	// ID of the line item being fulfilled. Must exist in the `line_items` array of the order.
+	LineItemId string `json:"line_item_id"`
 
-	// If the order has been fulfilled. If partially fulfilled, this field should be `false` 
-	IsFulfilled bool `json:"is_fulfilled"`
+	// Number of products fulfilled. The sum of quantities per `line_item_id` must match the total quantity of the line item.
+	Quantity float32 `json:"quantity"`
 }
 
 // AssertIntegrationFulfillmentRequired checks if the required fields are not zero-ed
 func AssertIntegrationFulfillmentRequired(obj IntegrationFulfillment) error {
 	elements := map[string]interface{}{
-		"is_fulfilled": obj.IsFulfilled,
+		"line_item_id": obj.LineItemId,
+		"quantity": obj.Quantity,
 	}
 	for name, el := range elements {
 		if isZero := IsZeroValue(el); isZero {

@@ -48,19 +48,19 @@ func NewIntegrationApiController(s IntegrationApiServicer, opts ...IntegrationAp
 func (c *IntegrationApiController) Routes() Routes {
 	return Routes{
 		{
-			"FindOrderByCustomerOrderPrintedId",
+			"FindOrderByCustomerPrintedOrderId",
 			strings.ToUpper("Get"),
 			"/integration/orders/find",
-			c.FindOrderByCustomerOrderPrintedId,
+			c.FindOrderByCustomerPrintedOrderId,
 		},
 	}
 }
 
-// FindOrderByCustomerOrderPrintedId - Find Order by customer_order_id
-func (c *IntegrationApiController) FindOrderByCustomerOrderPrintedId(w http.ResponseWriter, r *http.Request) {
+// FindOrderByCustomerPrintedOrderId - Find Order by `customer_printed_order_id`
+func (c *IntegrationApiController) FindOrderByCustomerPrintedOrderId(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
-	customerOrderPrintedIdParam := query.Get("customer_order_printed_id")
-	result, err := c.service.FindOrderByCustomerOrderPrintedId(r.Context(), customerOrderPrintedIdParam)
+	customerPrintedOrderIdParam := query.Get("customer_printed_order_id")
+	result, err := c.service.FindOrderByCustomerPrintedOrderId(r.Context(), customerPrintedOrderIdParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

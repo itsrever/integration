@@ -25,8 +25,8 @@ func NewIntegrationApiService() IntegrationApiServicer {
 	return &IntegrationApiService{}
 }
 
-// FindOrderByCustomerOrderPrintedId - Find Order by customer_order_id
-func (s *IntegrationApiService) FindOrderByCustomerOrderPrintedId(ctx context.Context, customerOrderPrintedId string) (ImplResponse, error) {
+// FindOrderByCustomerPrintedOrderId - Find Order by customer_order_id
+func (s *IntegrationApiService) FindOrderByCustomerPrintedOrderId(ctx context.Context, customerOrderPrintedId string) (ImplResponse, error) {
 	log.Printf("CONTEXT %+\n", ctx)
 	return Response(200, IntegrationOrder{}), nil
 }

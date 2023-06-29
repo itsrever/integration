@@ -9,7 +9,7 @@
 
 package server
 
-// IntegrationMultiMoneyAmountShop - Amount in the shop currency. Useful for accounting purposes. 
+// IntegrationMultiMoneyAmountShop - Amount in the shop currency.  Useful for accounting purposes, to provide reporting in this currency.  Usually, the shop currency is the same for every order within the e-commerce. 
 type IntegrationMultiMoneyAmountShop struct {
 
 	// amount (optionally with decimals), without currency symbol and thousands separator

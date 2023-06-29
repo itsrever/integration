@@ -9,7 +9,7 @@
 
 package server
 
-// IntegrationMultiMoneyAmountCustomer - Amount in the customer currency. Useful for displaying the amount to the customer. 
+// IntegrationMultiMoneyAmountCustomer - Amount in the customer currency.  Used as the amount + currency that the customer is really going to use for paying, the currency that the customer selected in the website. Usually, this comes from applying a conversion rate to the shop currency.  
 type IntegrationMultiMoneyAmountCustomer struct {
 
 	// amount (optionally with decimals), without currency symbol and thousands separator
