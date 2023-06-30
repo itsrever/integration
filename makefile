@@ -21,6 +21,12 @@ unit-test:
 
 unit-test-ci: install-gotestfmt unit-test 
 
+with-docker-test:
+	go build -o ./bin/${EXEC_FILE} server/main.go 
+	./bin/${EXEC_FILE} &
+	docker run --rm -v "${PWD}/test/config.json:/rever/test/config.json" itsrever/testing:sha-9bf18b9
+	pkill -9  ${EXEC_FILE}
+
 in-docker-test:
 	go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt 
 
