@@ -21,10 +21,22 @@ unit-test:
 
 unit-test-ci: install-gotestfmt unit-test 
 
-with-docker-test:
+with-docker-test-linux:
 	go build -o ./bin/${EXEC_FILE} server/main.go 
 	./bin/${EXEC_FILE} &
-	docker run --rm -v "${PWD}/test/config.json:/rever/test/config.json" itsrever/testing:latest
+	docker run --rm -v "${PWD}/test/config.json:/rever/test/config.json" --network="host"  itsrever/testing:latest
+	pkill -9  ${EXEC_FILE}
+
+with-docker-test-mac:
+	go build -o ./bin/${EXEC_FILE} server/main.go 
+	./bin/${EXEC_FILE} &
+	docker run --rm -v "${PWD}/sample/config.macos.json:/rever/test/config.json" --network="host"  itsrever/testing:latest
+	pkill -9  ${EXEC_FILE}
+
+with-docker-test-win:
+	go build -o ./bin/${EXEC_FILE} server/main.go 
+	./bin/${EXEC_FILE} &
+	docker run --rm -v "${PWD}/sample/config.win.json:/rever/test/config.json" --network="host"  itsrever/testing:latest
 	pkill -9  ${EXEC_FILE}
 
 in-docker-test:

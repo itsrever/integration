@@ -82,11 +82,24 @@ The docker container is available in the [Docker Hub](https://hub.docker.com/r/i
 You can run it with the following command:
 
 ``` bash
-docker run --rm -v "/path/to/your/config.json:/rever/test/config.json" \ 
+docker run --rm -v "/path/to/your/config.json:/rever/test/config.json" \
+    --network="host" \
     itsrever/testing:latest
 ```
 
 Please note the `/path/to/your/config.json` must be an absolute path.
+
+### Running the docker container against localhost (local dev server)
+
+If you're running your API locally (`localhost`), the docker container needs to access the `host` network. This is because the container needs to access your API running in the host machine. You can do it with the `--network="host"` option. In linux that should be it. If you're running macos or windows, you will need modify the URL of your api in the `config.json` file like in the [macos config file sample](./test/config.mac.json) or [windows config file sample](./test/config.win.json).
+
+Then, you can specify this file to docker:
+
+```` bash
+docker run --rm -v "${PWD}/sample/config.macos.json:/rever/test/config.json" \
+    --network="host" \
+    itsrever/testing:latest
+````
 
 ## Methods included in the testing
 

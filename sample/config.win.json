@@ -1,0 +1,19 @@
+{
+    "base_url": "http://host.docker.internal:8080",
+    "auth": {
+        "header": "x-rever-api-key",
+        "api_key": "valid-api-key"
+    },
+    "tests": [
+        {
+            "method":"FindOrderByCustomerOrderPrintedId",
+            "url_pattern": "/integration/orders/find?customer_printed_order_id={customer_printed_order_id}",
+            "scenarios": [
+                {
+                    "name": "FIND04",
+                    "customer_printed_order_id": "simple_order_1"
+                }
+            ]
+        }
+    ]
+}
