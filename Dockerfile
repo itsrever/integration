@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM golang:1.19-alpine
+FROM golang:1.19.3
 
 # Set the Current Working Directory inside the container
 WORKDIR /rever
@@ -11,8 +11,7 @@ COPY . .
 ENV TEST_CONFIG=/rever/test/config.json
 
 # Install dependencies
-RUN apk add --update make
 RUN go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 
 # Run the tests agains the config file 
-CMD ["make", "in-docker-test"]
+ENTRYPOINT ["make", "in-docker-test"]
