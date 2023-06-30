@@ -64,14 +64,6 @@ docker-build:
 docker-tag: 
 	docker tag $(APP_NAME) $(ECR_BASE_PATH)/$(APP_NAME):latest
 	docker tag $(APP_NAME) $(ECR_BASE_PATH)/$(APP_NAME):$(VERSION_TAG)
-
-docker-login:
-	aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin $(ECR_BASE_PATH)
-
-docker-push-ci:
-	docker push --all-tags $(ECR_BASE_PATH)/$(APP_NAME)
-	
-docker-push: docker-build docker-tag docker-login docker-push-ci
 	
 ##############################
 # GENERATE RELEASE			 #
