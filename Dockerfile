@@ -11,7 +11,7 @@ COPY . .
 ENV TEST_CONFIG=/rever/test/config.json
 
 # Install dependencies
-RUN RUN apt install build-essential -y --no-install-recommends
+RUN apk add --update make
 RUN go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 
 # Run the tests agains the config file 
