@@ -78,11 +78,15 @@ Please refer to the [config.json](./test/config.json) file for a complete exampl
 
 ### Running the docker container
 
-The docker container is available in the [Docker Hub](https://hub.docker.com/r/itsrever/testing). You can run it with the following command:
+The docker container is available in the [Docker Hub](https://hub.docker.com/r/itsrever/testing). 
+You can run it with the following command:
 
 ``` bash
-docker run --rm -v "route_to_your_config.json/test:/rever/test/config.json" itsrever/testing:latest
+docker run --rm -v "/path/to/your/config.json:/rever/test/config.json" \ 
+    itsrever/testing:latest
 ```
+
+Please note the `/path/to/your/config.json` must be an absolute path.
 
 ## Methods included in the testing
 
