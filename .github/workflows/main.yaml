@@ -25,9 +25,9 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.19.3
-        
+
       - name: Run tests
-        run: make unit-test
+        run: make unit-test-ci
 
   docker:
     runs-on: ubuntu-latest

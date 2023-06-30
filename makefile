@@ -10,11 +10,16 @@ APP_NAME=testing
 # TESTING					 #
 ##############################
 
+install-gotestfmt:
+	go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
+
 unit-test:
 	go build -o ./bin/${EXEC_FILE} server/main.go 
 	./bin/${EXEC_FILE} &
 	sleep 2
 	go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt || pkill -9  ${EXEC_FILE}
+
+unit-test-ci: install-gotestfmt unit-test 
 
 in-docker-test:
 	go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt 
@@ -53,18 +58,3 @@ openapi-generator-srv:
     -o /local/${SERVER_PATH}
 
 gen-go-server: download-openapi openapi-generator-srv clean-server update-libs
-
-##############################
-# DOCKER					 #
-##############################
-
-docker-build: 
-	docker build --platform=linux/amd64 -t $(APP_NAME) .
-
-docker-tag: 
-	docker tag $(APP_NAME) $(ECR_BASE_PATH)/$(APP_NAME):latest
-	docker tag $(APP_NAME) $(ECR_BASE_PATH)/$(APP_NAME):$(VERSION_TAG)
-	
-##############################
-# GENERATE RELEASE			 #
-##############################
