@@ -26,7 +26,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: |
-            $IMAGE_NAME
+            ${{ env.IMAGE_NAME }}
           tags: |
             type=schedule
             type=ref,event=branch
