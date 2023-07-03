@@ -25,5 +25,21 @@ func OrderWithProduct() *IntegrationOrder {
 				},
 			},
 		},
+		Shipping: OrderShipping(),
+	}
+}
+
+func OrderShipping() IntegrationShipping {
+	return IntegrationShipping{
+		Amount: IntegrationShippingAmount{
+			AmountShop: IntegrationMultiMoneyAmountShop{
+				Amount:   12.40,
+				Currency: "EUR",
+			},
+			AmountCustomer: IntegrationMultiMoneyAmountCustomer{
+				Amount:   12.40,
+				Currency: "EUR",
+			},
+		},
 	}
 }
