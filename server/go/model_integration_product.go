@@ -26,7 +26,7 @@ type IntegrationProduct struct {
 	// Product name
 	Name string `json:"name"`
 
-	Price IntegrationProductPrice `json:"price"`
+	UnitPrice IntegrationProductUnitPrice `json:"unit_price,omitempty"`
 
 	// Product short description
 	ShortDescription string `json:"short_description,omitempty"`
@@ -49,7 +49,6 @@ func AssertIntegrationProductRequired(obj IntegrationProduct) error {
 	elements := map[string]interface{}{
 		"id": obj.Id,
 		"name": obj.Name,
-		"price": obj.Price,
 	}
 	for name, el := range elements {
 		if isZero := IsZeroValue(el); isZero {
@@ -67,7 +66,7 @@ func AssertIntegrationProductRequired(obj IntegrationProduct) error {
 			return err
 		}
 	}
-	if err := AssertIntegrationProductPriceRequired(obj.Price); err != nil {
+	if err := AssertIntegrationProductUnitPriceRequired(obj.UnitPrice); err != nil {
 		return err
 	}
 	for _, el := range obj.Tags {

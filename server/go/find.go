@@ -1,8 +1,10 @@
 package server
 
+import "time"
+
 func FindResponses() map[string]*IntegrationOrder {
 	return map[string]*IntegrationOrder{
-		"simple_order_1": OrderWithProduct(),
+		"simple_order_1": OrderWithSingleProductEUR(),
 	}
 }
 
@@ -10,22 +12,47 @@ func FindResponseFor(id string) *IntegrationOrder {
 	return FindResponses()[id]
 }
 
-func OrderWithProduct() *IntegrationOrder {
+// CurrencyShop is the currency used by the shop, always EUR in all cases
+const CurrencyShop = "EUR"
+
+func OrderWithSingleProductEUR() *IntegrationOrder {
 	return &IntegrationOrder{
+		Date:          LastWeek(),
+		TaxesIncluded: true,
+		TotalAmount: IntegrationOrderTotalAmount{
+			AmountShop: IntegrationMultiMoneyAmountShop{
+				Amount:   15.13,
+				Currency: CurrencyShop,
+			},
+			AmountCustomer: IntegrationMultiMoneyAmountCustomer{
+				Amount:   15.13,
+				Currency: ProductSunglasses().UnitPrice.Currency,
+			},
+		},
+		TotalTaxes: IntegrationOrderTotalTaxes{},
 		LineItems: []IntegrationLineItem{
 			{
-				Product: IntegrationProduct{
-					Id:          "product1",
-					Name:        "Product 1",
-					Description: "Product 1 description",
-					Price: IntegrationProductPrice{
-						Amount:   1250,
-						Currency: "USD",
-					},
-				},
+				Product: ProductSunglasses(),
 			},
 		},
 		Shipping: OrderShipping(),
+	}
+}
+
+func LastWeek() time.Time {
+	return time.Now().Add(-time.Hour * 24 * 7)
+}
+
+// ProductSunglasses is a product with 21% VAT in EUR, with no variants
+func ProductSunglasses() IntegrationProduct {
+	return IntegrationProduct{
+		Id:          "sunglasses_product_id",
+		Name:        "Sunglasses",
+		Description: "Sunglasses long description",
+		UnitPrice: IntegrationProductUnitPrice{
+			Amount:   12.50,
+			Currency: CurrencyShop,
+		},
 	}
 }
 

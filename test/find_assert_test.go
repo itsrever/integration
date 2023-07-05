@@ -1,0 +1,126 @@
+package test
+
+import (
+	"testing"
+
+	server "github.com/itsrever/integration/server/go"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+)
+
+// assertSanity asserts that the order has data that complies with basic requirements
+func assertSanity(t *testing.T, order *server.IntegrationOrder) {
+	require.NoError(t, server.AssertIntegrationOrderRequired(*order))
+	assertPositiveAmount(t, order)
+	assertTaxes(t, order)
+	assertShippingCosts(t, order)
+	assertIsFulfilled(t, order)
+	assertIsPaid(t, order)
+	assertCustomer(t, order)
+	assertAmountsDoMatch(t, order)
+	assertSameCurrencies(t, order) // TODO: maybe this is a list
+}
+
+// Valid order with multiple `line_items`, referring products/services **without variants**.
+// Implement this case if your e-commerce supports products but has no support for Variants.
+// Product variants are a requirement for supporting exchange orders as compensation method.
+// The order must have a positive amount in EUR, with taxes and shipping costs.
+// Regarding the payment method, must be paid with a non-cash, non-cash on delivery, non-BNPL payment method.
+// It should have a discount applied. It must be associated with a valid customer.
+// It must be fulfilled and paid
+func assertOrderWithoutVariants(t *testing.T, order *server.IntegrationOrder) {
+	assertRefundablePaymentMethod(t, order)
+	assertDiscountApplied(t, order)
+
+	assert.GreaterOrEqual(t, len(order.LineItems), 1)
+	for _, lineItem := range order.LineItems {
+		assertHasProduct(t, &lineItem)
+		assertNoVariants(t, &lineItem)
+	}
+}
+
+func assertPositiveAmount(t *testing.T, order *server.IntegrationOrder) {
+	assert.Greater(t, order.TotalAmount.AmountCustomer.Amount, 0)
+	assert.Greater(t, order.TotalAmount.AmountShop.Amount, 0)
+	isValidCurrency(t, order.TotalAmount.AmountCustomer.Currency)
+	isValidCurrency(t, order.TotalAmount.AmountShop.Currency)
+}
+
+func assertTaxes(t *testing.T, order *server.IntegrationOrder) {
+
+}
+
+func assertShippingCosts(t *testing.T, order *server.IntegrationOrder) {
+
+}
+
+func assertRefundablePaymentMethod(t *testing.T, order *server.IntegrationOrder) {
+
+}
+
+func assertDiscountApplied(t *testing.T, order *server.IntegrationOrder) {
+
+}
+
+func assertIsFulfilled(t *testing.T, order *server.IntegrationOrder) {
+
+}
+
+func assertIsPaid(t *testing.T, order *server.IntegrationOrder) {
+
+}
+
+func assertCustomer(t *testing.T, order *server.IntegrationOrder) {
+
+}
+
+func assertHasProduct(t *testing.T, lineItem *server.IntegrationLineItem) {
+
+}
+
+func assertNoVariants(t *testing.T, lineItem *server.IntegrationLineItem) {
+
+}
+
+func assertAmountsDoMatch(t *testing.T, order *server.IntegrationOrder) {
+
+}
+
+// assertSameCurrencies asserts that all currencies in the order are the same (in terms of shop and customer)
+func assertSameCurrencies(t *testing.T, order *server.IntegrationOrder) {
+	shopCurrency := order.TotalAmount.AmountShop.Currency
+	custCurrency := order.TotalAmount.AmountCustomer.Currency
+
+	for _, lineItem := range order.LineItems {
+		if lineItem.Subtotal.AmountShop.Currency != shopCurrency {
+			assert.Fail(t, "line item subtotal currency does not match shop currency")
+		}
+		if lineItem.Subtotal.AmountCustomer.Currency != custCurrency {
+			assert.Fail(t, "line item subtotal currency does not match customer currency")
+		}
+		if lineItem.Total.AmountShop.Currency != shopCurrency {
+			assert.Fail(t, "line item total currency does not match shop currency")
+		}
+		if lineItem.Total.AmountCustomer.Currency != custCurrency {
+			assert.Fail(t, "line item total currency does not match customer currency")
+		}
+		if lineItem.TotalTaxes.AmountShop.Currency != shopCurrency {
+			assert.Fail(t, "line item taxes currency does not match shop currency")
+		}
+		if lineItem.TotalTaxes.AmountCustomer.Currency != custCurrency {
+			assert.Fail(t, "line item total taxes currency does not match customer currency")
+		}
+		if hasDiscountLineItem(lineItem) {
+			if lineItem.TotalDiscounts.AmountShop.Currency != shopCurrency {
+				assert.Fail(t, "line item discount currency does not match shop currency")
+			}
+			if lineItem.TotalDiscounts.AmountCustomer.Currency != custCurrency {
+				assert.Fail(t, "line item discount taxes currency does not match customer currency")
+			}
+		}
+	}
+}
+
+func isValidCurrency(t *testing.T, currency string) {
+	assert.Len(t, currency, 3)
+}

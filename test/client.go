@@ -56,7 +56,10 @@ func (c *Client) Debug() *Client {
 	}
 }
 
-// Do makes a GET request to the path pattern, with the vars context and body with a JSON body
+// Do makes an HTTP request to the path pattern, with the vars context and body with a JSON body
+// method is the verb of the request. Ex: GET, POST, PUT, DELETE
+// pathPattern is a path pattern with variables in the form of {var_name}. Ex: /orders/{order_id}
+// vars is a map of variables to be applied to the path pattern. Ex: map[string]string{"order_id": "123"}
 func (c *Client) Do(method string, pathPattern string, vars map[string]string, body any) (resp *http.Response, err error) {
 	var req *http.Request
 	bodyBuf := &bytes.Buffer{}
