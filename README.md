@@ -100,6 +100,13 @@ docker run --rm -v "${PWD}/sample/config.macos.json:/rever/test/config.json" \
     --network="host" \
     itsrever/testing:latest
 ````
+## Deploying the dummy implementation
+
+The commands can be tested against the mock server:
+    
+``` bash
+curl --header "x-rever-api-key:valid-api-key" "https://server-yn4mmnsfqa-ey.a.run.app/integration/orders/find?customer_printed_order_id=simple_order_1" 
+```
 
 ## Methods included in the testing
 
