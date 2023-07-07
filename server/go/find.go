@@ -83,6 +83,7 @@ func OrderWithProduct() *IntegrationOrder {
 						Currency: "USD",
 					},
 				},
+				Id:        "lineitem1",
 				Quantity:  1,
 				Name:      "Product 1",
 				VariantId: "variant1",
@@ -117,9 +118,11 @@ func OrderWithProduct() *IntegrationOrder {
 					},
 				},
 				Product: IntegrationProduct{
-					Id:          "product1",
-					Name:        "Product 1",
-					Description: "Product 1 description",
+					Id:                "product1",
+					Name:              "Product 1",
+					Description:       "Product 1 description",
+					Sku:               "skutestproduct",
+					InventoryQuantity: 14,
 					Price: IntegrationProductPrice{
 						Amount:   1250,
 						Currency: "USD",
@@ -138,6 +141,7 @@ func OrderWithProduct() *IntegrationOrder {
 							Name:             "Variant 1",
 							Description:      "Variant 1 description",
 							ShortDescription: "Variant 1 short description",
+							Enabled:          true,
 							Sku:              "skutest",
 							Weight:           1000,
 							Price: IntegrationVariantPrice{
