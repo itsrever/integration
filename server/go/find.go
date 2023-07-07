@@ -107,6 +107,16 @@ func OrderWithProduct() *IntegrationOrder {
 						Currency: "USD",
 					},
 				},
+				UnitPrice: IntegrationLineItemUnitPrice{
+					AmountShop: IntegrationMultiMoneyAmountShop{
+						Amount:   1250,
+						Currency: "USD",
+					},
+					AmountCustomer: IntegrationMultiMoneyAmountCustomer{
+						Amount:   1250,
+						Currency: "USD",
+					},
+				},
 				Product: IntegrationProduct{
 					Id:                "product1",
 					Name:              "Product 1",
