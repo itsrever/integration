@@ -13,6 +13,9 @@ on:
 
 env:
     IMAGE_NAME: itsrever/testing
+    PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+    RUN_REGION: europe-west3
+    SERVICE_NAME: server
 
 jobs:
   tests:
@@ -60,7 +63,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PAT }}
 
-      - name: Build and push
+      - name: Build and push Docker image (Docker Hub)
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -68,3 +71,26 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+    
+  deploy_gcp:
+    runs-on: ubuntu-latest
+    needs: docker
+    steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+
+        - id: 'auth'
+          uses: 'google-github-actions/auth@v1'
+          with:
+            credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+        - uses: 'google-github-actions/setup-gcloud@v1'
+          with:
+            project_id: ${{ secrets.GCP_PROJECT_ID }}
+       
+        - name: Deploy
+          run: |
+              gcloud run deploy $SERVICE_NAME \
+                --source=./server \
+                --region $RUN_REGION \
+                --platform managed
