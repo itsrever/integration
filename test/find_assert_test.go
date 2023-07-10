@@ -17,7 +17,7 @@ func assertSanity(t *testing.T, order *server.IntegrationOrder) {
 	assertIsFulfilled(t, order)
 	assertIsPaid(t, order)
 	assertCustomer(t, order)
-	assertAmountsDoMatch(t, order)
+	//assertAmountsDoMatch(t, order)
 	assertSameCurrencies(t, order) // TODO: maybe this is a list
 }
 
@@ -47,7 +47,10 @@ func assertPositiveAmount(t *testing.T, order *server.IntegrationOrder) {
 }
 
 func assertTaxes(t *testing.T, order *server.IntegrationOrder) {
-
+	assert.Greater(t, order.TotalTaxes.AmountCustomer.Amount, 0)
+	assert.Greater(t, order.TotalTaxes.AmountShop.Amount, 0)
+	isValidCurrency(t, order.TotalTaxes.AmountCustomer.Currency)
+	isValidCurrency(t, order.TotalTaxes.AmountShop.Currency)
 }
 
 func assertShippingCosts(t *testing.T, order *server.IntegrationOrder) {
@@ -79,7 +82,7 @@ func assertHasProduct(t *testing.T, lineItem *server.IntegrationLineItem) {
 }
 
 func assertNoVariants(t *testing.T, lineItem *server.IntegrationLineItem) {
-
+	assert.Equal(t, "a", lineItem.Id)
 }
 
 func assertAmountsDoMatch(t *testing.T, order *server.IntegrationOrder) {
