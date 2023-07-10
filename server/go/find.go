@@ -56,11 +56,11 @@ func getReturns() []IntegrationReturnOrder {
 func getTotalAmountInUSD() IntegrationOrderTotalAmount {
 	return IntegrationOrderTotalAmount{
 		AmountShop: IntegrationMultiMoneyAmountShop{
-			Amount:   1250,
+			Amount:   50,
 			Currency: "USD",
 		},
 		AmountCustomer: IntegrationMultiMoneyAmountCustomer{
-			Amount:   1250,
+			Amount:   50,
 			Currency: "USD",
 		},
 	}
@@ -69,11 +69,11 @@ func getTotalAmountInUSD() IntegrationOrderTotalAmount {
 func getTotalTaxesInEUR() IntegrationOrderTotalTaxes {
 	return IntegrationOrderTotalTaxes{
 		AmountShop: IntegrationMultiMoneyAmountShop{
-			Amount:   1000,
+			Amount:   5,
 			Currency: "EUR",
 		},
 		AmountCustomer: IntegrationMultiMoneyAmountCustomer{
-			Amount:   1000,
+			Amount:   5,
 			Currency: "EUR",
 		},
 	}
@@ -83,11 +83,11 @@ func getShippingDetails() IntegrationShipping {
 	return IntegrationShipping{
 		Amount: IntegrationShippingAmount{
 			AmountShop: IntegrationMultiMoneyAmountShop{
-				Amount:   1000,
+				Amount:   5,
 				Currency: "USD",
 			},
 			AmountCustomer: IntegrationMultiMoneyAmountCustomer{
-				Amount:   1000,
+				Amount:   5,
 				Currency: "USD",
 			},
 		},
@@ -117,7 +117,7 @@ func getPaymentDetails() IntegrationPayment {
 				PaymentMethodType: "non-cash",
 				TransactionId:     "123456",
 				Amount: IntegrationTransactionAmount{
-					Amount:   1000,
+					Amount:   45,
 					Currency: "USD",
 				},
 				Date: getOrderDate(),
@@ -179,21 +179,21 @@ func getLineItems() []IntegrationLineItem {
 		{
 			Subtotal: IntegrationLineItemSubtotal{
 				AmountShop: IntegrationMultiMoneyAmountShop{
-					Amount:   1250,
+					Amount:   50,
 					Currency: "USD",
 				},
 				AmountCustomer: IntegrationMultiMoneyAmountCustomer{
-					Amount:   1250,
+					Amount:   50,
 					Currency: "USD",
 				},
 			},
 			Total: IntegrationLineItemTotal{
 				AmountShop: IntegrationMultiMoneyAmountShop{
-					Amount:   1250,
+					Amount:   50,
 					Currency: "USD",
 				},
 				AmountCustomer: IntegrationMultiMoneyAmountCustomer{
-					Amount:   1250,
+					Amount:   50,
 					Currency: "USD",
 				},
 			},
@@ -203,31 +203,31 @@ func getLineItems() []IntegrationLineItem {
 			VariantId: "variant1",
 			TotalDiscounts: IntegrationLineItemTotalDiscounts{
 				AmountShop: IntegrationMultiMoneyAmountShop{
-					Amount:   100,
+					Amount:   10,
 					Currency: "USD",
 				},
 				AmountCustomer: IntegrationMultiMoneyAmountCustomer{
-					Amount:   100,
+					Amount:   10,
 					Currency: "USD",
 				},
 			},
 			TotalTaxes: IntegrationLineItemTotalTaxes{
 				AmountShop: IntegrationMultiMoneyAmountShop{
-					Amount:   1000,
+					Amount:   5,
 					Currency: "USD",
 				},
 				AmountCustomer: IntegrationMultiMoneyAmountCustomer{
-					Amount:   1000,
+					Amount:   5,
 					Currency: "USD",
 				},
 			},
 			UnitPrice: IntegrationLineItemUnitPrice{
 				AmountShop: IntegrationMultiMoneyAmountShop{
-					Amount:   1250,
+					Amount:   50,
 					Currency: "USD",
 				},
 				AmountCustomer: IntegrationMultiMoneyAmountCustomer{
-					Amount:   1250,
+					Amount:   50,
 					Currency: "USD",
 				},
 			},
@@ -244,7 +244,7 @@ func getIntegrationProduct() IntegrationProduct {
 		Sku:               "skutestproduct",
 		InventoryQuantity: 14,
 		UnitPrice: IntegrationProductUnitPrice{
-			Amount:   1250,
+			Amount:   50,
 			Currency: "USD",
 		},
 		Tags: []IntegrationTag{
@@ -264,7 +264,7 @@ func getIntegrationProduct() IntegrationProduct {
 				Enabled:           true,
 				Sku:               "skutest",
 				Weight:            100,
-				UnitPrice:         IntegrationVariantUnitPrice{Amount: 1250, Currency: "USD"},
+				UnitPrice:         IntegrationVariantUnitPrice{Amount: 50, Currency: "USD"},
 				InventoryQuantity: 10,
 				Options: []IntegrationOption{
 					{

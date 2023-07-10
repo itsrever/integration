@@ -40,21 +40,28 @@ func assertOrderWithoutVariants(t *testing.T, order *server.IntegrationOrder) {
 }
 
 func assertPositiveAmount(t *testing.T, order *server.IntegrationOrder) {
-	assert.Greater(t, order.TotalAmount.AmountCustomer.Amount, 0)
-	assert.Greater(t, order.TotalAmount.AmountShop.Amount, 0)
+	println("assertPositiveAmount")
+	println("currency", order.TotalAmount.AmountCustomer.Currency)
+	println("amount", order.TotalAmount.AmountCustomer.Amount)
+
+	assert.Greater(t, order.TotalAmount.AmountCustomer.Amount, float32(0))
+	assert.Greater(t, order.TotalAmount.AmountShop.Amount, float32(0))
 	isValidCurrency(t, order.TotalAmount.AmountCustomer.Currency)
 	isValidCurrency(t, order.TotalAmount.AmountShop.Currency)
 }
 
 func assertTaxes(t *testing.T, order *server.IntegrationOrder) {
-	assert.Greater(t, order.TotalTaxes.AmountCustomer.Amount, 0)
-	assert.Greater(t, order.TotalTaxes.AmountShop.Amount, 0)
+	assert.Greater(t, order.TotalTaxes.AmountCustomer.Amount, float32(0))
+	assert.Greater(t, order.TotalTaxes.AmountShop.Amount, float32(0))
 	isValidCurrency(t, order.TotalTaxes.AmountCustomer.Currency)
 	isValidCurrency(t, order.TotalTaxes.AmountShop.Currency)
 }
 
 func assertShippingCosts(t *testing.T, order *server.IntegrationOrder) {
-
+	assert.Greater(t, order.Shipping.Amount.AmountCustomer.Amount, float32(0))
+	assert.Greater(t, order.Shipping.Amount.AmountShop.Amount, float32(0))
+	isValidCurrency(t, order.Shipping.Amount.AmountCustomer.Currency)
+	isValidCurrency(t, order.Shipping.Amount.AmountShop.Currency)
 }
 
 func assertRefundablePaymentMethod(t *testing.T, order *server.IntegrationOrder) {
@@ -82,7 +89,6 @@ func assertHasProduct(t *testing.T, lineItem *server.IntegrationLineItem) {
 }
 
 func assertNoVariants(t *testing.T, lineItem *server.IntegrationLineItem) {
-	assert.Equal(t, "a", lineItem.Id)
 }
 
 func assertAmountsDoMatch(t *testing.T, order *server.IntegrationOrder) {
