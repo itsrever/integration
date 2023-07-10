@@ -61,7 +61,14 @@ func assertShippingCosts(t *testing.T, order *server.IntegrationOrder) {
 }
 
 func assertRefundablePaymentMethod(t *testing.T, order *server.IntegrationOrder) {
+	assert.NotNil(t, order.Payment)
+	for _, transaction := range order.Payment.Transactions {
+		assert.True(t, isRefundablePaymentMethod(transaction.PaymentMethodType))
+	}
+}
 
+func isRefundablePaymentMethod(paymentMethodType string) bool {
+	return paymentMethodType == "non-cash" || paymentMethodType == "non-cash-on-delivery" || paymentMethodType == "non-bnpl"
 }
 
 func assertDiscountApplied(t *testing.T, order *server.IntegrationOrder) {
@@ -95,7 +102,6 @@ func assertNoVariants(t *testing.T, lineItem *server.IntegrationLineItem) {
 }
 
 func assertAmountsDoMatch(t *testing.T, order *server.IntegrationOrder) {
-
 }
 
 // assertSameCurrencies asserts that all currencies in the order are the same (in terms of shop and customer)
