@@ -247,35 +247,19 @@ func getIntegrationProduct() IntegrationProduct {
 			Amount:   50,
 			Currency: "USD",
 		},
+		Images: []IntegrationImage{
+			{
+				Name: "Image 1",
+				Src:  "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png",
+				Alt:  "Image 1",
+			},
+		},
 		Tags: []IntegrationTag{
 			{
 				Name: "Tag 1",
 			},
 			{
 				Name: "Tag 2",
-			},
-		},
-		Variants: []IntegrationVariant{
-			{
-				Id:                "variant1",
-				Name:              "Variant 1",
-				Description:       "Variant 1 description",
-				ShortDescription:  "Variant 1 short description",
-				Enabled:           true,
-				Sku:               "skutest",
-				Weight:            100,
-				UnitPrice:         IntegrationVariantUnitPrice{Amount: 50, Currency: "USD"},
-				InventoryQuantity: 10,
-				Options: []IntegrationOption{
-					{
-						Name:  "size",
-						Value: "small",
-					},
-					{
-						Name:  "color",
-						Value: "red",
-					},
-				},
 			},
 		},
 	}

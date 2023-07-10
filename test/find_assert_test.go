@@ -65,26 +65,33 @@ func assertRefundablePaymentMethod(t *testing.T, order *server.IntegrationOrder)
 }
 
 func assertDiscountApplied(t *testing.T, order *server.IntegrationOrder) {
-
 }
 
 func assertIsFulfilled(t *testing.T, order *server.IntegrationOrder) {
-
+	assert.Greater(t, len(order.FulfillmentOrders), 0)
 }
 
 func assertIsPaid(t *testing.T, order *server.IntegrationOrder) {
-
+	assert.Greater(t, len(order.Payment.Transactions), 0)
 }
 
 func assertCustomer(t *testing.T, order *server.IntegrationOrder) {
-
+	assert.NotNil(t, order.Customer)
+	assert.NotEmpty(t, order.Customer.Email)
+	assert.NotEmpty(t, order.Customer.FirstName)
+	assert.NotEmpty(t, order.Customer.LastName)
 }
 
 func assertHasProduct(t *testing.T, lineItem *server.IntegrationLineItem) {
-
+	assert.NotEmpty(t, lineItem.Product)
+	assert.NotEmpty(t, lineItem.Product.Id)
+	assert.NotEmpty(t, lineItem.Product.Name)
+	assert.NotEmpty(t, lineItem.Product.Description)
+	assert.Greater(t, len(lineItem.Product.Images), 0)
 }
 
 func assertNoVariants(t *testing.T, lineItem *server.IntegrationLineItem) {
+	assert.Empty(t, lineItem.Product.Variants)
 }
 
 func assertAmountsDoMatch(t *testing.T, order *server.IntegrationOrder) {
