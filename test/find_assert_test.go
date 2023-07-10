@@ -17,7 +17,7 @@ func assertSanity(t *testing.T, order *server.IntegrationOrder) {
 	assertIsFulfilled(t, order)
 	assertIsPaid(t, order)
 	assertCustomer(t, order)
-	//assertAmountsDoMatch(t, order)
+	assertAmountsDoMatch(t, order)
 	assertSameCurrencies(t, order) // TODO: maybe this is a list
 }
 
@@ -40,10 +40,6 @@ func assertOrderWithoutVariants(t *testing.T, order *server.IntegrationOrder) {
 }
 
 func assertPositiveAmount(t *testing.T, order *server.IntegrationOrder) {
-	println("assertPositiveAmount")
-	println("currency", order.TotalAmount.AmountCustomer.Currency)
-	println("amount", order.TotalAmount.AmountCustomer.Amount)
-
 	assert.Greater(t, order.TotalAmount.AmountCustomer.Amount, float32(0))
 	assert.Greater(t, order.TotalAmount.AmountShop.Amount, float32(0))
 	isValidCurrency(t, order.TotalAmount.AmountCustomer.Currency)
