@@ -21,6 +21,17 @@ func assertSanity(t *testing.T, order *server.IntegrationOrder) {
 	assertSameCurrencies(t, order)
 }
 
+func assertOrderWitVariants(t *testing.T, order *server.IntegrationOrder) {
+	assertRefundablePaymentMethod(t, order)
+	assertDiscountApplied(t, order)
+
+	assert.GreaterOrEqual(t, len(order.LineItems), 1)
+	for _, lineItem := range order.LineItems {
+		assertHasProduct(t, &lineItem)
+		assertVariants(t, &lineItem)
+	}
+}
+
 // Valid order with multiple `line_items`, referring products/services **without variants**.
 // Implement this case if your e-commerce supports products but has no support for Variants.
 // Product variants are a requirement for supporting exchange orders as compensation method.
@@ -107,8 +118,6 @@ func assertNoVariants(t *testing.T, lineItem *server.IntegrationLineItem) {
 func assertAmountsDoMatch(t *testing.T, order *server.IntegrationOrder) {
 	for _, lineItem := range order.LineItems {
 		total := lineItem.Subtotal.AmountCustomer.Amount + lineItem.TotalTaxes.AmountCustomer.Amount - lineItem.TotalDiscounts.AmountCustomer.Amount
-		println("total", total)
-		println("total-item", lineItem.Total.AmountCustomer.Amount)
 		assert.Equal(t, lineItem.Total.AmountCustomer.Amount, total)
 	}
 
@@ -123,6 +132,20 @@ func calculateTotalAmount(order *server.IntegrationOrder) float32 {
 	}
 	totalAmount += order.Shipping.Amount.AmountCustomer.Amount - order.TotalTaxes.AmountCustomer.Amount
 	return totalAmount
+}
+
+func assertVariants(t *testing.T, lineItem *server.IntegrationLineItem) {
+	assert.NotEmpty(t, lineItem.Product.Variants)
+	for _, variant := range lineItem.Product.Variants {
+		assert.NotEmpty(t, variant.Id, "variant id is empty")
+		assert.NotEmpty(t, variant.Name, "variant name is empty")
+		assert.NotEmpty(t, variant.Description, "variant description is empty")
+		assert.Greater(t, len(variant.Images), 0, "variant images is empty")
+		assert.NotEmpty(t, variant.Sku, "variant sku is empty")
+		assert.Greater(t, variant.UnitPrice.Amount, float32(0), "variant unit price is empty")
+		assert.NotEmpty(t, variant.UnitPrice.Currency, "variant unit price currency is empty")
+		isValidCurrency(t, variant.UnitPrice.Currency)
+	}
 }
 
 // assertSameCurrencies asserts that all currencies in the order are the same (in terms of shop and customer)
