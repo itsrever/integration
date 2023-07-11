@@ -1,9 +1,13 @@
 package test
 
 import (
+	"encoding/json"
+	"net/http"
 	"strings"
 	"testing"
 
+	server "github.com/itsrever/integration/server/go"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -52,8 +56,11 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, resp.StatusCode, 200)
-
-		// TODO: assert order
+		order, err := orderFromResponse(resp)
+		require.NoError(t, err)
+		assertSanity(t, order)
+		assertOrderWithoutVariants(t, order)
+		assert.Equal(t, order.Identification.CustomerPrintedOrderId, scenario.Vars()["customer_printed_order_id"])
 	})
 }
 
@@ -65,4 +72,24 @@ func emptyVars() map[string]string {
 
 func testName(t *testing.T) string {
 	return strings.Split(t.Name(), "/")[1]
+}
+
+// orderFromResponse decodes the response body into an order
+func orderFromResponse(resp *http.Response) (*server.IntegrationOrder, error) {
+	result := &server.IntegrationOrder{}
+	err := json.NewDecoder(resp.Body).Decode(result)
+	return result, err
+}
+
+func hasDiscountOrder(order *server.IntegrationOrder) bool {
+	for _, lineItem := range order.LineItems {
+		if hasDiscountLineItem(lineItem) {
+			return true
+		}
+	}
+	return false
+}
+
+func hasDiscountLineItem(order server.IntegrationLineItem) bool {
+	return order.TotalDiscounts.AmountShop.Amount > 0
 }

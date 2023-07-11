@@ -33,7 +33,7 @@ type IntegrationVariant struct {
 	// The list of options that conforms this variant
 	Options []IntegrationOption `json:"options"`
 
-	Price IntegrationVariantPrice `json:"price"`
+	UnitPrice IntegrationVariantUnitPrice `json:"unit_price,omitempty"`
 
 	// Variant short description
 	ShortDescription string `json:"short_description,omitempty"`
@@ -52,7 +52,6 @@ func AssertIntegrationVariantRequired(obj IntegrationVariant) error {
 		"id": obj.Id,
 		"name": obj.Name,
 		"options": obj.Options,
-		"price": obj.Price,
 	}
 	for name, el := range elements {
 		if isZero := IsZeroValue(el); isZero {
@@ -70,7 +69,7 @@ func AssertIntegrationVariantRequired(obj IntegrationVariant) error {
 			return err
 		}
 	}
-	if err := AssertIntegrationVariantPriceRequired(obj.Price); err != nil {
+	if err := AssertIntegrationVariantUnitPriceRequired(obj.UnitPrice); err != nil {
 		return err
 	}
 	return nil
