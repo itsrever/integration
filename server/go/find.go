@@ -2,9 +2,12 @@ package server
 
 import "time"
 
+const currencyUSD = "USD"
+
 func FindResponses() map[string]*IntegrationOrder {
 	return map[string]*IntegrationOrder{
-		"simple_order_1": OrderWithSingleProductEUR(),
+		"simple_order_1": OrderWithSingleProductUSD(),
+		"simple_order_2": GetSimpleOrderWithVartiantsInUSD(),
 	}
 }
 
@@ -12,10 +15,54 @@ func FindResponseFor(id string) *IntegrationOrder {
 	return FindResponses()[id]
 }
 
+func GetSimpleOrderWithVartiantsInUSD() *IntegrationOrder {
+	integrationOrder := OrderWithSingleProductUSD()
+	integrationOrder.Identification.CustomerPrintedOrderId = "simple_order_2"
+	integrationOrder.LineItems[0].Product.Variants = getVariants()
+	return integrationOrder
+}
+
+func getVariants() []IntegrationVariant {
+	return []IntegrationVariant{
+		{
+			Id:                "gopher-black-s",
+			Enabled:           true,
+			InventoryQuantity: 10,
+			Name:              "Gopher Black S",
+			Sku:               "gopher-black-s",
+			Weight:            100,
+			ShortDescription:  "Gopher Black S",
+			Description:       "Gopher Black S",
+			UnitPrice: IntegrationVariantUnitPrice{
+				Amount:   10,
+				Currency: currencyUSD,
+			},
+
+			Images: []IntegrationImage{
+				{
+					Src:  "https://magento.byrever.com/media/catalog/product/cache/584aced4a1dec0308dc2dca447b4d064/t/e/teegolang.jpg",
+					Name: "Tee Golang",
+					Alt:  "Tee Golang",
+				},
+			},
+			Options: []IntegrationOption{
+				{
+					Name:  "Color",
+					Value: "Black",
+				},
+				{
+					Name:  "Size",
+					Value: "S",
+				},
+			},
+		},
+	}
+}
+
 // CurrencyShop is the currency used by the shop, always EUR in all cases
 const CurrencyShop = "EUR"
 
-func OrderWithSingleProductEUR() *IntegrationOrder {
+func OrderWithSingleProductUSD() *IntegrationOrder {
 	return &IntegrationOrder{
 		Identification:    getIdentificationDetails(),
 		Customer:          getCustomerDetails(),
@@ -23,7 +70,7 @@ func OrderWithSingleProductEUR() *IntegrationOrder {
 		ShippingAddress:   getShippingAddress(),
 		LineItems:         getLineItems(),
 		TotalAmount:       getTotalAmountInUSD(),
-		TotalTaxes:        getTotalTaxesInEUR(),
+		TotalTaxes:        getTotalTaxesInUSD(),
 		Shipping:          getShippingDetails(),
 		Payment:           getPaymentDetails(),
 		FulfillmentOrders: getFulfillmentOrders(),
@@ -57,24 +104,24 @@ func getTotalAmountInUSD() IntegrationOrderTotalAmount {
 	return IntegrationOrderTotalAmount{
 		AmountShop: IntegrationMultiMoneyAmountShop{
 			Amount:   45,
-			Currency: "USD",
+			Currency: currencyUSD,
 		},
 		AmountCustomer: IntegrationMultiMoneyAmountCustomer{
 			Amount:   45,
-			Currency: "USD",
+			Currency: currencyUSD,
 		},
 	}
 }
 
-func getTotalTaxesInEUR() IntegrationOrderTotalTaxes {
+func getTotalTaxesInUSD() IntegrationOrderTotalTaxes {
 	return IntegrationOrderTotalTaxes{
 		AmountShop: IntegrationMultiMoneyAmountShop{
 			Amount:   5,
-			Currency: "EUR",
+			Currency: currencyUSD,
 		},
 		AmountCustomer: IntegrationMultiMoneyAmountCustomer{
 			Amount:   5,
-			Currency: "EUR",
+			Currency: currencyUSD,
 		},
 	}
 }
@@ -84,11 +131,11 @@ func getShippingDetails() IntegrationShipping {
 		Amount: IntegrationShippingAmount{
 			AmountShop: IntegrationMultiMoneyAmountShop{
 				Amount:   5,
-				Currency: "USD",
+				Currency: currencyUSD,
 			},
 			AmountCustomer: IntegrationMultiMoneyAmountCustomer{
 				Amount:   5,
-				Currency: "USD",
+				Currency: currencyUSD,
 			},
 		},
 	}
@@ -118,7 +165,7 @@ func getPaymentDetails() IntegrationPayment {
 				TransactionId:     "123456",
 				Amount: IntegrationTransactionAmount{
 					Amount:   45,
-					Currency: "USD",
+					Currency: currencyUSD,
 				},
 				Date: getOrderDate(),
 			},
@@ -180,21 +227,21 @@ func getLineItems() []IntegrationLineItem {
 			Subtotal: IntegrationLineItemSubtotal{
 				AmountShop: IntegrationMultiMoneyAmountShop{
 					Amount:   50,
-					Currency: "USD",
+					Currency: currencyUSD,
 				},
 				AmountCustomer: IntegrationMultiMoneyAmountCustomer{
 					Amount:   50,
-					Currency: "USD",
+					Currency: currencyUSD,
 				},
 			},
 			Total: IntegrationLineItemTotal{
 				AmountShop: IntegrationMultiMoneyAmountShop{
 					Amount:   45,
-					Currency: "USD",
+					Currency: currencyUSD,
 				},
 				AmountCustomer: IntegrationMultiMoneyAmountCustomer{
 					Amount:   45,
-					Currency: "USD",
+					Currency: currencyUSD,
 				},
 			},
 			Id:        "lineitem1",
@@ -204,31 +251,31 @@ func getLineItems() []IntegrationLineItem {
 			TotalDiscounts: IntegrationLineItemTotalDiscounts{
 				AmountShop: IntegrationMultiMoneyAmountShop{
 					Amount:   10,
-					Currency: "USD",
+					Currency: currencyUSD,
 				},
 				AmountCustomer: IntegrationMultiMoneyAmountCustomer{
 					Amount:   10,
-					Currency: "USD",
+					Currency: currencyUSD,
 				},
 			},
 			TotalTaxes: IntegrationLineItemTotalTaxes{
 				AmountShop: IntegrationMultiMoneyAmountShop{
 					Amount:   5,
-					Currency: "USD",
+					Currency: currencyUSD,
 				},
 				AmountCustomer: IntegrationMultiMoneyAmountCustomer{
 					Amount:   5,
-					Currency: "USD",
+					Currency: currencyUSD,
 				},
 			},
 			UnitPrice: IntegrationLineItemUnitPrice{
 				AmountShop: IntegrationMultiMoneyAmountShop{
 					Amount:   50,
-					Currency: "USD",
+					Currency: currencyUSD,
 				},
 				AmountCustomer: IntegrationMultiMoneyAmountCustomer{
 					Amount:   50,
-					Currency: "USD",
+					Currency: currencyUSD,
 				},
 			},
 			Product: getIntegrationProduct(),
@@ -245,7 +292,7 @@ func getIntegrationProduct() IntegrationProduct {
 		InventoryQuantity: 14,
 		UnitPrice: IntegrationProductUnitPrice{
 			Amount:   50,
-			Currency: "USD",
+			Currency: currencyUSD,
 		},
 		Images: []IntegrationImage{
 			{

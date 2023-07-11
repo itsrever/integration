@@ -2,6 +2,7 @@ package test
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 	"testing"
@@ -60,6 +61,19 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		require.NoError(t, err)
 		assertSanity(t, order)
 		assertOrderWithoutVariants(t, order)
+		assert.Equal(t, order.Identification.CustomerPrintedOrderId, scenario.Vars()["customer_printed_order_id"])
+	})
+	t.Run("FIND05", func(t *testing.T) {
+		fmt.Print(testName(t))
+		scenario := test.Scenario(testName(t))
+		resp, err := c.Do("GET", test.UrlPattern, scenario.Vars(), nil)
+		require.NoError(t, err)
+		require.NotNil(t, resp)
+		require.Equal(t, resp.StatusCode, 200)
+		order, err := orderFromResponse(resp)
+		require.NoError(t, err)
+		assertSanity(t, order)
+		assertOrderWitVariants(t, order)
 		assert.Equal(t, order.Identification.CustomerPrintedOrderId, scenario.Vars()["customer_printed_order_id"])
 	})
 }

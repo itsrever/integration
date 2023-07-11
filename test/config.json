@@ -12,6 +12,10 @@
                 {
                     "name": "FIND04",
                     "customer_printed_order_id": "simple_order_1"
+                },
+                {
+                    "name": "FIND05",
+                    "customer_printed_order_id": "simple_order_2"
                 }
             ]
         }
