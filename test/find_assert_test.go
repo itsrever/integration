@@ -72,6 +72,9 @@ func isRefundablePaymentMethod(paymentMethodType string) bool {
 }
 
 func assertDiscountApplied(t *testing.T, order *server.IntegrationOrder) {
+	for _, lineItem := range order.LineItems {
+		assert.Greater(t, lineItem.TotalDiscounts.AmountCustomer.Amount, float32(0))
+	}
 }
 
 func assertIsFulfilled(t *testing.T, order *server.IntegrationOrder) {
