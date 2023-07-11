@@ -18,7 +18,7 @@ func assertSanity(t *testing.T, order *server.IntegrationOrder) {
 	assertIsPaid(t, order)
 	assertCustomer(t, order)
 	assertAmountsDoMatch(t, order)
-	assertSameCurrencies(t, order) // TODO: maybe this is a list
+	assertSameCurrencies(t, order)
 }
 
 // Valid order with multiple `line_items`, referring products/services **without variants**.
@@ -105,6 +105,24 @@ func assertNoVariants(t *testing.T, lineItem *server.IntegrationLineItem) {
 }
 
 func assertAmountsDoMatch(t *testing.T, order *server.IntegrationOrder) {
+	for _, lineItem := range order.LineItems {
+		total := lineItem.Subtotal.AmountCustomer.Amount + lineItem.TotalTaxes.AmountCustomer.Amount - lineItem.TotalDiscounts.AmountCustomer.Amount
+		println("total", total)
+		println("total-item", lineItem.Total.AmountCustomer.Amount)
+		assert.Equal(t, lineItem.Total.AmountCustomer.Amount, total)
+	}
+
+	totalAmount := calculateTotalAmount(order)
+	assert.Equal(t, totalAmount, order.TotalAmount.AmountCustomer.Amount)
+}
+
+func calculateTotalAmount(order *server.IntegrationOrder) float32 {
+	var totalAmount float32
+	for _, lineItem := range order.LineItems {
+		totalAmount += lineItem.Total.AmountCustomer.Amount
+	}
+	totalAmount += order.Shipping.Amount.AmountCustomer.Amount - order.TotalTaxes.AmountCustomer.Amount
+	return totalAmount
 }
 
 // assertSameCurrencies asserts that all currencies in the order are the same (in terms of shop and customer)

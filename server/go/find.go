@@ -56,11 +56,11 @@ func getReturns() []IntegrationReturnOrder {
 func getTotalAmountInUSD() IntegrationOrderTotalAmount {
 	return IntegrationOrderTotalAmount{
 		AmountShop: IntegrationMultiMoneyAmountShop{
-			Amount:   50,
+			Amount:   45,
 			Currency: "USD",
 		},
 		AmountCustomer: IntegrationMultiMoneyAmountCustomer{
-			Amount:   50,
+			Amount:   45,
 			Currency: "USD",
 		},
 	}
@@ -189,11 +189,11 @@ func getLineItems() []IntegrationLineItem {
 			},
 			Total: IntegrationLineItemTotal{
 				AmountShop: IntegrationMultiMoneyAmountShop{
-					Amount:   50,
+					Amount:   45,
 					Currency: "USD",
 				},
 				AmountCustomer: IntegrationMultiMoneyAmountCustomer{
-					Amount:   50,
+					Amount:   45,
 					Currency: "USD",
 				},
 			},
