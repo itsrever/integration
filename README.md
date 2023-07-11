@@ -72,7 +72,7 @@ Please refer to the [config.json](./test/config.json) file for a complete exampl
             "name": "FIND04",
             "customer_printed_order_id": "your-order-id"
         },
-    ...
+    ]
 }
 ```
 > **FIND05**: Valid order with multiple `line_items`, referring products/services **with variants**. Implement this case if your e-commerce supports products and variants...
@@ -88,6 +88,7 @@ Please refer to the [config.json](./test/config.json) file for a complete exampl
             "name": "FIND05",
             "customer_printed_order_id": "your-order-id"
         },
+    ]
 }
 ```
 ### Running the docker container
