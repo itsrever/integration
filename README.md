@@ -75,7 +75,21 @@ Please refer to the [config.json](./test/config.json) file for a complete exampl
     ...
 }
 ```
+> **FIND05**: Valid order with multiple `line_items`, referring products/services **with variants**. Implement this case if your e-commerce supports products and variants...
 
+Please refer to the [config.json](./test/config.json) file for a complete example. All of the supported tests are listed in the section [Methods included in the testing](#methods-included-in-the-testing).
+
+``` json
+{
+    "method":"FindOrderByCustomerOrderPrintedId",
+    "url_pattern": "/integration/orders/find?customer_printed_order_id={customer_printed_order_id}",
+    "scenarios": [
+        {
+            "name": "FIND05",
+            "customer_printed_order_id": "your-order-id"
+        },
+}
+```
 ### Running the docker container
 
 The docker container is available in the [Docker Hub](https://hub.docker.com/r/itsrever/testing). 

@@ -21,6 +21,12 @@ func assertSanity(t *testing.T, order *server.IntegrationOrder) {
 	assertSameCurrencies(t, order)
 }
 
+// Valid order with multiple `line_items`, referring products/services **with variants**.
+// Product variants are a requirement for supporting exchange orders as compensation method.
+// The order must have a positive amount in EUR, with taxes and shipping costs.
+// Regarding the payment method, must be paid with a non-cash, non-cash on delivery, non-BNPL payment method.
+// It should have a discount applied. It must be associated with a valid customer.
+// It must be fulfilled and paid
 func assertOrderWitVariants(t *testing.T, order *server.IntegrationOrder) {
 	assertRefundablePaymentMethod(t, order)
 	assertDiscountApplied(t, order)
