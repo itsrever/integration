@@ -22,7 +22,7 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		resp, err := c.WithNoAuth().Do("GET", test.UrlPattern, emptyVars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
-		require.Equal(t, resp.StatusCode, 401)
+		require.Equal(t, 401, resp.StatusCode)
 	})
 
 	t.Run("FIND01", func(t *testing.T) {
@@ -32,14 +32,14 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		}).Do("GET", test.UrlPattern, emptyVars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
-		require.Equal(t, resp.StatusCode, 401)
+		require.Equal(t, 401, resp.StatusCode)
 	})
 
 	t.Run("FIND02", func(t *testing.T) {
 		resp, err := c.Do("GET", test.UrlPattern, emptyVars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
-		require.Equal(t, resp.StatusCode, 400)
+		require.Equal(t, 400, resp.StatusCode)
 	})
 
 	t.Run("FIND03", func(t *testing.T) {
@@ -48,7 +48,7 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		}, nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
-		require.Equal(t, resp.StatusCode, 404)
+		require.Equal(t, 404, resp.StatusCode)
 	})
 
 	t.Run("FIND04", func(t *testing.T) {
@@ -56,12 +56,12 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		resp, err := c.Do("GET", test.UrlPattern, scenario.Vars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
-		require.Equal(t, resp.StatusCode, 200)
+		require.Equal(t, 200, resp.StatusCode)
 		order, err := orderFromResponse(resp)
 		require.NoError(t, err)
 		assertSanity(t, order)
 		assertOrderWithoutVariants(t, order)
-		assert.Equal(t, order.Identification.CustomerPrintedOrderId, scenario.Vars()["customer_printed_order_id"])
+		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId)
 	})
 	t.Run("FIND05", func(t *testing.T) {
 		fmt.Print(testName(t))
@@ -69,12 +69,12 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		resp, err := c.Do("GET", test.UrlPattern, scenario.Vars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
-		require.Equal(t, resp.StatusCode, 200)
+		require.Equal(t, 200, resp.StatusCode)
 		order, err := orderFromResponse(resp)
 		require.NoError(t, err)
 		assertSanity(t, order)
 		assertOrderWitVariants(t, order)
-		assert.Equal(t, order.Identification.CustomerPrintedOrderId, scenario.Vars()["customer_printed_order_id"])
+		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId)
 	})
 }
 
