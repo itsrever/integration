@@ -82,7 +82,6 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 
 func skipOptionalTest(t *testing.T, haveToSkip string) {
 	if haveToSkip == "true" {
-		fmt.Print("Skipping optional test")
 		t.Skip("Skipping optional test")
 	}
 }
