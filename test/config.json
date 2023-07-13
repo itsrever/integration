@@ -11,11 +11,13 @@
             "scenarios": [
                 {
                     "name": "FIND04",
-                    "customer_printed_order_id": "simple_order_1"
+                    "customer_printed_order_id": "simple_order_1",
+                    "optional": false
                 },
                 {
                     "name": "FIND05",
-                    "customer_printed_order_id": "simple_order_2"
+                    "customer_printed_order_id": "simple_order_2",
+                    "optional": false
                 }
             ]
         }

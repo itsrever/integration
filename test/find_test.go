@@ -53,6 +53,7 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 
 	t.Run("FIND04", func(t *testing.T) {
 		scenario := test.Scenario(testName(t))
+		skipOptionalTest(t, scenario.Vars()["optional"])
 		resp, err := c.Do("GET", test.UrlPattern, scenario.Vars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
@@ -66,6 +67,7 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 	t.Run("FIND05", func(t *testing.T) {
 		fmt.Print(testName(t))
 		scenario := test.Scenario(testName(t))
+		skipOptionalTest(t, scenario.Vars()["optional"])
 		resp, err := c.Do("GET", test.UrlPattern, scenario.Vars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
@@ -76,6 +78,13 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		assertOrderWitVariants(t, order)
 		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId)
 	})
+}
+
+func skipOptionalTest(t *testing.T, haveToSkip string) {
+	if haveToSkip == "true" {
+		fmt.Print("Skipping optional test")
+		t.Skip("Skipping optional test")
+	}
 }
 
 func emptyVars() map[string]string {
