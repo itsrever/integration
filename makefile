@@ -31,7 +31,6 @@ with-docker-test-linux-ci: docker-build
 	go build -o ./bin/${EXEC_FILE} server/main.go 
 	./bin/${EXEC_FILE} &
 	docker run --rm -v "${PWD}/test/config.json:/rever/test/config.json" --network="host"  $(APP_NAME)
-	pkill -9  ${EXEC_FILE}
 
 with-docker-test-mac:
 	go build -o ./bin/${EXEC_FILE} server/main.go 
