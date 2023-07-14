@@ -23,7 +23,7 @@ The steps execute the suite of tests are:
 
 If all of the test go well, you will see something like this:
 
-``` 
+``` bash
 📦 REVER integration testing framework
   ...
   ✅ Test_FindOrderByCustomerOrderPrintedId (10ms)
@@ -59,8 +59,8 @@ The [config.json](./test/config.json) file contains a global section, independen
 
 Per each endpoint of the integration, below the `tests` section you will have to configure the specific tests and pass the values that matches the scenarios. For example, for the scenario `FIND04` you will need to set the value of `customer_order_printed_id` that matches the described scenario in your platform.
 
-In case you don't use some of the tests because your app doesn't need them, you can mark them as optional.
-Example: 
+Some test scenarios are optional. If you don't implement them, then do not add a configuration for them.
+As an example, with this json, the optional tests `FIND05` won't be executed:
 
 ``` json
 {
@@ -69,11 +69,26 @@ Example:
     "scenarios": [
         {
             "name": "FIND04",
-            "customer_printed_order_id": "your-order-id",
-            "optional": true
+            "customer_printed_order_id": "your-order-id"
         },
     ]
 }
+```
+
+The result will indicate that the test was skipped:
+
+``` bash
+📦 github.com/itsrever/integration/test
+  ✅ TestApplyVars (0s)
+  ✅ TestComposeURL (0s)
+  ✅ Test_FindOrderByCustomerOrderPrintedId (130ms)
+  ✅ Test_FindOrderByCustomerOrderPrintedId/FIND00 (30ms)
+  ✅ Test_FindOrderByCustomerOrderPrintedId/FIND01 (10ms)
+  ✅ Test_FindOrderByCustomerOrderPrintedId/FIND02 (10ms)
+  ✅ Test_FindOrderByCustomerOrderPrintedId/FIND03 (10ms)
+  ✅ Test_FindOrderByCustomerOrderPrintedId/FIND04 (50ms)
+  🚧 Test_FindOrderByCustomerOrderPrintedId/FIND05 (0s)
+    config.go:87: Skipping: Scenario FIND05 not present in config
 ```
 
 > **FIND04**: Valid order with multiple `line_items`, referring products/services **without variants**. Implement this case if your e-commerce supports products but has no support for Variants...

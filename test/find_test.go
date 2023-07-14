@@ -2,7 +2,6 @@ package test
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strings"
 	"testing"
@@ -52,8 +51,8 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 	})
 
 	t.Run("FIND04", func(t *testing.T) {
+		test.SkipTestIfScenarioNotPresent(t, testName(t))
 		scenario := test.Scenario(testName(t))
-		skipOptionalTest(t, scenario.Vars()["optional"])
 		resp, err := c.Do("GET", test.UrlPattern, scenario.Vars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
@@ -65,9 +64,8 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId)
 	})
 	t.Run("FIND05", func(t *testing.T) {
-		fmt.Print(testName(t))
+		test.SkipTestIfScenarioNotPresent(t, testName(t))
 		scenario := test.Scenario(testName(t))
-		skipOptionalTest(t, scenario.Vars()["optional"])
 		resp, err := c.Do("GET", test.UrlPattern, scenario.Vars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
@@ -78,12 +76,6 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		assertOrderWitVariants(t, order)
 		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId)
 	})
-}
-
-func skipOptionalTest(t *testing.T, haveToSkip string) {
-	if haveToSkip == "true" {
-		t.Skip("Skipping optional test")
-	}
 }
 
 func emptyVars() map[string]string {
