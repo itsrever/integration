@@ -3,6 +3,7 @@ package test
 import (
 	"encoding/json"
 	"os"
+	"testing"
 )
 
 // Config is the configuration of the suite of tests
@@ -73,8 +74,29 @@ func (t *Test) Scenario(name string) *Scenario {
 	return nil
 }
 
+// SkipIfNotPresent skips the test if the scenario is not present in the config
+func (t *Test) SkipTestIfScenarioNotPresent(tt *testing.T, scenarioName string) {
+	found := false
+	for _, scenario := range t.Scenarios {
+		found = scenario.Name == scenarioName
+		if found {
+			break
+		}
+	}
+	if !found {
+		tt.Skipf("Skipping: Scenario %v not present in config", scenarioName)
+	}
+}
+
 func (s *Scenario) Vars() map[string]string {
 	return map[string]string{
 		"customer_printed_order_id": s.CustomerPrintedOrderId,
 	}
+}
+
+func boolToString(b bool) string {
+	if b {
+		return "true"
+	}
+	return "false"
 }

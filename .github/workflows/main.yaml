@@ -37,8 +37,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: build docker
-        run: docker build -t $IMAGE_NAME .
+      - name: execute docker tests
+        run: make with-docker-test-linux-ci
 
   deploy-docker:
     runs-on: ubuntu-latest

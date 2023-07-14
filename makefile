@@ -13,19 +13,24 @@ APP_NAME=testing
 install-gotestfmt:
 	go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 
-unit-test:
+unit-test: 
 	go build -o ./bin/${EXEC_FILE} server/main.go 
 	./bin/${EXEC_FILE} &
 	sleep 2
 	go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt || pkill -9  ${EXEC_FILE}
 
-unit-test-ci: install-gotestfmt unit-test 
+unit-test-ci: install-gotestfmt unit-test
 
 with-docker-test-linux:
 	go build -o ./bin/${EXEC_FILE} server/main.go 
 	./bin/${EXEC_FILE} &
 	docker run --rm -v "${PWD}/test/config.json:/rever/test/config.json" --network="host"  itsrever/testing:latest
 	pkill -9  ${EXEC_FILE}
+
+with-docker-test-linux-ci: docker-build
+	go build -o ./bin/${EXEC_FILE} server/main.go 
+	./bin/${EXEC_FILE} &
+	docker run --rm -v "${PWD}/test/config.json:/rever/test/config.json" --network="host"  $(APP_NAME)
 
 with-docker-test-mac:
 	go build -o ./bin/${EXEC_FILE} server/main.go 
@@ -41,6 +46,9 @@ with-docker-test-win:
 
 in-docker-test:
 	go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt 
+
+docker-build: 
+	docker build --platform=linux/amd64 -t $(APP_NAME) .
 
 ##################
 # API GENERATION #

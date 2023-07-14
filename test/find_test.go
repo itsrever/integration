@@ -2,7 +2,6 @@ package test
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strings"
 	"testing"
@@ -52,6 +51,7 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 	})
 
 	t.Run("FIND04", func(t *testing.T) {
+		test.SkipTestIfScenarioNotPresent(t, testName(t))
 		scenario := test.Scenario(testName(t))
 		resp, err := c.Do("GET", test.UrlPattern, scenario.Vars(), nil)
 		require.NoError(t, err)
@@ -64,7 +64,7 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId)
 	})
 	t.Run("FIND05", func(t *testing.T) {
-		fmt.Print(testName(t))
+		test.SkipTestIfScenarioNotPresent(t, testName(t))
 		scenario := test.Scenario(testName(t))
 		resp, err := c.Do("GET", test.UrlPattern, scenario.Vars(), nil)
 		require.NoError(t, err)
