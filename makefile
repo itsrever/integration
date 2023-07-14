@@ -1,6 +1,7 @@
 
 OPENAPI_URL=https://api.byrever.com/v1/docs/openapi_integration.yaml
 OPENAPI_LOCAL=tmp/openapi.yaml
+JSON_SCHEMA=test/schema.json
 CLIENT_PATH=client
 SERVER_PATH=server
 EXEC_FILE=rever-server-integration
@@ -83,4 +84,11 @@ openapi-generator-srv:
 	--ignore-file-override=/local/.openapi-generator-ignore \
     -o /local/${SERVER_PATH}
 
-gen-go-server: download-openapi openapi-generator-srv clean-server update-libs
+gen-go-server: download-openapi openapi-generator-srv openapi-to-json clean-server update-libs
+
+install-openapi-schema-to-json-schema: 
+	npm install @openapi-contrib/openapi-schema-to-json-schema
+	npm install ytoj 
+
+openapi-to-json: install-openapi-schema-to-json-schema
+	npx ytoj --resolve-refs --input ${OPENAPI_LOCAL} --output ${JSON_SCHEMA}

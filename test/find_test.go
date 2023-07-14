@@ -15,6 +15,8 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 	cfg, err := configFromEnv()
 	require.NoError(t, err)
 	c := NewClient(cfg.BaseURL).WithAuth(cfg.Auth)
+	val, err := NewJsonValidator("schema.json")
+	require.NoError(t, err)
 	test := cfg.Test("FindOrderByCustomerOrderPrintedId")
 
 	t.Run("FIND00", func(t *testing.T) {
@@ -57,6 +59,7 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 200, resp.StatusCode)
+		val.RequireModel(t, "integration.Order", resp.Body)
 		order, err := orderFromResponse(resp)
 		require.NoError(t, err)
 		assertSanity(t, order)
