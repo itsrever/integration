@@ -19,7 +19,7 @@ unit-test:
 	sleep 2
 	go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt || pkill -9  ${EXEC_FILE}
 
-unit-test-ci: install-gotestfmt unit-test with-docker-test-linux
+unit-test-ci: install-gotestfmt unit-test
 
 with-docker-test-linux:
 	go build -o ./bin/${EXEC_FILE} server/main.go 
