@@ -35,3 +35,7 @@ func (s *IntegrationApiService) FindOrderByCustomerPrintedOrderId(ctx context.Co
 	}
 	return Response(200, payload), nil
 }
+
+func (s *IntegrationApiService) AddNoteToOrder(context.Context, string, AddNoteToOrderRequest) (ImplResponse, error) {
+	return Response(200, nil), nil
+}

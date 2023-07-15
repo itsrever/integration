@@ -10,13 +10,16 @@
 package server
 
 import (
+	"encoding/json"
 	"net/http"
 	"strings"
+
+	"github.com/gorilla/mux"
 )
 
 // IntegrationApiController binds http requests to an api service and writes the service results to the http response
 type IntegrationApiController struct {
-	service      IntegrationApiServicer
+	service IntegrationApiServicer
 	errorHandler ErrorHandler
 }
 
@@ -46,7 +49,13 @@ func NewIntegrationApiController(s IntegrationApiServicer, opts ...IntegrationAp
 
 // Routes returns all the api routes for the IntegrationApiController
 func (c *IntegrationApiController) Routes() Routes {
-	return Routes{
+	return Routes{ 
+		{
+			"AddNoteToOrder",
+			strings.ToUpper("Post"),
+			"/integration/orders/{order_id}/note",
+			c.AddNoteToOrder,
+		},
 		{
 			"FindOrderByCustomerPrintedOrderId",
 			strings.ToUpper("Get"),
@@ -54,6 +63,33 @@ func (c *IntegrationApiController) Routes() Routes {
 			c.FindOrderByCustomerPrintedOrderId,
 		},
 	}
+}
+
+// AddNoteToOrder - Adds a note (text) to an existing order
+func (c *IntegrationApiController) AddNoteToOrder(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	orderIdParam := params["order_id"]
+	
+	addNoteToOrderRequestParam := AddNoteToOrderRequest{}
+	d := json.NewDecoder(r.Body)
+	d.DisallowUnknownFields()
+	if err := d.Decode(&addNoteToOrderRequestParam); err != nil {
+		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
+		return
+	}
+	if err := AssertAddNoteToOrderRequestRequired(addNoteToOrderRequestParam); err != nil {
+		c.errorHandler(w, r, err, nil)
+		return
+	}
+	result, err := c.service.AddNoteToOrder(r.Context(), orderIdParam, addNoteToOrderRequestParam)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
+
 }
 
 // FindOrderByCustomerPrintedOrderId - Find Order by `customer_printed_order_id`

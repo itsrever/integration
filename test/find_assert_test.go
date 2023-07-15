@@ -5,12 +5,10 @@ import (
 
 	server "github.com/itsrever/integration/server/go"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 // assertSanity asserts that the order has data that complies with basic requirements
 func assertSanity(t *testing.T, order *server.IntegrationOrder) {
-	require.NoError(t, server.AssertIntegrationOrderRequired(*order))
 	assertPositiveAmount(t, order)
 	assertTaxes(t, order)
 	assertShippingCosts(t, order)

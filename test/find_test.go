@@ -2,6 +2,7 @@ package test
 
 import (
 	"encoding/json"
+	"io"
 	"net/http"
 	"strings"
 	"testing"
@@ -15,6 +16,8 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 	cfg, err := configFromEnv()
 	require.NoError(t, err)
 	c := NewClient(cfg.BaseURL).WithAuth(cfg.Auth)
+	val, err := NewJsonValidator(schemaLocation)
+	require.NoError(t, err)
 	test := cfg.Test("FindOrderByCustomerOrderPrintedId")
 
 	t.Run("FIND00", func(t *testing.T) {
@@ -57,7 +60,9 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 200, resp.StatusCode)
-		order, err := orderFromResponse(resp)
+		body := requireBodyFromResponse(t, resp)
+		val.RequireModel(t, "integration.Order", body)
+		order, err := orderFromBody(body)
 		require.NoError(t, err)
 		assertSanity(t, order)
 		assertOrderWithoutVariants(t, order)
@@ -70,7 +75,9 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 200, resp.StatusCode)
-		order, err := orderFromResponse(resp)
+		body := requireBodyFromResponse(t, resp)
+		val.RequireModel(t, "integration.Order", body)
+		order, err := orderFromBody(body)
 		require.NoError(t, err)
 		assertSanity(t, order)
 		assertOrderWitVariants(t, order)
@@ -88,10 +95,16 @@ func testName(t *testing.T) string {
 	return strings.Split(t.Name(), "/")[1]
 }
 
-// orderFromResponse decodes the response body into an order
-func orderFromResponse(resp *http.Response) (*server.IntegrationOrder, error) {
+func requireBodyFromResponse(t *testing.T, resp *http.Response) []byte {
+	data, err := io.ReadAll(resp.Body)
+	require.NoError(t, err)
+	return data
+}
+
+// orderFromBody decodes the response body into an order
+func orderFromBody(body []byte) (*server.IntegrationOrder, error) {
 	result := &server.IntegrationOrder{}
-	err := json.NewDecoder(resp.Body).Decode(result)
+	err := json.Unmarshal(body, result)
 	return result, err
 }
 

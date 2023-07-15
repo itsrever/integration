@@ -13,26 +13,26 @@ import (
 	"time"
 )
 
-// IntegrationOrder - Model for an Order returned by a custom integration. REVER supports multi-currency with the following restrictions:    * the shop currency must be the same for every order within the same e-commerce   * there must be only one customer currency per order (it can be the same or not than the shop currency)  In addition, discounts are supported as pre-tax calculations.  Gift cards are not considered discounts but a payment method.
+// IntegrationOrder - Model for an Order returned by a custom integration. REVER supports multi-currency with the following restrictions:    * the shop currency must be the same for every order within the same e-commerce   * there must be only one customer currency per order (it can be the same or not than the shop currency)  In addition, discounts are supported as pre-tax calculations.  Gift cards are not considered discounts but a payment method. 
 type IntegrationOrder struct {
 
-	// Date when the Order was created in the e-commerce
+	// Date when the Order was created in the e-commerce 
 	Date time.Time `json:"date"`
 
-	// Indicates if the taxes should be displayed as included in the total amount of the order or separated
+	// Indicates if the taxes should be displayed as included in the total amount of the order or separated 
 	TaxesIncluded bool `json:"taxes_included"`
 
 	TotalAmount IntegrationOrderTotalAmount `json:"total_amount"`
 
 	TotalTaxes IntegrationOrderTotalTaxes `json:"total_taxes"`
 
-	// List of fulfillment orders per items or groups of items in the order.
+	// List of fulfillment orders per items or groups of items in the order. 
 	FulfillmentOrders []IntegrationFulfillmentOrder `json:"fulfillment_orders"`
 
-	// List of returns already associated to the order
+	// List of returns already associated to the order 
 	Returns []IntegrationReturnOrder `json:"returns"`
 
-	// List of refunds already associated to the order. Optional, only if OPM is supported.
+	// List of refunds already associated to the order. Optional, only if OPM is supported. 
 	Refunds []IntegrationRefundOrder `json:"refunds,omitempty"`
 
 	Payment IntegrationPayment `json:"payment"`
@@ -43,7 +43,7 @@ type IntegrationOrder struct {
 
 	Shipping IntegrationShipping `json:"shipping"`
 
-	// List of items in the order. It should only include products or services,  not shipping costs. When working with international orders, the customer currency and shop currency might be different. As REVER supports multicurrency, 2 currencies  can be specified per `line_item`. However, all of the `line_items` must have the same shop and  customer currency.
+	// List of items in the order. It should only include products or services,  not shipping costs. When working with international orders, the customer currency and shop currency might be different. As REVER supports multicurrency, 2 currencies  can be specified per `line_item`. However, all of the `line_items` must have the same shop and  customer currency.  
 	LineItems []IntegrationLineItem `json:"line_items"`
 
 	ShippingAddress IntegrationOrderShippingAddress `json:"shipping_address"`
@@ -54,18 +54,18 @@ type IntegrationOrder struct {
 // AssertIntegrationOrderRequired checks if the required fields are not zero-ed
 func AssertIntegrationOrderRequired(obj IntegrationOrder) error {
 	elements := map[string]interface{}{
-		"date":               obj.Date,
-		"taxes_included":     obj.TaxesIncluded,
-		"total_amount":       obj.TotalAmount,
-		"total_taxes":        obj.TotalTaxes,
+		"date": obj.Date,
+		"taxes_included": obj.TaxesIncluded,
+		"total_amount": obj.TotalAmount,
+		"total_taxes": obj.TotalTaxes,
 		"fulfillment_orders": obj.FulfillmentOrders,
-		"returns":            obj.Returns,
-		"payment":            obj.Payment,
-		"customer":           obj.Customer,
-		"shipping":           obj.Shipping,
-		"line_items":         obj.LineItems,
-		"shipping_address":   obj.ShippingAddress,
-		"billing_address":    obj.BillingAddress,
+		"returns": obj.Returns,
+		"payment": obj.Payment,
+		"customer": obj.Customer,
+		"shipping": obj.Shipping,
+		"line_items": obj.LineItems,
+		"shipping_address": obj.ShippingAddress,
+		"billing_address": obj.BillingAddress,
 	}
 	for name, el := range elements {
 		if isZero := IsZeroValue(el); isZero {
