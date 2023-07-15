@@ -3,7 +3,6 @@ package test
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"testing"
 
 	"github.com/santhosh-tekuri/jsonschema/v5"
@@ -33,10 +32,8 @@ func (v *JsonValidator) Validate(model string, data []byte) error {
 	return v.sch.Validate(mapData)
 }
 
-func (v *JsonValidator) RequireModel(t *testing.T, model string, reader io.ReadCloser) {
-	data, err := io.ReadAll(reader)
-	require.NoError(t, err)
-	err = v.Validate(model, data)
+func (v *JsonValidator) RequireModel(t *testing.T, model string, data []byte) {
+	err := v.Validate(model, data)
 	require.NoError(t, err)
 }
 

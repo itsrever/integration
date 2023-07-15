@@ -581,7 +581,7 @@
                 "required": [
                   "id",
                   "name",
-                  "price"
+                  "unit_price"
                 ],
                 "properties": {
                   "categories": {
@@ -708,7 +708,7 @@
                         "name",
                         "enabled",
                         "options",
-                        "price"
+                        "unit_price"
                       ],
                       "properties": {
                         "description": {
@@ -1029,8 +1029,7 @@
                       }
                     }
                   }
-                ],
-                "type": "integer"
+                ]
               },
               "total_taxes": {
                 "description": "total amount of taxes for this line. Each item of this line item has proportional taxes.",
@@ -1996,7 +1995,7 @@
                 "required": [
                   "id",
                   "name",
-                  "price"
+                  "unit_price"
                 ],
                 "properties": {
                   "categories": {
@@ -2123,7 +2122,7 @@
                         "name",
                         "enabled",
                         "options",
-                        "price"
+                        "unit_price"
                       ],
                       "properties": {
                         "description": {
@@ -2444,8 +2443,7 @@
                       }
                     }
                   }
-                ],
-                "type": "integer"
+                ]
               },
               "total_taxes": {
                 "description": "total amount of taxes for this line. Each item of this line item has proportional taxes.",
@@ -3323,7 +3321,7 @@
           "required": [
             "id",
             "name",
-            "price"
+            "unit_price"
           ],
           "properties": {
             "categories": {
@@ -3450,7 +3448,7 @@
                   "name",
                   "enabled",
                   "options",
-                  "price"
+                  "unit_price"
                 ],
                 "properties": {
                   "description": {
@@ -3771,8 +3769,7 @@
                 }
               }
             }
-          ],
-          "type": "integer"
+          ]
         },
         "total_taxes": {
           "description": "total amount of taxes for this line. Each item of this line item has proportional taxes.",
@@ -3940,7 +3937,7 @@
       "required": [
         "id",
         "name",
-        "price"
+        "unit_price"
       ],
       "properties": {
         "categories": {
@@ -4067,7 +4064,7 @@
               "name",
               "enabled",
               "options",
-              "price"
+              "unit_price"
             ],
             "properties": {
               "description": {
@@ -4233,7 +4230,7 @@
         "name",
         "enabled",
         "options",
-        "price"
+        "unit_price"
       ],
       "properties": {
         "description": {
