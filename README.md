@@ -172,3 +172,4 @@ curl --header "x-rever-api-key:valid-api-key" "https://server-yn4mmnsfqa-ey.a.ru
 ## Methods included in the testing
 
 * [FindOrderByCustomerPrintedOrderId](./docs/FindOrderByCustomerPrintedOrderId.md)
+* [AddNoteToOrder](./docs/AddNoteToOrder.md)
