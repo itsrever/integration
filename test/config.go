@@ -30,6 +30,7 @@ type Test struct {
 type Scenario struct {
 	Name                   string `json:"name"`
 	CustomerPrintedOrderId string `json:"customer_printed_order_id"`
+	OrderID                string `json:"order_id"`
 }
 
 func configFromEnv() (*Config, error) {
@@ -91,12 +92,6 @@ func (t *Test) SkipTestIfScenarioNotPresent(tt *testing.T, scenarioName string) 
 func (s *Scenario) Vars() map[string]string {
 	return map[string]string{
 		"customer_printed_order_id": s.CustomerPrintedOrderId,
+		"order_id":                  s.OrderID,
 	}
-}
-
-func boolToString(b bool) string {
-	if b {
-		return "true"
-	}
-	return "false"
 }
