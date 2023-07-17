@@ -17,7 +17,7 @@ The implementation of this method **must** support the following scenarios:
 
 | Scenario | Status | Description |
 | -------- | ------ | ----------- |
-| FIND04 | 200 | Add a note to an order given the `order_id` and the `note` to be added.
+| FIND06 | 200 | Add a note to an order given the `order_id` and the `note` to be added.
 | ... | 200 | .... |
 
 ## Configuration example
@@ -27,7 +27,7 @@ The implementation of this method **must** support the following scenarios:
 "url_pattern": "orders/{order_id}/note",
 "scenarios": [
     {  
-        "name": "ADDNOTE04",
+        "name": "FIND06",
         "order_id": "simple_order_1"
     }
 ]
