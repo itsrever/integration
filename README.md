@@ -123,6 +123,20 @@ Please refer to the [config.json](./test/config.json) file for a complete exampl
     ]
 }
 ```
+
+> **ADDNOTE04**: Add a note to an order given the `order_id` and the `note` to be added.
+``` json
+{
+    "method":"AddNoteToOrder",
+    "url_pattern": "/integration/orders/{order_id}/note",
+    "scenarios": [
+        {
+            "name": "ADDNOTE04",
+            "order_id": "simple_order_1"
+        }
+    ]
+}
+```
 ### Running the docker container
 
 The docker container is available in the [Docker Hub](https://hub.docker.com/r/itsrever/testing). 
@@ -158,3 +172,4 @@ curl --header "x-rever-api-key:valid-api-key" "https://server-yn4mmnsfqa-ey.a.ru
 ## Methods included in the testing
 
 * [FindOrderByCustomerPrintedOrderId](./docs/FindOrderByCustomerPrintedOrderId.md)
+* [AddNoteToOrder](./docs/AddNoteToOrder.md)
