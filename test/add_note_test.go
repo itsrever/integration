@@ -37,8 +37,8 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 		require.Equal(t, 401, resp.StatusCode)
 	})
 	t.Run("ADDNOTE02", func(t *testing.T) {
-		resp, err := c.Do("POST", test.UrlPattern, nil, nil)
-		require.Error(t, err)
+		resp, err := c.Do("POST", test.UrlPattern, emptyVars(), nil)
+		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 400, resp.StatusCode)
 	})
