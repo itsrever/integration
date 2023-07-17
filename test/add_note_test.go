@@ -1,7 +1,6 @@
 package test
 
 import (
-	"fmt"
 	"math/rand"
 	"testing"
 	"time"
@@ -54,7 +53,6 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 	t.Run("ADDNOTE04", func(t *testing.T) {
 		scenario := test.Scenario(testName(t))
 		resp, err := c.Do("POST", test.UrlPattern, scenario.Vars(), noteBody)
-		fmt.Print(resp.Request.URL.String())
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 200, resp.StatusCode)
