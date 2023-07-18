@@ -19,14 +19,14 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 		Note: "Note" + GenerateRandomString(10),
 	}
 
-	t.Run("ADDNOTE00", func(t *testing.T) {
+	t.Run("FIND00", func(t *testing.T) {
 		resp, err := c.WithNoAuth().Do("POST", test.UrlPattern, nil, noteBody)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 401, resp.StatusCode)
 	})
 
-	t.Run("ADDNOTE01", func(t *testing.T) {
+	t.Run("FIND01", func(t *testing.T) {
 		resp, err := c.WithAuth(&AuthenticationInfo{
 			HeaderName: cfg.Auth.HeaderName,
 			ApiKey:     "invalid-api-key",
@@ -35,14 +35,14 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 		require.NotNil(t, resp)
 		require.Equal(t, 401, resp.StatusCode)
 	})
-	t.Run("ADDNOTE02", func(t *testing.T) {
+	t.Run("FIND02", func(t *testing.T) {
 		resp, err := c.Do("POST", test.UrlPattern, emptyVars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 400, resp.StatusCode)
 	})
 
-	t.Run("ADDNOTE03", func(t *testing.T) {
+	t.Run("FIND03", func(t *testing.T) {
 		resp, err := c.Do("POST", test.UrlPattern, map[string]string{"order_id": "non-existing-order"}, noteBody)
 		println(resp.Request.URL.String())
 		require.NoError(t, err)
@@ -50,7 +50,8 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 		require.Equal(t, 404, resp.StatusCode)
 	})
 
-	t.Run("ADDNOTE04", func(t *testing.T) {
+	t.Run("FIND06", func(t *testing.T) {
+		test.SkipTestIfScenarioNotPresent(t, testName(t))
 		scenario := test.Scenario(testName(t))
 		resp, err := c.Do("POST", test.UrlPattern, scenario.Vars(), noteBody)
 		require.NoError(t, err)

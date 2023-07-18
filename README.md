@@ -124,14 +124,14 @@ Please refer to the [config.json](./test/config.json) file for a complete exampl
 }
 ```
 
-> **ADDNOTE04**: Add a note to an order given the `order_id` and the `note` to be added.
+> **FIND06**: Add a note to an order given the `order_id` and the `note` to be added.
 ``` json
 {
     "method":"AddNoteToOrder",
     "url_pattern": "/integration/orders/{order_id}/note",
     "scenarios": [
         {
-            "name": "ADDNOTE04",
+            "name": "FIND06",
             "order_id": "simple_order_1"
         }
     ]
