@@ -2,6 +2,7 @@ package test
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"testing"
 )
@@ -86,6 +87,20 @@ func (t *Test) SkipTestIfScenarioNotPresent(tt *testing.T, scenarioName string) 
 	}
 	if !found {
 		tt.Skipf("Skipping: Scenario %v not present in config", scenarioName)
+	}
+}
+
+// FailTestIfScenarioNotPresent requires the test config to be present
+func (t *Test) FailTestIfScenarioNotPresent(tt *testing.T, scenarioName string) {
+	found := false
+	for _, scenario := range t.Scenarios {
+		found = scenario.Name == scenarioName
+		if found {
+			break
+		}
+	}
+	if !found {
+		tt.Fatal(fmt.Sprintf("Error: Scenario %v not present in config", scenarioName))
 	}
 }
 

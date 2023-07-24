@@ -11,6 +11,7 @@ package server
 
 type AddNoteToOrderRequest struct {
 
+	// The text to be associated to the order
 	Note string `json:"note,omitempty"`
 }
 

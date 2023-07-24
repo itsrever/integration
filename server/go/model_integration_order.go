@@ -49,6 +49,9 @@ type IntegrationOrder struct {
 	ShippingAddress IntegrationOrderShippingAddress `json:"shipping_address"`
 
 	BillingAddress IntegrationOrderBillingAddress `json:"billing_address"`
+
+	// List of notes added to the order. The notes are ordered by date, the most recent one first. They can include orders from the customer or from other third-parties, like REVER. 
+	Notes []IntegrationNote `json:"notes,omitempty"`
 }
 
 // AssertIntegrationOrderRequired checks if the required fields are not zero-ed
@@ -116,6 +119,11 @@ func AssertIntegrationOrderRequired(obj IntegrationOrder) error {
 	}
 	if err := AssertIntegrationOrderBillingAddressRequired(obj.BillingAddress); err != nil {
 		return err
+	}
+	for _, el := range obj.Notes {
+		if err := AssertIntegrationNoteRequired(el); err != nil {
+			return err
+		}
 	}
 	return nil
 }
