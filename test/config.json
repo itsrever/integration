@@ -21,8 +21,12 @@
         },
         {
             "method":"AddNoteToOrder",
-            "url_pattern": "/integration/orders/{order_id}/note",
+            "url_pattern": "/integration/orders/{customer_printed_order_id}/note",
             "scenarios": [
+                {
+                    "name": "ADDNOTE04",
+                    "customer_printed_order_id": "simple_order_1"
+                }
             ]
         }
     ]

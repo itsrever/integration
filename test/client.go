@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httputil"
+	"net/url"
 	"strings"
 )
 
@@ -95,7 +96,7 @@ func composeRequestURL(baseURL string, path string) string {
 func applyVars(pathPattern string, vars map[string]string) string {
 	path := pathPattern
 	for varName, varValue := range vars {
-		path = strings.ReplaceAll(path, "{"+varName+"}", varValue)
+		path = strings.ReplaceAll(path, "{"+varName+"}", url.QueryEscape(varValue))
 	}
 	return path
 }

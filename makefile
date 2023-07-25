@@ -18,7 +18,7 @@ unit-test:
 	go build -o ./bin/${EXEC_FILE} server/main.go 
 	./bin/${EXEC_FILE} &
 	sleep 2
-	go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt || pkill -9  ${EXEC_FILE}
+	(go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt) || pkill -9  ${EXEC_FILE}
 
 unit-test-ci: install-gotestfmt unit-test
 

@@ -45,9 +45,7 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 	})
 
 	t.Run("FIND03", func(t *testing.T) {
-		resp, err := c.Do("GET", test.UrlPattern, map[string]string{
-			"customer_printed_order_id": "non-existing-order",
-		}, nil)
+		resp, err := c.Do("GET", test.UrlPattern, nonExistingOrderVars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 404, resp.StatusCode)
@@ -119,4 +117,10 @@ func hasDiscountOrder(order *server.IntegrationOrder) bool {
 
 func hasDiscountLineItem(order server.IntegrationLineItem) bool {
 	return order.TotalDiscounts.AmountShop.Amount > 0
+}
+
+func nonExistingOrderVars() map[string]string {
+	return map[string]string{
+		"customer_printed_order_id": "non-existing-order",
+	}
 }

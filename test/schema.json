@@ -10,7 +10,7 @@
     },
     "customer_printed_order_id": {
       "type": "string",
-      "description": "This is the `order_id` as seen by the customer (for example, in the email body)"
+      "description": "This is the `customer_printed_order_id` as a unique identifier of the order"
     },
     "integration.Order": {
       "description": "Model for an Order returned by a custom integration. REVER supports multi-currency with the following\nrestrictions:\n\n  * the shop currency must be the same for every order within the same e-commerce\n  * there must be only one customer currency per order (it can be the same or not than the shop currency)\n\nIn addition, discounts are supported as pre-tax calculations. \nGift cards are not considered discounts but a payment method.\n",
@@ -1326,17 +1326,87 @@
               "type": "object"
             }
           ]
+        },
+        "notes": {
+          "description": "List of notes added to the order. The notes are ordered by date, the most recent one first. They can\ninclude orders from the customer or from other third-parties, like REVER.\n",
+          "items": {
+            "description": "Note (text) associated to an order",
+            "required": [
+              "text",
+              "date"
+            ],
+            "properties": {
+              "date": {
+                "description": "Date when the note was added to the order\n",
+                "type": "string",
+                "format": "date-time"
+              },
+              "user": {
+                "description": "User that added the note. Can be the customer or a third-party, like REVER. This is optional, but it's recommended.\nIntegrators can guess the name of the app through the usage of the API key.\n",
+                "type": "string",
+                "example": "REVER"
+              },
+              "text": {
+                "description": "Arbitrary text associated to the order\n",
+                "type": "string",
+                "example": "Sample note: Started a return process in REVER with ID #22122"
+              }
+            }
+          },
+          "type": "array"
         }
       }
-    },
-    "order_id": {
-      "type": "string",
-      "description": "This is the `order_id` as the unique identifier of the order in the platform"
     },
     "object-1": {
       "type": "object",
       "properties": {
         "note": {
+          "type": "string",
+          "description": "The text to be associated to the order"
+        }
+      }
+    },
+    "integration.ReturnRequest": {
+      "description": "Payload for the method CreateOrUpdateReturn.",
+      "type": "object",
+      "required": [
+        "returns"
+      ],
+      "properties": {
+        "returns": {
+          "description": "List of items to mark (or unmark) as returned. Can't be empty.",
+          "type": "array",
+          "items": {
+            "description": "Items from an order being marked as returned",
+            "type": "object",
+            "required": [
+              "line_item_id",
+              "quantity"
+            ],
+            "properties": {
+              "line_item_id": {
+                "description": "The id of the line item from the order, corresponding to the product/variant being returned List of items to mark (or unmark) as returned",
+                "type": "string",
+                "example": "line_item_01"
+              },
+              "quantity": {
+                "description": "Number of items from that line item being returned. Can be a positive or negative number. If negative, the previous return operation is totally or partially reverted.",
+                "type": "number",
+                "example": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "object-2": {
+      "type": "object",
+      "required": [
+        "return_id"
+      ],
+      "properties": {
+        "return_id": {
+          "description": "the id of the return generated in the platform",
           "type": "string"
         }
       }
@@ -1346,6 +1416,59 @@
     "schemaVersion"
   ],
   "definitions": {
+    "integration.ReturnRequestItem": {
+      "description": "Items from an order being marked as returned",
+      "type": "object",
+      "required": [
+        "line_item_id",
+        "quantity"
+      ],
+      "properties": {
+        "line_item_id": {
+          "description": "The id of the line item from the order, corresponding to the product/variant being returned List of items to mark (or unmark) as returned",
+          "type": "string",
+          "example": "line_item_01"
+        },
+        "quantity": {
+          "description": "Number of items from that line item being returned. Can be a positive or negative number. If negative, the previous return operation is totally or partially reverted.",
+          "type": "number",
+          "example": 1
+        }
+      }
+    },
+    "integration.ReturnRequest": {
+      "description": "Payload for the method CreateOrUpdateReturn.",
+      "type": "object",
+      "required": [
+        "returns"
+      ],
+      "properties": {
+        "returns": {
+          "description": "List of items to mark (or unmark) as returned. Can't be empty.",
+          "type": "array",
+          "items": {
+            "description": "Items from an order being marked as returned",
+            "type": "object",
+            "required": [
+              "line_item_id",
+              "quantity"
+            ],
+            "properties": {
+              "line_item_id": {
+                "description": "The id of the line item from the order, corresponding to the product/variant being returned List of items to mark (or unmark) as returned",
+                "type": "string",
+                "example": "line_item_01"
+              },
+              "quantity": {
+                "description": "Number of items from that line item being returned. Can be a positive or negative number. If negative, the previous return operation is totally or partially reverted.",
+                "type": "number",
+                "example": 1
+              }
+            }
+          }
+        }
+      }
+    },
     "integration.MultiMoney": {
       "description": "An amount that is expressed in two currencies: the shop and the customer one. They can be the same or not.\n",
       "type": "object",
@@ -2740,6 +2863,58 @@
               "type": "object"
             }
           ]
+        },
+        "notes": {
+          "description": "List of notes added to the order. The notes are ordered by date, the most recent one first. They can\ninclude orders from the customer or from other third-parties, like REVER.\n",
+          "items": {
+            "description": "Note (text) associated to an order",
+            "required": [
+              "text",
+              "date"
+            ],
+            "properties": {
+              "date": {
+                "description": "Date when the note was added to the order\n",
+                "type": "string",
+                "format": "date-time"
+              },
+              "user": {
+                "description": "User that added the note. Can be the customer or a third-party, like REVER. This is optional, but it's recommended.\nIntegrators can guess the name of the app through the usage of the API key.\n",
+                "type": "string",
+                "example": "REVER"
+              },
+              "text": {
+                "description": "Arbitrary text associated to the order\n",
+                "type": "string",
+                "example": "Sample note: Started a return process in REVER with ID #22122"
+              }
+            }
+          },
+          "type": "array"
+        }
+      }
+    },
+    "integration.Note": {
+      "description": "Note (text) associated to an order",
+      "required": [
+        "text",
+        "date"
+      ],
+      "properties": {
+        "date": {
+          "description": "Date when the note was added to the order\n",
+          "type": "string",
+          "format": "date-time"
+        },
+        "user": {
+          "description": "User that added the note. Can be the customer or a third-party, like REVER. This is optional, but it's recommended.\nIntegrators can guess the name of the app through the usage of the API key.\n",
+          "type": "string",
+          "example": "REVER"
+        },
+        "text": {
+          "description": "Arbitrary text associated to the order\n",
+          "type": "string",
+          "example": "Sample note: Started a return process in REVER with ID #22122"
         }
       }
     },

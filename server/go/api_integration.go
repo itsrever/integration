@@ -53,8 +53,14 @@ func (c *IntegrationApiController) Routes() Routes {
 		{
 			"AddNoteToOrder",
 			strings.ToUpper("Post"),
-			"/integration/orders/{order_id}/note",
+			"/integration/orders/{customer_printed_order_id}/note",
 			c.AddNoteToOrder,
+		},
+		{
+			"CreateOrUpdateReturn",
+			strings.ToUpper("Put"),
+			"/integration/orders/{customer_printed_order_id}/return",
+			c.CreateOrUpdateReturn,
 		},
 		{
 			"FindOrderByCustomerPrintedOrderId",
@@ -68,7 +74,7 @@ func (c *IntegrationApiController) Routes() Routes {
 // AddNoteToOrder - Adds a note (text) to an existing order
 func (c *IntegrationApiController) AddNoteToOrder(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	orderIdParam := params["order_id"]
+	customerPrintedOrderIdParam := params["customer_printed_order_id"]
 	
 	addNoteToOrderRequestParam := AddNoteToOrderRequest{}
 	d := json.NewDecoder(r.Body)
@@ -81,7 +87,34 @@ func (c *IntegrationApiController) AddNoteToOrder(w http.ResponseWriter, r *http
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.AddNoteToOrder(r.Context(), orderIdParam, addNoteToOrderRequestParam)
+	result, err := c.service.AddNoteToOrder(r.Context(), customerPrintedOrderIdParam, addNoteToOrderRequestParam)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
+
+}
+
+// CreateOrUpdateReturn - Creates or updates the returned items of an existing order
+func (c *IntegrationApiController) CreateOrUpdateReturn(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	customerPrintedOrderIdParam := params["customer_printed_order_id"]
+	
+	integrationReturnRequestParam := IntegrationReturnRequest{}
+	d := json.NewDecoder(r.Body)
+	d.DisallowUnknownFields()
+	if err := d.Decode(&integrationReturnRequestParam); err != nil {
+		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
+		return
+	}
+	if err := AssertIntegrationReturnRequestRequired(integrationReturnRequestParam); err != nil {
+		c.errorHandler(w, r, err, nil)
+		return
+	}
+	result, err := c.service.CreateOrUpdateReturn(r.Context(), customerPrintedOrderIdParam, integrationReturnRequestParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)
