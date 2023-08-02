@@ -39,6 +39,9 @@ with-docker-test-mac:
 	docker run --rm -v "${PWD}/sample/config.macos.json:/rever/test/config.json" --network="host"  itsrever/testing:latest
 	pkill -9  ${EXEC_FILE}
 
+with-docker-test-qooqer: docker-build docker-tag
+	docker run --rm -v "${PWD}/sample/config.qooqer.json:/rever/test/config.json"  itsrever/testing:latest
+
 with-docker-test-win:
 	go build -o ./bin/${EXEC_FILE} server/main.go 
 	./bin/${EXEC_FILE} &
@@ -50,6 +53,9 @@ in-docker-test:
 
 docker-build: 
 	docker build --platform=linux/amd64 -t $(APP_NAME) .
+
+docker-tag:
+	docker tag $(APP_NAME) itsrever/testing:latest
 
 ##################
 # API GENERATION #

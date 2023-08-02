@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"testing"
 
 	server "github.com/itsrever/integration/server/go"
@@ -55,22 +56,28 @@ func assertOrderWithoutVariants(t *testing.T, order *server.IntegrationOrder) {
 }
 
 func assertPositiveAmount(t *testing.T, order *server.IntegrationOrder) {
-	assert.Greater(t, order.TotalAmount.AmountCustomer.Amount, float32(0))
-	assert.Greater(t, order.TotalAmount.AmountShop.Amount, float32(0))
+	assert.Greater(t, order.TotalAmount.AmountCustomer.Amount, float32(0),
+		"order customer total amount is not greater than 0")
+	assert.Greater(t, order.TotalAmount.AmountShop.Amount, float32(0),
+		"order shop total amount is not greater than 0")
 	isValidCurrency(t, order.TotalAmount.AmountCustomer.Currency)
 	isValidCurrency(t, order.TotalAmount.AmountShop.Currency)
 }
 
 func assertTaxes(t *testing.T, order *server.IntegrationOrder) {
-	assert.Greater(t, order.TotalTaxes.AmountCustomer.Amount, float32(0))
-	assert.Greater(t, order.TotalTaxes.AmountShop.Amount, float32(0))
+	assert.GreaterOrEqual(t, order.TotalTaxes.AmountCustomer.Amount, float32(0),
+		"order customer amount total taxes are not greater or equal to 0")
+	assert.GreaterOrEqual(t, order.TotalTaxes.AmountShop.Amount, float32(0),
+		"order shop amount total taxes are not greater or equal to 0")
 	isValidCurrency(t, order.TotalTaxes.AmountCustomer.Currency)
 	isValidCurrency(t, order.TotalTaxes.AmountShop.Currency)
 }
 
 func assertShippingCosts(t *testing.T, order *server.IntegrationOrder) {
-	assert.Greater(t, order.Shipping.Amount.AmountCustomer.Amount, float32(0))
-	assert.Greater(t, order.Shipping.Amount.AmountShop.Amount, float32(0))
+	assert.GreaterOrEqual(t, order.Shipping.Amount.AmountCustomer.Amount, float32(0),
+		"order customer shipping amount is not greater or equal to 0")
+	assert.GreaterOrEqual(t, order.Shipping.Amount.AmountShop.Amount, float32(0),
+		"order shop shipping amount is not greater or equal to 0")
 	isValidCurrency(t, order.Shipping.Amount.AmountCustomer.Currency)
 	isValidCurrency(t, order.Shipping.Amount.AmountShop.Currency)
 }
@@ -78,64 +85,78 @@ func assertShippingCosts(t *testing.T, order *server.IntegrationOrder) {
 func assertRefundablePaymentMethod(t *testing.T, order *server.IntegrationOrder) {
 	assert.NotNil(t, order.Payment)
 	for _, transaction := range order.Payment.Transactions {
-		assert.True(t, isRefundablePaymentMethod(transaction.PaymentMethodType))
+		assert.True(t, isRefundablePaymentMethod(transaction.PaymentMethodType),
+			fmt.Sprintf("the payment method type %v is not refundable", transaction.PaymentMethodType))
 	}
 }
 
 func isRefundablePaymentMethod(paymentMethodType string) bool {
-	return paymentMethodType == "non-cash" || paymentMethodType == "non-cash-on-delivery" || paymentMethodType == "non-bnpl"
+	// TODO: decide enums for payment method types
+	return paymentMethodType != "cash" && paymentMethodType != "CoD"
 }
 
 func assertDiscountApplied(t *testing.T, order *server.IntegrationOrder) {
 	for _, lineItem := range order.LineItems {
-		assert.Greater(t, lineItem.TotalDiscounts.AmountCustomer.Amount, float32(0))
+		assert.Greater(t, lineItem.TotalDiscounts.AmountCustomer.Amount, float32(0),
+			"a discount was not applied to the line item but it was expected")
 	}
 }
 
 func assertIsFulfilled(t *testing.T, order *server.IntegrationOrder) {
-	assert.Greater(t, len(order.FulfillmentOrders), 0)
+	assert.Greater(t, len(order.FulfillmentOrders), 0,
+		"the order has not at least one fulfillment order")
 }
 
 func assertIsPaid(t *testing.T, order *server.IntegrationOrder) {
-	assert.Greater(t, len(order.Payment.Transactions), 0)
+	assert.Greater(t, len(order.Payment.Transactions), 0,
+		"the order has not at least one transaction")
 }
 
 func assertCustomer(t *testing.T, order *server.IntegrationOrder) {
-	assert.NotNil(t, order.Customer)
-	assert.NotEmpty(t, order.Customer.Email)
-	assert.NotEmpty(t, order.Customer.FirstName)
-	assert.NotEmpty(t, order.Customer.LastName)
+	assert.NotNil(t, order.Customer, "missing customer data")
+	assert.NotEmpty(t, order.Customer.Email, "missing customer email")
+	assert.NotEmpty(t, order.Customer.FirstName, "the customer first name is empty")
+	assert.NotEmpty(t, order.Customer.LastName, "the customer last name is empty")
 }
 
 func assertHasProduct(t *testing.T, lineItem *server.IntegrationLineItem) {
-	assert.NotEmpty(t, lineItem.Product)
-	assert.NotEmpty(t, lineItem.Product.Id)
-	assert.NotEmpty(t, lineItem.Product.Name)
-	assert.NotEmpty(t, lineItem.Product.Description)
-	assert.Greater(t, len(lineItem.Product.Images), 0)
+	assert.NotEmpty(t, lineItem.Product, "missing product data")
+	assert.NotEmpty(t, lineItem.Product.Id, "missing product id")
+	assert.NotEmpty(t, lineItem.Product.Name, "missing product name")
+	assert.NotEmpty(t, lineItem.Product.Description, "missing product description")
+	assert.Greater(t, len(lineItem.Product.Images), 0,
+		"missing product image")
 }
 
 func assertNoVariants(t *testing.T, lineItem *server.IntegrationLineItem) {
-	assert.Empty(t, lineItem.Product.Variants)
+	assert.Empty(t, lineItem.Product.Variants, "product variants are not empty")
 }
 
 func assertAmountsDoMatch(t *testing.T, order *server.IntegrationOrder) {
+	var totalAmountShop, totalAmountCustomer float32
+	var totalTaxShop, totalTaxCustomer float32
 	for _, lineItem := range order.LineItems {
-		total := lineItem.Subtotal.AmountCustomer.Amount + lineItem.TotalTaxes.AmountCustomer.Amount - lineItem.TotalDiscounts.AmountCustomer.Amount
-		assert.Equal(t, lineItem.Total.AmountCustomer.Amount, total)
+		totalCustomerLine := lineItem.Subtotal.AmountCustomer.Amount +
+			lineItem.TotalTaxes.AmountCustomer.Amount - lineItem.TotalDiscounts.AmountCustomer.Amount
+		assert.Equal(t, lineItem.Total.AmountCustomer.Amount, totalCustomerLine,
+			"line item customer total amount does not match ")
+		totalAmountCustomer += totalCustomerLine
+		totalTaxCustomer += lineItem.TotalTaxes.AmountCustomer.Amount
 	}
 
-	totalAmount := calculateTotalAmount(order)
-	assert.Equal(t, totalAmount, order.TotalAmount.AmountCustomer.Amount)
-}
-
-func calculateTotalAmount(order *server.IntegrationOrder) float32 {
-	var totalAmount float32
 	for _, lineItem := range order.LineItems {
-		totalAmount += lineItem.Total.AmountCustomer.Amount
+		totalShopLine := lineItem.Subtotal.AmountShop.Amount +
+			lineItem.TotalTaxes.AmountShop.Amount - lineItem.TotalDiscounts.AmountShop.Amount
+		assert.Equal(t, lineItem.Total.AmountShop.Amount, totalShopLine,
+			"line item shop total amount does not match ")
+		totalAmountShop += totalShopLine
+		totalTaxShop += lineItem.TotalTaxes.AmountShop.Amount
 	}
-	totalAmount += order.Shipping.Amount.AmountCustomer.Amount - order.TotalTaxes.AmountCustomer.Amount
-	return totalAmount
+
+	assert.Equal(t, totalAmountCustomer, order.TotalAmount.AmountCustomer.Amount,
+		"order total customer amount does not match")
+	assert.Equal(t, totalAmountShop, order.TotalAmount.AmountShop.Amount,
+		"order total shop amount does not match")
 }
 
 func assertVariants(t *testing.T, lineItem *server.IntegrationLineItem) {

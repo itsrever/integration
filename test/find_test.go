@@ -16,6 +16,9 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 	cfg, err := configFromEnv()
 	require.NoError(t, err)
 	c := NewClient(cfg.BaseURL).WithAuth(cfg.Auth)
+	if cfg.Debug {
+		c = c.Debug()
+	}
 	val, err := NewJsonValidator(schemaLocation)
 	require.NoError(t, err)
 	test := cfg.Test("FindOrderByCustomerOrderPrintedId")
@@ -64,7 +67,8 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		require.NoError(t, err)
 		assertSanity(t, order)
 		assertOrderWithoutVariants(t, order)
-		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId)
+		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId,
+			"the customer printed order id does not match")
 	})
 	t.Run("FIND05", func(t *testing.T) {
 		test.SkipTestIfScenarioNotPresent(t, testName(t))
@@ -79,7 +83,8 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		require.NoError(t, err)
 		assertSanity(t, order)
 		assertOrderWitVariants(t, order)
-		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId)
+		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId,
+			"the customer printed order id does not match")
 	})
 }
 
