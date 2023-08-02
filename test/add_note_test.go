@@ -14,7 +14,9 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 	cfg, err := configFromEnv()
 	require.NoError(t, err)
 	c := NewClient(cfg.BaseURL).WithAuth(cfg.Auth)
-	require.NoError(t, err)
+	if cfg.Debug {
+		c = c.Debug()
+	}
 	test := cfg.Test("AddNoteToOrder")
 	testFindOrder := cfg.Test("FindOrderByCustomerOrderPrintedId")
 	val, err := NewJsonValidator(schemaLocation)

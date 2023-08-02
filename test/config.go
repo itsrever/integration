@@ -15,6 +15,8 @@ type Config struct {
 	Auth *AuthenticationInfo `json:"auth"`
 	// Tests is the configuration of tests to run
 	Tests []Test `json:"tests"`
+	// Debug the requests/responses
+	Debug bool `json:"debug"`
 }
 
 type AuthenticationInfo struct {
