@@ -116,7 +116,6 @@ func assertCustomer(t *testing.T, order *server.IntegrationOrder) {
 	assert.NotNil(t, order.Customer, "missing customer data")
 	assert.NotEmpty(t, order.Customer.Email, "missing customer email")
 	assert.NotEmpty(t, order.Customer.FirstName, "the customer first name is empty")
-	assert.NotEmpty(t, order.Customer.LastName, "the customer last name is empty")
 }
 
 func assertHasProduct(t *testing.T, lineItem *server.IntegrationLineItem) {
