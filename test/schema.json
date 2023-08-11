@@ -12,8 +12,8 @@
       "type": "string",
       "description": "This is the `customer_printed_order_id` as a unique identifier of the order"
     },
-    "integration.Order": {
-      "description": "Model for an Order returned by a custom integration. REVER supports multi-currency with the following\nrestrictions:\n\n  * the shop currency must be the same for every order within the same e-commerce\n  * there must be only one customer currency per order (it can be the same or not than the shop currency)\n\nIn addition, discounts are supported as pre-tax calculations. \nGift cards are not considered discounts but a payment method.\n",
+    "order": {
+      "description": "Model for an Order returned by a custom  REVER supports multi-currency with the following\nrestrictions:\n\n  * the shop currency must be the same for every order within the same e-commerce\n  * there must be only one customer currency per order (it can be the same or not than the shop currency)\n\nIn addition, discounts are supported as pre-tax calculations. \nGift cards are not considered discounts but a payment method.\n",
       "type": "object",
       "required": [
         "date",
@@ -1458,7 +1458,7 @@
         }
       }
     },
-    "integration.ReturnRequest": {
+    "returnRequest": {
       "description": "Payload for the method CreateOrUpdateReturn.",
       "type": "object",
       "required": [
@@ -1508,7 +1508,7 @@
     "schemaVersion"
   ],
   "definitions": {
-    "integration.ReturnRequestItem": {
+    "ReturnRequestItem": {
       "description": "Items from an order being marked as returned",
       "type": "object",
       "required": [
@@ -1528,7 +1528,7 @@
         }
       }
     },
-    "integration.ReturnRequest": {
+    "ReturnRequest": {
       "description": "Payload for the method CreateOrUpdateReturn.",
       "type": "object",
       "required": [
@@ -1561,7 +1561,7 @@
         }
       }
     },
-    "integration.MultiMoney": {
+    "MultiMoney": {
       "description": "An amount that is expressed in two currencies: the shop and the customer one. They can be the same or not.\n",
       "type": "object",
       "required": [
@@ -1623,7 +1623,7 @@
         }
       }
     },
-    "integration.Money": {
+    "Money": {
       "description": "Model for an amount plus the currency in which it is expressed.\n",
       "type": "object",
       "required": [
@@ -1644,8 +1644,8 @@
         }
       }
     },
-    "integration.Order": {
-      "description": "Model for an Order returned by a custom integration. REVER supports multi-currency with the following\nrestrictions:\n\n  * the shop currency must be the same for every order within the same e-commerce\n  * there must be only one customer currency per order (it can be the same or not than the shop currency)\n\nIn addition, discounts are supported as pre-tax calculations. \nGift cards are not considered discounts but a payment method.\n",
+    "Order": {
+      "description": "Model for an Order returned by a custom  REVER supports multi-currency with the following\nrestrictions:\n\n  * the shop currency must be the same for every order within the same e-commerce\n  * there must be only one customer currency per order (it can be the same or not than the shop currency)\n\nIn addition, discounts are supported as pre-tax calculations. \nGift cards are not considered discounts but a payment method.\n",
       "type": "object",
       "required": [
         "date",
@@ -3081,7 +3081,7 @@
         }
       }
     },
-    "integration.Note": {
+    "Note": {
       "description": "Note (text) associated to an order",
       "required": [
         "text",
@@ -3105,7 +3105,7 @@
         }
       }
     },
-    "integration.Address": {
+    "Address": {
       "description": "Generic address used in many scenarios",
       "required": [
         "address_line_1",
@@ -3173,7 +3173,7 @@
       },
       "type": "object"
     },
-    "integration.Payment": {
+    "Payment": {
       "description": "Payment information for the order",
       "type": "object",
       "required": [
@@ -3245,7 +3245,7 @@
         }
       }
     },
-    "integration.Transaction": {
+    "Transaction": {
       "description": "Transaction executed as payment for an order",
       "type": "object",
       "required": [
@@ -3298,7 +3298,7 @@
         }
       }
     },
-    "integration.ReturnOrder": {
+    "ReturnOrder": {
       "description": "A return operation executed over one or more items of an order. It might\nbe in progress or successfully completed.\n",
       "type": "object",
       "required": [
@@ -3348,7 +3348,7 @@
         }
       }
     },
-    "integration.RefundOrder": {
+    "RefundOrder": {
       "description": "A refund operation executed over one or more items of an order. \n",
       "type": "object",
       "required": [
@@ -3430,7 +3430,7 @@
         }
       }
     },
-    "integration.Return": {
+    "Return": {
       "description": "A return operation executed over one or more items of an order. It might\nbe in progress or successfully completed.\n",
       "type": "object",
       "required": [
@@ -3450,7 +3450,7 @@
         }
       }
     },
-    "integration.Refund": {
+    "Refund": {
       "description": "A refund operation executed over one or more items of an order\n",
       "type": "object",
       "required": [
@@ -3470,7 +3470,7 @@
         }
       }
     },
-    "integration.FulfillmentOrder": {
+    "FulfillmentOrder": {
       "description": "Represents either an item or a group of items in an order that are to be fulfilled from the same location. \nThere can be more than one fulfillment order for an order at a given location\n",
       "required": [
         "fulfillments",
@@ -3514,7 +3514,7 @@
         }
       }
     },
-    "integration.Fulfillment": {
+    "Fulfillment": {
       "description": "Line item fulfilled in an order",
       "required": [
         "line_item_id",
@@ -3534,7 +3534,7 @@
         }
       }
     },
-    "integration.Shipping": {
+    "Shipping": {
       "description": "Shipping information",
       "required": [
         "amount",
@@ -3681,7 +3681,7 @@
         }
       }
     },
-    "integration.Customer": {
+    "Customer": {
       "description": "Customer associated to the order",
       "required": [
         "email"
@@ -3708,7 +3708,7 @@
       },
       "type": "object"
     },
-    "integration.Identification": {
+    "Identification": {
       "description": "Extended data for identifying an order in any e-commerce",
       "type": "object",
       "required": [
@@ -3727,7 +3727,7 @@
         }
       }
     },
-    "integration.LineItem": {
+    "LineItem": {
       "description": "One of the line items from the Order. Consist of a quantity of a product or a product variant,\nwith the associated price, taxes and discounts. For the properties of the item sold, the property\n`product` should be used. If the item sold is a variant of a product, the property `variant` should\nbe filled additionally, with the variant information, and the properties in there will override\nthe properties in the `product` object.\n",
       "required": [
         "id",
@@ -4370,7 +4370,7 @@
       },
       "type": "object"
     },
-    "integration.Tag": {
+    "Tag": {
       "description": "a tag (string) associated to one resource",
       "required": [
         "name"
@@ -4383,7 +4383,7 @@
       },
       "type": "object"
     },
-    "integration.Product": {
+    "Product": {
       "description": "A product from the e-commerce catalog (enabled or not). Products that are removed from the catalog should still be available in the orders.",
       "required": [
         "id",
@@ -4640,7 +4640,7 @@
       },
       "type": "object"
     },
-    "integration.Category": {
+    "Category": {
       "description": "A category from the e-commerce catalog. It can be used to filter products or decide if a product is returnable or not.",
       "required": [
         "id"
@@ -4653,7 +4653,7 @@
       },
       "type": "object"
     },
-    "integration.Image": {
+    "Image": {
       "description": "An image from the e-commerce catalog",
       "required": [
         "src"
@@ -4676,7 +4676,7 @@
       },
       "type": "object"
     },
-    "integration.Variant": {
+    "Variant": {
       "description": "A variant of a product from the e-commerce catalog. It's the combination of one or more option values (e.g. size or size + color)",
       "required": [
         "id",
@@ -4802,7 +4802,7 @@
       },
       "type": "object"
     },
-    "integration.Option": {
+    "Option": {
       "required": [
         "name",
         "value"

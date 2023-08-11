@@ -22,30 +22,30 @@ const SingleOrderWithoutVariantsID = "simple_order_1"
 const SingleOrderWithVariantsID = "simple_order_2"
 
 // responsesByID returns a map of orders, indexed by order_id
-func responsesByID() map[string]*IntegrationOrder {
-	return map[string]*IntegrationOrder{
+func responsesByID() map[string]*Order {
+	return map[string]*Order{
 		SingleOrderWithoutVariantsID: OrderWithSingleProduct(SingleOrderWithoutVariantsID),
 		SingleOrderWithVariantsID:    SimpleOrderWithVariants(SingleOrderWithVariantsID),
 	}
 }
 
 // FindOrderFor returns the order corresponding to the given id
-func FindOrderFor(id string) *IntegrationOrder {
+func FindOrderFor(id string) *Order {
 	order := responsesByID()[id]
 	if order != nil {
-		order.Notes = toIntegrationNotes(notes.New().GetNotesFromOrder(id))
+		order.Notes = toNotes(notes.New().GetNotesFromOrder(id))
 	}
 	return order
 }
 
-func toIntegrationNotes(notes []notes.Note) []IntegrationNote {
-	var integrationNotes []IntegrationNote
+func toNotes(notes []notes.Note) []Note {
+	var Notes []Note
 	for _, note := range notes {
-		integrationNotes = append(integrationNotes, IntegrationNote{
+		Notes = append(Notes, Note{
 			Text: note.Text,
 			Date: note.Date,
 			User: "unknown",
 		})
 	}
-	return integrationNotes
+	return Notes
 }

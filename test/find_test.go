@@ -105,8 +105,8 @@ func requireBodyFromResponse(t *testing.T, resp *http.Response) []byte {
 }
 
 // orderFromBody decodes the response body into an order
-func orderFromBody(body []byte) (*server.IntegrationOrder, error) {
-	result := &server.IntegrationOrder{}
+func orderFromBody(body []byte) (*server.Order, error) {
+	result := &server.Order{}
 	err := json.Unmarshal(body, result)
 	return result, err
 }

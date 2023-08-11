@@ -77,7 +77,7 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 	})
 }
 
-func assertOrderHasNote(t *testing.T, order *server.IntegrationOrder, text string) {
+func assertOrderHasNote(t *testing.T, order *server.Order, text string) {
 	assert.NotEmpty(t, order.Notes)
 	for _, note := range order.Notes {
 		if note.Text == text {
