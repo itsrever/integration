@@ -69,7 +69,7 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 		require.NotNil(t, resp)
 		require.Equal(t, 200, resp.StatusCode)
 		body := requireBodyFromResponse(t, resp)
-		val.RequireModel(t, "integration.Order", body)
+		val.RequireModel(t, "order", body)
 		order, err := orderFromBody(body)
 		require.NoError(t, err)
 		server.AssertSanity(t, order)
