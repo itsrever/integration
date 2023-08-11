@@ -9,7 +9,7 @@
 
 package server
 
-// IntegrationMultiMoney - An amount that is expressed in two currencies: the shop and the customer one. They can be the same or not. 
+// IntegrationMultiMoney - Total amount charged as shipping costs. Taxes are included. Can be zero. 
 type IntegrationMultiMoney struct {
 
 	AmountShop IntegrationMultiMoneyAmountShop `json:"amount_shop"`

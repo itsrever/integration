@@ -16,7 +16,7 @@ type IntegrationReturnRequestItem struct {
 	LineItemId string `json:"line_item_id"`
 
 	// Number of items from that line item being returned. Can be a positive or negative number. If negative, the previous return operation is totally or partially reverted.
-	Quantity float32 `json:"quantity"`
+	Quantity int32 `json:"quantity"`
 }
 
 // AssertIntegrationReturnRequestItemRequired checks if the required fields are not zero-ed

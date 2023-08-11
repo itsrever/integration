@@ -1,11 +1,10 @@
 package test
 
 import (
-	"math/rand"
 	"testing"
-	"time"
 
 	server "github.com/itsrever/integration/server/go"
+	"github.com/itsrever/integration/tools"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -22,7 +21,7 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 	val, err := NewJsonValidator(schemaLocation)
 	require.NoError(t, err)
 	noteBody := server.AddNoteToOrderRequest{
-		Note: "Note" + generateRandomString(10),
+		Note: "Note" + tools.RandomString(10),
 	}
 
 	t.Run("ADDNOTE00", func(t *testing.T) {
@@ -73,20 +72,9 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 		val.RequireModel(t, "integration.Order", body)
 		order, err := orderFromBody(body)
 		require.NoError(t, err)
-		assertSanity(t, order)
+		server.AssertSanity(t, order)
 		assertOrderHasNote(t, order, noteBody.Note)
 	})
-}
-
-func generateRandomString(length int) string {
-	var letters = []rune("bcdfghijklmnpqrstwxyz")
-	rand.Seed(time.Now().UTC().UnixNano())
-
-	b := make([]rune, length)
-	for i := range b {
-		b[i] = letters[rand.Intn(len(letters))]
-	}
-	return string(b)
 }
 
 func assertOrderHasNote(t *testing.T, order *server.IntegrationOrder, text string) {

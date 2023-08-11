@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/gorilla/mux v1.8.0
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.0
+	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.8.4
 )
 

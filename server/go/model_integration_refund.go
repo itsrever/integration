@@ -16,7 +16,7 @@ type IntegrationRefund struct {
 	LineItemId string `json:"line_item_id"`
 
 	// Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.
-	Quantity float32 `json:"quantity"`
+	Quantity int32 `json:"quantity"`
 }
 
 // AssertIntegrationRefundRequired checks if the required fields are not zero-ed
