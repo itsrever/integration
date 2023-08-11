@@ -103,4 +103,5 @@ jobs:
               gcloud run deploy $SERVICE_NAME \
                 --source=./server \
                 --region $RUN_REGION \
+                --set-env-vars=GO111MODULE=on \
                 --platform managed
