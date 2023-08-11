@@ -8,6 +8,8 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+const customerEmail = "test@itsrever.com"
+
 // NewMultiMoney is an auxiliary function to help with the stubs
 // and create a MultiMoney with the given amount and currency
 func NewMultiMoney(amountShop float64, currencyShop string,
@@ -72,7 +74,7 @@ func billingAddress() IntegrationOrderBillingAddress {
 		StateProvince: "California",
 		Country:       "United States",
 		CountryCode:   "US",
-		Email:         "test@tets.com",
+		Email:         customerEmail,
 		Company:       "Test Company",
 	}
 }
@@ -89,7 +91,7 @@ func shippingAddress() IntegrationOrderShippingAddress {
 		StateProvince: "California",
 		Country:       "United States",
 		CountryCode:   "US",
-		Email:         "test@tets.com",
+		Email:         customerEmail,
 		Company:       "Test Company",
 	}
 }
@@ -99,7 +101,7 @@ func customerDetails() IntegrationCustomer {
 	return IntegrationCustomer{
 		FirstName:     "John",
 		LastName:      "Doe",
-		Email:         "test@test.com",
+		Email:         customerEmail,
 		PreferredLang: "es",
 	}
 }
