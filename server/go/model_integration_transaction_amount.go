@@ -13,7 +13,7 @@ package server
 type IntegrationTransactionAmount struct {
 
 	// amount (optionally with decimals), without currency symbol and thousands separator
-	Amount float32 `json:"amount"`
+	Amount float64 `json:"amount"`
 
 	// three-letter code as ISO 4217 currency code.  Examples: EUR, USD, JPY, GBP... The currency must be supported by REVER. 
 	Currency string `json:"currency"`

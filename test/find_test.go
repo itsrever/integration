@@ -65,8 +65,8 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		val.RequireModel(t, "integration.Order", body)
 		order, err := orderFromBody(body)
 		require.NoError(t, err)
-		assertSanity(t, order)
-		assertOrderWithoutVariants(t, order)
+		server.AssertSanity(t, order)
+		server.AssertOrderWithoutVariants(t, order)
 		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId,
 			"the customer printed order id does not match")
 	})
@@ -81,8 +81,8 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		val.RequireModel(t, "integration.Order", body)
 		order, err := orderFromBody(body)
 		require.NoError(t, err)
-		assertSanity(t, order)
-		assertOrderWitVariants(t, order)
+		server.AssertSanity(t, order)
+		server.AssertOrderWithVariants(t, order)
 		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId,
 			"the customer printed order id does not match")
 	})
@@ -109,19 +109,6 @@ func orderFromBody(body []byte) (*server.IntegrationOrder, error) {
 	result := &server.IntegrationOrder{}
 	err := json.Unmarshal(body, result)
 	return result, err
-}
-
-func hasDiscountOrder(order *server.IntegrationOrder) bool {
-	for _, lineItem := range order.LineItems {
-		if hasDiscountLineItem(lineItem) {
-			return true
-		}
-	}
-	return false
-}
-
-func hasDiscountLineItem(order server.IntegrationLineItem) bool {
-	return order.TotalDiscounts.AmountShop.Amount > 0
 }
 
 func nonExistingOrderVars() map[string]string {

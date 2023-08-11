@@ -64,6 +64,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -89,6 +90,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -129,6 +131,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -154,6 +157,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -208,7 +212,7 @@
                     },
                     "quantity": {
                       "description": "Number of products fulfilled. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
-                      "type": "number",
+                      "type": "integer",
                       "example": 1
                     }
                   }
@@ -262,7 +266,7 @@
                     },
                     "quantity": {
                       "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
-                      "type": "number",
+                      "type": "integer",
                       "example": 1
                     }
                   }
@@ -318,6 +322,7 @@
                       "amount": {
                         "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                         "type": "number",
+                        "format": "double",
                         "example": 123.45
                       },
                       "currency": {
@@ -347,7 +352,7 @@
                     },
                     "quantity": {
                       "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
-                      "type": "number",
+                      "type": "integer",
                       "example": 1
                     }
                   }
@@ -406,6 +411,7 @@
                           "amount": {
                             "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                             "type": "number",
+                            "format": "double",
                             "example": 123.45
                           },
                           "currency": {
@@ -476,11 +482,16 @@
         "shipping": {
           "description": "Shipping information",
           "required": [
-            "amount"
+            "amount",
+            "taxes"
           ],
           "properties": {
-            "amount": {
-              "description": "Total amount charged as shipping costs.\n",
+            "description": {
+              "description": "Text associated to the shipping line.",
+              "type": "string"
+            },
+            "taxes": {
+              "description": "Total amount of taxes for the shipping. Included in the amount. Can be zero.\n",
               "allOf": [
                 {
                   "description": "An amount that is expressed in two currencies: the shop and the customer one. They can be the same or not.\n",
@@ -504,6 +515,7 @@
                             "amount": {
                               "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                               "type": "number",
+                              "format": "double",
                               "example": 123.45
                             },
                             "currency": {
@@ -529,6 +541,74 @@
                             "amount": {
                               "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                               "type": "number",
+                              "format": "double",
+                              "example": 123.45
+                            },
+                            "currency": {
+                              "description": "three-letter code as ISO 4217 currency code. \nExamples: EUR, USD, JPY, GBP...\nThe currency must be supported by REVER.\n",
+                              "type": "string",
+                              "example": "EUR"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "amount": {
+              "description": "Total amount charged as shipping costs. Taxes are included. Can be zero.\n",
+              "allOf": [
+                {
+                  "description": "An amount that is expressed in two currencies: the shop and the customer one. They can be the same or not.\n",
+                  "type": "object",
+                  "required": [
+                    "amount_shop",
+                    "amount_customer"
+                  ],
+                  "properties": {
+                    "amount_shop": {
+                      "description": "Amount in the shop currency. \nUseful for accounting purposes, to provide reporting in this currency. \nUsually, the shop currency is the same for every order within the e-commerce.\n",
+                      "allOf": [
+                        {
+                          "description": "Model for an amount plus the currency in which it is expressed.\n",
+                          "type": "object",
+                          "required": [
+                            "amount",
+                            "currency"
+                          ],
+                          "properties": {
+                            "amount": {
+                              "description": "amount (optionally with decimals), without currency symbol and thousands separator",
+                              "type": "number",
+                              "format": "double",
+                              "example": 123.45
+                            },
+                            "currency": {
+                              "description": "three-letter code as ISO 4217 currency code. \nExamples: EUR, USD, JPY, GBP...\nThe currency must be supported by REVER.\n",
+                              "type": "string",
+                              "example": "EUR"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "amount_customer": {
+                      "description": "Amount in the customer currency. \nUsed as the amount + currency that the customer is really going to use for paying, the currency that the customer selected in the website.\nUsually, this comes from applying a conversion rate to the shop currency. \n",
+                      "allOf": [
+                        {
+                          "description": "Model for an amount plus the currency in which it is expressed.\n",
+                          "type": "object",
+                          "required": [
+                            "amount",
+                            "currency"
+                          ],
+                          "properties": {
+                            "amount": {
+                              "description": "amount (optionally with decimals), without currency symbol and thousands separator",
+                              "type": "number",
+                              "format": "double",
                               "example": 123.45
                             },
                             "currency": {
@@ -656,6 +736,7 @@
                           "amount": {
                             "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                             "type": "number",
+                            "format": "double",
                             "example": 123.45
                           },
                           "currency": {
@@ -799,6 +880,7 @@
                                 "amount": {
                                   "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                   "type": "number",
+                                  "format": "double",
                                   "example": 123.45
                                 },
                                 "currency": {
@@ -861,6 +943,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -886,6 +969,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -926,6 +1010,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -951,6 +1036,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -991,6 +1077,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -1016,6 +1103,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -1056,6 +1144,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -1081,6 +1170,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -1121,6 +1211,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -1146,6 +1237,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -1391,7 +1483,7 @@
               },
               "quantity": {
                 "description": "Number of items from that line item being returned. Can be a positive or negative number. If negative, the previous return operation is totally or partially reverted.",
-                "type": "number",
+                "type": "integer",
                 "example": 1
               }
             }
@@ -1431,7 +1523,7 @@
         },
         "quantity": {
           "description": "Number of items from that line item being returned. Can be a positive or negative number. If negative, the previous return operation is totally or partially reverted.",
-          "type": "number",
+          "type": "integer",
           "example": 1
         }
       }
@@ -1461,7 +1553,7 @@
               },
               "quantity": {
                 "description": "Number of items from that line item being returned. Can be a positive or negative number. If negative, the previous return operation is totally or partially reverted.",
-                "type": "number",
+                "type": "integer",
                 "example": 1
               }
             }
@@ -1491,6 +1583,7 @@
                 "amount": {
                   "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                   "type": "number",
+                  "format": "double",
                   "example": 123.45
                 },
                 "currency": {
@@ -1516,6 +1609,7 @@
                 "amount": {
                   "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                   "type": "number",
+                  "format": "double",
                   "example": 123.45
                 },
                 "currency": {
@@ -1540,6 +1634,7 @@
         "amount": {
           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
           "type": "number",
+          "format": "double",
           "example": 123.45
         },
         "currency": {
@@ -1601,6 +1696,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -1626,6 +1722,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -1666,6 +1763,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -1691,6 +1789,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -1745,7 +1844,7 @@
                     },
                     "quantity": {
                       "description": "Number of products fulfilled. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
-                      "type": "number",
+                      "type": "integer",
                       "example": 1
                     }
                   }
@@ -1799,7 +1898,7 @@
                     },
                     "quantity": {
                       "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
-                      "type": "number",
+                      "type": "integer",
                       "example": 1
                     }
                   }
@@ -1855,6 +1954,7 @@
                       "amount": {
                         "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                         "type": "number",
+                        "format": "double",
                         "example": 123.45
                       },
                       "currency": {
@@ -1884,7 +1984,7 @@
                     },
                     "quantity": {
                       "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
-                      "type": "number",
+                      "type": "integer",
                       "example": 1
                     }
                   }
@@ -1943,6 +2043,7 @@
                           "amount": {
                             "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                             "type": "number",
+                            "format": "double",
                             "example": 123.45
                           },
                           "currency": {
@@ -2013,11 +2114,16 @@
         "shipping": {
           "description": "Shipping information",
           "required": [
-            "amount"
+            "amount",
+            "taxes"
           ],
           "properties": {
-            "amount": {
-              "description": "Total amount charged as shipping costs.\n",
+            "description": {
+              "description": "Text associated to the shipping line.",
+              "type": "string"
+            },
+            "taxes": {
+              "description": "Total amount of taxes for the shipping. Included in the amount. Can be zero.\n",
               "allOf": [
                 {
                   "description": "An amount that is expressed in two currencies: the shop and the customer one. They can be the same or not.\n",
@@ -2041,6 +2147,7 @@
                             "amount": {
                               "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                               "type": "number",
+                              "format": "double",
                               "example": 123.45
                             },
                             "currency": {
@@ -2066,6 +2173,74 @@
                             "amount": {
                               "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                               "type": "number",
+                              "format": "double",
+                              "example": 123.45
+                            },
+                            "currency": {
+                              "description": "three-letter code as ISO 4217 currency code. \nExamples: EUR, USD, JPY, GBP...\nThe currency must be supported by REVER.\n",
+                              "type": "string",
+                              "example": "EUR"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
+            },
+            "amount": {
+              "description": "Total amount charged as shipping costs. Taxes are included. Can be zero.\n",
+              "allOf": [
+                {
+                  "description": "An amount that is expressed in two currencies: the shop and the customer one. They can be the same or not.\n",
+                  "type": "object",
+                  "required": [
+                    "amount_shop",
+                    "amount_customer"
+                  ],
+                  "properties": {
+                    "amount_shop": {
+                      "description": "Amount in the shop currency. \nUseful for accounting purposes, to provide reporting in this currency. \nUsually, the shop currency is the same for every order within the e-commerce.\n",
+                      "allOf": [
+                        {
+                          "description": "Model for an amount plus the currency in which it is expressed.\n",
+                          "type": "object",
+                          "required": [
+                            "amount",
+                            "currency"
+                          ],
+                          "properties": {
+                            "amount": {
+                              "description": "amount (optionally with decimals), without currency symbol and thousands separator",
+                              "type": "number",
+                              "format": "double",
+                              "example": 123.45
+                            },
+                            "currency": {
+                              "description": "three-letter code as ISO 4217 currency code. \nExamples: EUR, USD, JPY, GBP...\nThe currency must be supported by REVER.\n",
+                              "type": "string",
+                              "example": "EUR"
+                            }
+                          }
+                        }
+                      ]
+                    },
+                    "amount_customer": {
+                      "description": "Amount in the customer currency. \nUsed as the amount + currency that the customer is really going to use for paying, the currency that the customer selected in the website.\nUsually, this comes from applying a conversion rate to the shop currency. \n",
+                      "allOf": [
+                        {
+                          "description": "Model for an amount plus the currency in which it is expressed.\n",
+                          "type": "object",
+                          "required": [
+                            "amount",
+                            "currency"
+                          ],
+                          "properties": {
+                            "amount": {
+                              "description": "amount (optionally with decimals), without currency symbol and thousands separator",
+                              "type": "number",
+                              "format": "double",
                               "example": 123.45
                             },
                             "currency": {
@@ -2193,6 +2368,7 @@
                           "amount": {
                             "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                             "type": "number",
+                            "format": "double",
                             "example": 123.45
                           },
                           "currency": {
@@ -2336,6 +2512,7 @@
                                 "amount": {
                                   "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                   "type": "number",
+                                  "format": "double",
                                   "example": 123.45
                                 },
                                 "currency": {
@@ -2398,6 +2575,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -2423,6 +2601,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -2463,6 +2642,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -2488,6 +2668,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -2528,6 +2709,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -2553,6 +2735,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -2593,6 +2776,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -2618,6 +2802,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -2658,6 +2843,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -2683,6 +2869,7 @@
                               "amount": {
                                 "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                                 "type": "number",
+                                "format": "double",
                                 "example": 123.45
                               },
                               "currency": {
@@ -3036,6 +3223,7 @@
                       "amount": {
                         "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                         "type": "number",
+                        "format": "double",
                         "example": 123.45
                       },
                       "currency": {
@@ -3091,6 +3279,7 @@
                 "amount": {
                   "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                   "type": "number",
+                  "format": "double",
                   "example": 123.45
                 },
                 "currency": {
@@ -3151,7 +3340,7 @@
               },
               "quantity": {
                 "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
-                "type": "number",
+                "type": "integer",
                 "example": 1
               }
             }
@@ -3203,6 +3392,7 @@
                 "amount": {
                   "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                   "type": "number",
+                  "format": "double",
                   "example": 123.45
                 },
                 "currency": {
@@ -3232,7 +3422,7 @@
               },
               "quantity": {
                 "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
-                "type": "number",
+                "type": "integer",
                 "example": 1
               }
             }
@@ -3255,7 +3445,7 @@
         },
         "quantity": {
           "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
-          "type": "number",
+          "type": "integer",
           "example": 1
         }
       }
@@ -3275,7 +3465,7 @@
         },
         "quantity": {
           "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
-          "type": "number",
+          "type": "integer",
           "example": 1
         }
       }
@@ -3316,7 +3506,7 @@
               },
               "quantity": {
                 "description": "Number of products fulfilled. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
-                "type": "number",
+                "type": "integer",
                 "example": 1
               }
             }
@@ -3339,7 +3529,7 @@
         },
         "quantity": {
           "description": "Number of products fulfilled. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
-          "type": "number",
+          "type": "integer",
           "example": 1
         }
       }
@@ -3347,11 +3537,16 @@
     "integration.Shipping": {
       "description": "Shipping information",
       "required": [
-        "amount"
+        "amount",
+        "taxes"
       ],
       "properties": {
-        "amount": {
-          "description": "Total amount charged as shipping costs.\n",
+        "description": {
+          "description": "Text associated to the shipping line.",
+          "type": "string"
+        },
+        "taxes": {
+          "description": "Total amount of taxes for the shipping. Included in the amount. Can be zero.\n",
           "allOf": [
             {
               "description": "An amount that is expressed in two currencies: the shop and the customer one. They can be the same or not.\n",
@@ -3375,6 +3570,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -3400,6 +3596,74 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
+                          "example": 123.45
+                        },
+                        "currency": {
+                          "description": "three-letter code as ISO 4217 currency code. \nExamples: EUR, USD, JPY, GBP...\nThe currency must be supported by REVER.\n",
+                          "type": "string",
+                          "example": "EUR"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "amount": {
+          "description": "Total amount charged as shipping costs. Taxes are included. Can be zero.\n",
+          "allOf": [
+            {
+              "description": "An amount that is expressed in two currencies: the shop and the customer one. They can be the same or not.\n",
+              "type": "object",
+              "required": [
+                "amount_shop",
+                "amount_customer"
+              ],
+              "properties": {
+                "amount_shop": {
+                  "description": "Amount in the shop currency. \nUseful for accounting purposes, to provide reporting in this currency. \nUsually, the shop currency is the same for every order within the e-commerce.\n",
+                  "allOf": [
+                    {
+                      "description": "Model for an amount plus the currency in which it is expressed.\n",
+                      "type": "object",
+                      "required": [
+                        "amount",
+                        "currency"
+                      ],
+                      "properties": {
+                        "amount": {
+                          "description": "amount (optionally with decimals), without currency symbol and thousands separator",
+                          "type": "number",
+                          "format": "double",
+                          "example": 123.45
+                        },
+                        "currency": {
+                          "description": "three-letter code as ISO 4217 currency code. \nExamples: EUR, USD, JPY, GBP...\nThe currency must be supported by REVER.\n",
+                          "type": "string",
+                          "example": "EUR"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "amount_customer": {
+                  "description": "Amount in the customer currency. \nUsed as the amount + currency that the customer is really going to use for paying, the currency that the customer selected in the website.\nUsually, this comes from applying a conversion rate to the shop currency. \n",
+                  "allOf": [
+                    {
+                      "description": "Model for an amount plus the currency in which it is expressed.\n",
+                      "type": "object",
+                      "required": [
+                        "amount",
+                        "currency"
+                      ],
+                      "properties": {
+                        "amount": {
+                          "description": "amount (optionally with decimals), without currency symbol and thousands separator",
+                          "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -3571,6 +3835,7 @@
                     "amount": {
                       "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                       "type": "number",
+                      "format": "double",
                       "example": 123.45
                     },
                     "currency": {
@@ -3714,6 +3979,7 @@
                           "amount": {
                             "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                             "type": "number",
+                            "format": "double",
                             "example": 123.45
                           },
                           "currency": {
@@ -3776,6 +4042,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -3801,6 +4068,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -3841,6 +4109,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -3866,6 +4135,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -3906,6 +4176,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -3931,6 +4202,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -3971,6 +4243,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -3996,6 +4269,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -4036,6 +4310,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -4061,6 +4336,7 @@
                         "amount": {
                           "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                           "type": "number",
+                          "format": "double",
                           "example": 123.45
                         },
                         "currency": {
@@ -4187,6 +4463,7 @@
                 "amount": {
                   "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                   "type": "number",
+                  "format": "double",
                   "example": 123.45
                 },
                 "currency": {
@@ -4330,6 +4607,7 @@
                       "amount": {
                         "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                         "type": "number",
+                        "format": "double",
                         "example": 123.45
                       },
                       "currency": {
@@ -4496,6 +4774,7 @@
                 "amount": {
                   "description": "amount (optionally with decimals), without currency symbol and thousands separator",
                   "type": "number",
+                  "format": "double",
                   "example": 123.45
                 },
                 "currency": {

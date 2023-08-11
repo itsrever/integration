@@ -88,6 +88,8 @@ openapi-generator-srv:
     -g go-server \
 	--git-repo-id=integration/server --git-user-id=itsrever \
 	--ignore-file-override=/local/.openapi-generator-ignore \
+	--inline-schema-name-mappings \
+		integration_Shipping_taxes=integration_MultiMoney,integration_Shipping_amount=integration_MultiMoney \
     -o /local/${SERVER_PATH}
 
 gen-go-server: download-openapi openapi-generator-srv openapi-to-json clean-server update-libs

@@ -12,12 +12,18 @@ package server
 // IntegrationShipping - Shipping information
 type IntegrationShipping struct {
 
-	Amount IntegrationShippingAmount `json:"amount"`
+	// Text associated to the shipping line.
+	Description string `json:"description,omitempty"`
+
+	Taxes IntegrationMultiMoney `json:"taxes"`
+
+	Amount IntegrationMultiMoney `json:"amount"`
 }
 
 // AssertIntegrationShippingRequired checks if the required fields are not zero-ed
 func AssertIntegrationShippingRequired(obj IntegrationShipping) error {
 	elements := map[string]interface{}{
+		"taxes": obj.Taxes,
 		"amount": obj.Amount,
 	}
 	for name, el := range elements {
@@ -26,7 +32,10 @@ func AssertIntegrationShippingRequired(obj IntegrationShipping) error {
 		}
 	}
 
-	if err := AssertIntegrationShippingAmountRequired(obj.Amount); err != nil {
+	if err := AssertIntegrationMultiMoneyRequired(obj.Taxes); err != nil {
+		return err
+	}
+	if err := AssertIntegrationMultiMoneyRequired(obj.Amount); err != nil {
 		return err
 	}
 	return nil
