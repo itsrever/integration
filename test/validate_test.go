@@ -20,7 +20,7 @@ func TestValidateNOK(t *testing.T) {
 	}
 	bytes, err := json.Marshal(order)
 	require.NoError(t, err)
-	err = val.Validate("integration.Order", bytes)
+	err = val.Validate("order", bytes)
 	require.Error(t, err)
 }
 
