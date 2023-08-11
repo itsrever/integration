@@ -8,7 +8,7 @@ import (
 )
 
 // AssertSanity asserts that the order has data that complies with basic requirements
-func AssertSanity(t *testing.T, order *IntegrationOrder) {
+func AssertSanity(t *testing.T, order *Order) {
 	assertPositiveAmount(t, order)
 	assertTaxes(t, order)
 	assertShippingCosts(t, order)
@@ -25,7 +25,7 @@ func AssertSanity(t *testing.T, order *IntegrationOrder) {
 // Regarding the payment method, must be paid with a non-cash, non-cash on delivery, non-BNPL payment method.
 // It should have a discount applied. It must be associated with a valid customer.
 // It must be fulfilled and paid
-func AssertOrderWithVariants(t *testing.T, order *IntegrationOrder) {
+func AssertOrderWithVariants(t *testing.T, order *Order) {
 	assertRefundablePaymentMethod(t, order)
 	assertDiscountApplied(t, order)
 
@@ -44,7 +44,7 @@ func AssertOrderWithVariants(t *testing.T, order *IntegrationOrder) {
 // Regarding the payment method, must be paid with a non-cash, non-cash on delivery, non-BNPL payment method.
 // It should have a discount applied. It must be associated with a valid customer.
 // It must be fulfilled and paid
-func AssertOrderWithoutVariants(t *testing.T, order *IntegrationOrder) {
+func AssertOrderWithoutVariants(t *testing.T, order *Order) {
 	assertRefundablePaymentMethod(t, order)
 	assertDiscountApplied(t, order)
 
@@ -59,7 +59,7 @@ func AssertOrderWithoutVariants(t *testing.T, order *IntegrationOrder) {
 // INTERNAL METHODS
 // ***************
 
-func assertPositiveAmount(t *testing.T, order *IntegrationOrder) {
+func assertPositiveAmount(t *testing.T, order *Order) {
 	assert.Greater(t, order.TotalAmount.AmountCustomer.Amount, float64(0),
 		"order customer total amount is not greater than 0")
 	assert.Greater(t, order.TotalAmount.AmountShop.Amount, float64(0),
@@ -68,7 +68,7 @@ func assertPositiveAmount(t *testing.T, order *IntegrationOrder) {
 	isValidCurrency(t, order.TotalAmount.AmountShop.Currency)
 }
 
-func assertTaxes(t *testing.T, order *IntegrationOrder) {
+func assertTaxes(t *testing.T, order *Order) {
 	assert.GreaterOrEqual(t, order.TotalTaxes.AmountCustomer.Amount, float64(0),
 		"order customer amount total taxes are not greater or equal to 0")
 	assert.GreaterOrEqual(t, order.TotalTaxes.AmountShop.Amount, float64(0),
@@ -82,7 +82,7 @@ func assertTaxes(t *testing.T, order *IntegrationOrder) {
 	isValidCurrency(t, order.Shipping.Taxes.AmountShop.Currency)
 }
 
-func assertShippingCosts(t *testing.T, order *IntegrationOrder) {
+func assertShippingCosts(t *testing.T, order *Order) {
 	assert.GreaterOrEqual(t, order.Shipping.Amount.AmountCustomer.Amount, float64(0),
 		"order customer shipping amount is not greater or equal to 0")
 	assert.GreaterOrEqual(t, order.Shipping.Amount.AmountShop.Amount, float64(0),
@@ -91,7 +91,7 @@ func assertShippingCosts(t *testing.T, order *IntegrationOrder) {
 	isValidCurrency(t, order.Shipping.Amount.AmountShop.Currency)
 }
 
-func assertRefundablePaymentMethod(t *testing.T, order *IntegrationOrder) {
+func assertRefundablePaymentMethod(t *testing.T, order *Order) {
 	assert.NotNil(t, order.Payment)
 	for _, transaction := range order.Payment.Transactions {
 		assert.True(t, isRefundablePaymentMethod(transaction.PaymentMethodType),
@@ -104,30 +104,30 @@ func isRefundablePaymentMethod(paymentMethodType string) bool {
 	return paymentMethodType != "cash" && paymentMethodType != "CoD"
 }
 
-func assertDiscountApplied(t *testing.T, order *IntegrationOrder) {
+func assertDiscountApplied(t *testing.T, order *Order) {
 	for _, lineItem := range order.LineItems {
 		assert.Greater(t, lineItem.TotalDiscounts.AmountCustomer.Amount, float64(0),
 			"a discount was not applied to the line item but it was expected")
 	}
 }
 
-func assertIsFulfilled(t *testing.T, order *IntegrationOrder) {
+func assertIsFulfilled(t *testing.T, order *Order) {
 	assert.Greater(t, len(order.FulfillmentOrders), 0,
 		"the order has not at least one fulfillment order")
 }
 
-func assertIsPaid(t *testing.T, order *IntegrationOrder) {
+func assertIsPaid(t *testing.T, order *Order) {
 	assert.Greater(t, len(order.Payment.Transactions), 0,
 		"the order has not at least one transaction")
 }
 
-func assertCustomer(t *testing.T, order *IntegrationOrder) {
+func assertCustomer(t *testing.T, order *Order) {
 	assert.NotNil(t, order.Customer, "missing customer data")
 	assert.NotEmpty(t, order.Customer.Email, "missing customer email")
 	assert.NotEmpty(t, order.Customer.FirstName, "the customer first name is empty")
 }
 
-func assertHasProduct(t *testing.T, lineItem *IntegrationLineItem) {
+func assertHasProduct(t *testing.T, lineItem *LineItem) {
 	assert.NotEmpty(t, lineItem.Product, "missing product data")
 	assert.NotEmpty(t, lineItem.Product.Id, "missing product id")
 	assert.NotEmpty(t, lineItem.Product.Name, "missing product name")
@@ -136,11 +136,11 @@ func assertHasProduct(t *testing.T, lineItem *IntegrationLineItem) {
 		"missing product image")
 }
 
-func assertNoVariants(t *testing.T, lineItem *IntegrationLineItem) {
+func assertNoVariants(t *testing.T, lineItem *LineItem) {
 	assert.Empty(t, lineItem.Product.Variants, "product variants are not empty")
 }
 
-func assertAmountsDoMatch(t *testing.T, order *IntegrationOrder) {
+func assertAmountsDoMatch(t *testing.T, order *Order) {
 	var totalAmountShop, totalAmountCustomer float64
 	var totalTaxShop, totalTaxCustomer float64
 
@@ -171,7 +171,7 @@ func assertAmountsDoMatch(t *testing.T, order *IntegrationOrder) {
 		"order total shop amount does not match")
 }
 
-func assertVariants(t *testing.T, lineItem *IntegrationLineItem) {
+func assertVariants(t *testing.T, lineItem *LineItem) {
 	assert.NotEmpty(t, lineItem.Product.Variants)
 	for _, variant := range lineItem.Product.Variants {
 		assert.NotEmpty(t, variant.Id, "variant id is empty")
@@ -186,7 +186,7 @@ func assertVariants(t *testing.T, lineItem *IntegrationLineItem) {
 }
 
 // assertSameCurrencies asserts that all currencies in the order are the same (in terms of shop and customer)
-func assertSameCurrencies(t *testing.T, order *IntegrationOrder) {
+func assertSameCurrencies(t *testing.T, order *Order) {
 	shopCurrency := order.TotalAmount.AmountShop.Currency
 	custCurrency := order.TotalAmount.AmountCustomer.Currency
 
@@ -220,7 +220,7 @@ func assertSameCurrencies(t *testing.T, order *IntegrationOrder) {
 	}
 }
 
-func hasDiscountLineItem(order IntegrationLineItem) bool {
+func hasDiscountLineItem(order LineItem) bool {
 	return order.TotalDiscounts.AmountShop.Amount > 0
 }
 

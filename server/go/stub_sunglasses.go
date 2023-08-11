@@ -14,7 +14,7 @@ const sunglassesDiscountRate = 0.12
 const sunglassesQuantity = 1
 const sunglassesCurrency = CurrencyEUR
 
-func sunglassesLineItem() IntegrationLineItem {
+func sunglassesLineItem() LineItem {
 	decUnitPrice := decimal.NewFromFloat(sunglassesUnitPrice)
 	decTaxRate := decimal.NewFromFloat(sunglassesTaxRate)
 	decDiscount := decimal.NewFromFloat(sunglassesDiscountRate)
@@ -26,54 +26,54 @@ func sunglassesLineItem() IntegrationLineItem {
 	taxes := decimal.NewFromFloat(subtotal - discounts).Mul(decTaxRate).RoundBank(2).InexactFloat64()
 	total := decimal.NewFromFloat(subtotal - discounts + taxes).RoundBank(2).InexactFloat64()
 
-	return IntegrationLineItem{
+	return LineItem{
 		Quantity: int32(decQuantity.IntPart()),
-		UnitPrice: IntegrationLineItemUnitPrice{
-			AmountShop: IntegrationMultiMoneyAmountShop{
+		UnitPrice: LineItemUnitPrice{
+			AmountShop: MultiMoneyAmountShop{
 				Amount:   unitPrice,
 				Currency: sunglassesCurrency,
 			},
-			AmountCustomer: IntegrationMultiMoneyAmountCustomer{
+			AmountCustomer: MultiMoneyAmountCustomer{
 				Amount:   unitPrice,
 				Currency: sunglassesCurrency,
 			},
 		},
-		Subtotal: IntegrationLineItemSubtotal{
-			AmountShop: IntegrationMultiMoneyAmountShop{
+		Subtotal: LineItemSubtotal{
+			AmountShop: MultiMoneyAmountShop{
 				Amount:   subtotal,
 				Currency: sunglassesCurrency,
 			},
-			AmountCustomer: IntegrationMultiMoneyAmountCustomer{
+			AmountCustomer: MultiMoneyAmountCustomer{
 				Amount:   subtotal,
 				Currency: sunglassesCurrency,
 			},
 		},
-		TotalDiscounts: IntegrationLineItemTotalDiscounts{
-			AmountShop: IntegrationMultiMoneyAmountShop{
+		TotalDiscounts: LineItemTotalDiscounts{
+			AmountShop: MultiMoneyAmountShop{
 				Amount:   discounts,
 				Currency: sunglassesCurrency,
 			},
-			AmountCustomer: IntegrationMultiMoneyAmountCustomer{
+			AmountCustomer: MultiMoneyAmountCustomer{
 				Amount:   discounts,
 				Currency: sunglassesCurrency,
 			},
 		},
-		TotalTaxes: IntegrationLineItemTotalTaxes{
-			AmountShop: IntegrationMultiMoneyAmountShop{
+		TotalTaxes: LineItemTotalTaxes{
+			AmountShop: MultiMoneyAmountShop{
 				Amount:   taxes,
 				Currency: sunglassesCurrency,
 			},
-			AmountCustomer: IntegrationMultiMoneyAmountCustomer{
+			AmountCustomer: MultiMoneyAmountCustomer{
 				Amount:   taxes,
 				Currency: sunglassesCurrency,
 			},
 		},
-		Total: IntegrationLineItemTotal{
-			AmountShop: IntegrationMultiMoneyAmountShop{
+		Total: LineItemTotal{
+			AmountShop: MultiMoneyAmountShop{
 				Amount:   total,
 				Currency: sunglassesCurrency,
 			},
-			AmountCustomer: IntegrationMultiMoneyAmountCustomer{
+			AmountCustomer: MultiMoneyAmountCustomer{
 				Amount:   total,
 				Currency: sunglassesCurrency,
 			},
@@ -84,25 +84,25 @@ func sunglassesLineItem() IntegrationLineItem {
 	}
 }
 
-func sunglassesProduct() IntegrationProduct {
-	return IntegrationProduct{
+func sunglassesProduct() Product {
+	return Product{
 		Id:                "sun_wv",
 		Name:              sunglassesProductName,
 		Description:       sunglassesDescription,
 		Sku:               "sku_sun_vw",
 		InventoryQuantity: 14,
-		UnitPrice: IntegrationProductUnitPrice{
+		UnitPrice: ProductUnitPrice{
 			Amount:   sunglassesUnitPrice,
 			Currency: sunglassesCurrency,
 		},
-		Images: []IntegrationImage{
+		Images: []Image{
 			{
 				Name: "Red sunglasses front",
 				Src:  "https://mypartyshirt.com/media/catalog/product/cache/1/image/1000x1231/9df78eab33525d08d6e5fb8d27136e95/r/e/red-vampire-sunglasses1.jpg",
 				Alt:  "Image 1",
 			},
 		},
-		Tags: []IntegrationTag{
+		Tags: []Tag{
 			{
 				Name: "One size",
 			},

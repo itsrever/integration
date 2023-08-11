@@ -13,14 +13,14 @@ const schemaLocation = "./schema.json"
 func TestValidateNOK(t *testing.T) {
 	val, err := NewJsonValidator(schemaLocation)
 	require.NoError(t, err)
-	order := server.IntegrationOrder{
-		Identification: server.IntegrationIdentification{
+	order := server.Order{
+		Identification: server.Identification{
 			CustomerPrintedOrderId: "123",
 		},
 	}
 	bytes, err := json.Marshal(order)
 	require.NoError(t, err)
-	err = val.Validate("integration.Order", bytes)
+	err = val.Validate("order", bytes)
 	require.Error(t, err)
 }
 

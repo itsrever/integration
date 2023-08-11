@@ -1,8 +1,8 @@
 package server
 
 // tShirtVariants returns the variants for the t-shirt product
-func tShirtVariants() []IntegrationVariant {
-	return []IntegrationVariant{
+func tShirtVariants() []Variant {
+	return []Variant{
 		{
 			Id:                "gopher-black-s",
 			Enabled:           true,
@@ -12,19 +12,19 @@ func tShirtVariants() []IntegrationVariant {
 			Weight:            100,
 			ShortDescription:  "Gopher Black S",
 			Description:       "Gopher Black S",
-			UnitPrice: IntegrationVariantUnitPrice{
+			UnitPrice: VariantUnitPrice{
 				Amount:   10,
 				Currency: CurrencyUSD,
 			},
 
-			Images: []IntegrationImage{
+			Images: []Image{
 				{
 					Src:  "https://magento.byrever.com/media/catalog/product/cache/584aced4a1dec0308dc2dca447b4d064/t/e/teegolang.jpg",
 					Name: "Tee Golang",
 					Alt:  "Tee Golang",
 				},
 			},
-			Options: []IntegrationOption{
+			Options: []Option{
 				{
 					Name:  "Color",
 					Value: "Black",

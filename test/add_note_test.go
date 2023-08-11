@@ -69,7 +69,7 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 		require.NotNil(t, resp)
 		require.Equal(t, 200, resp.StatusCode)
 		body := requireBodyFromResponse(t, resp)
-		val.RequireModel(t, "integration.Order", body)
+		val.RequireModel(t, "order", body)
 		order, err := orderFromBody(body)
 		require.NoError(t, err)
 		server.AssertSanity(t, order)
@@ -77,7 +77,7 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 	})
 }
 
-func assertOrderHasNote(t *testing.T, order *server.IntegrationOrder, text string) {
+func assertOrderHasNote(t *testing.T, order *server.Order, text string) {
 	assert.NotEmpty(t, order.Notes)
 	for _, note := range order.Notes {
 		if note.Text == text {

@@ -103,18 +103,18 @@ func (c *IntegrationApiController) CreateOrUpdateReturn(w http.ResponseWriter, r
 	params := mux.Vars(r)
 	customerPrintedOrderIdParam := params["customer_printed_order_id"]
 	
-	integrationReturnRequestParam := IntegrationReturnRequest{}
+	returnRequestParam := ReturnRequest{}
 	d := json.NewDecoder(r.Body)
 	d.DisallowUnknownFields()
-	if err := d.Decode(&integrationReturnRequestParam); err != nil {
+	if err := d.Decode(&returnRequestParam); err != nil {
 		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
 		return
 	}
-	if err := AssertIntegrationReturnRequestRequired(integrationReturnRequestParam); err != nil {
+	if err := AssertReturnRequestRequired(returnRequestParam); err != nil {
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.CreateOrUpdateReturn(r.Context(), customerPrintedOrderIdParam, integrationReturnRequestParam)
+	result, err := c.service.CreateOrUpdateReturn(r.Context(), customerPrintedOrderIdParam, returnRequestParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

@@ -32,6 +32,6 @@ type IntegrationApiRouter interface {
 // and updated with the logic required for the API.
 type IntegrationApiServicer interface { 
 	AddNoteToOrder(context.Context, string, AddNoteToOrderRequest) (ImplResponse, error)
-	CreateOrUpdateReturn(context.Context, string, IntegrationReturnRequest) (ImplResponse, error)
+	CreateOrUpdateReturn(context.Context, string, ReturnRequest) (ImplResponse, error)
 	FindOrderByCustomerPrintedOrderId(context.Context, string) (ImplResponse, error)
 }

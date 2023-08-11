@@ -74,6 +74,8 @@ clean-server:
 download-openapi:
 	mkdir -p tmp
 	curl -o ${OPENAPI_LOCAL} ${OPENAPI_URL}
+	echo "Replacing `integration.` with empty string to avoid long names..."
+	sed -i '' "s/integration\.//g" ${OPENAPI_LOCAL}
 
 update-libs:
 	go get golang.org/x/oauth2
@@ -89,8 +91,9 @@ openapi-generator-srv:
 	--git-repo-id=integration/server --git-user-id=itsrever \
 	--ignore-file-override=/local/.openapi-generator-ignore \
 	--inline-schema-name-mappings \
-		integration_Shipping_taxes=integration_MultiMoney,integration_Shipping_amount=integration_MultiMoney \
+		Shipping_taxes=multi_money,Shipping_amount=multi_money \
     -o /local/${SERVER_PATH}
+
 
 gen-go-server: download-openapi openapi-generator-srv openapi-to-json clean-server update-libs
 

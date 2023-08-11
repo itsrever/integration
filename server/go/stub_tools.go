@@ -13,13 +13,13 @@ const customerEmail = "test@itsrever.com"
 // NewMultiMoney is an auxiliary function to help with the stubs
 // and create a MultiMoney with the given amount and currency
 func NewMultiMoney(amountShop float64, currencyShop string,
-	amountCustomer float64, currencyCustomer string) IntegrationMultiMoney {
-	return IntegrationMultiMoney{
-		AmountShop: IntegrationMultiMoneyAmountShop{
+	amountCustomer float64, currencyCustomer string) MultiMoney {
+	return MultiMoney{
+		AmountShop: MultiMoneyAmountShop{
 			Amount:   amountShop,
 			Currency: currencyShop,
 		},
-		AmountCustomer: IntegrationMultiMoneyAmountCustomer{
+		AmountCustomer: MultiMoneyAmountCustomer{
 			Amount:   amountCustomer,
 			Currency: currencyCustomer,
 		},
@@ -29,29 +29,29 @@ func NewMultiMoney(amountShop float64, currencyShop string,
 // shippingDetails returns a generic shipping of the given amount in the shop currency
 // TODO: exchange if the Currency customer is different and
 // more generic approach to pass currencies
-func shippingDetails(costWithTax float64, taxRate float64) IntegrationShipping {
+func shippingDetails(costWithTax float64, taxRate float64) Shipping {
 	decimalTaxRate := decimal.NewFromFloat(taxRate)
 	decimalOppositeTaxRate := decimal.NewFromFloat(1 - taxRate)
 	cost := decimal.NewFromFloat(costWithTax).Mul(decimalOppositeTaxRate).RoundBank(2).InexactFloat64()
 	tax := decimal.NewFromFloat(costWithTax).Mul(decimalTaxRate).RoundBank(2).InexactFloat64()
 
-	return IntegrationShipping{
+	return Shipping{
 		Amount: NewMultiMoney(cost, CurrencyShop, cost, CurrencyCustomer),
 		Taxes:  NewMultiMoney(tax, CurrencyShop, tax, CurrencyCustomer),
 	}
 }
 
 // payOrder returns the order with a payment for the total due
-func payOrder(order *IntegrationOrder) *IntegrationOrder {
+func payOrder(order *Order) *Order {
 	amount := order.TotalAmount.AmountCustomer.Amount
 	currency := order.TotalAmount.AmountCustomer.Currency
-	order.Payment = IntegrationPayment{
+	order.Payment = Payment{
 		Date: orderDate(),
-		Transactions: []IntegrationTransaction{
+		Transactions: []Transaction{
 			{
 				PaymentMethodType: "non-cash",
 				TransactionId:     tools.RandomString(10),
-				Amount: IntegrationTransactionAmount{
+				Amount: TransactionAmount{
 					Amount:   amount,
 					Currency: currency,
 				},
@@ -63,8 +63,8 @@ func payOrder(order *IntegrationOrder) *IntegrationOrder {
 }
 
 // billingAddress returns an arbitrary billing address
-func billingAddress() IntegrationOrderBillingAddress {
-	return IntegrationOrderBillingAddress{
+func billingAddress() OrderBillingAddress {
+	return OrderBillingAddress{
 		FirstName:     "John",
 		LastName:      "Doe",
 		AddressLine1:  "1234 Main Street",
@@ -80,8 +80,8 @@ func billingAddress() IntegrationOrderBillingAddress {
 }
 
 // shippingAddress returns an arbitrary shipping address
-func shippingAddress() IntegrationOrderShippingAddress {
-	return IntegrationOrderShippingAddress{
+func shippingAddress() OrderShippingAddress {
+	return OrderShippingAddress{
 		FirstName:     "John",
 		LastName:      "Doe",
 		AddressLine1:  "1234 Main Street",
@@ -97,8 +97,8 @@ func shippingAddress() IntegrationOrderShippingAddress {
 }
 
 // customerDetails returns an arbitrary customer
-func customerDetails() IntegrationCustomer {
-	return IntegrationCustomer{
+func customerDetails() Customer {
+	return Customer{
 		FirstName:     "John",
 		LastName:      "Doe",
 		Email:         customerEmail,
@@ -106,10 +106,10 @@ func customerDetails() IntegrationCustomer {
 	}
 }
 
-// identification returns the IntegrationIdentification section
+// identification returns the Identification section
 // corresponding to the given order id
-func identification(orderID string) IntegrationIdentification {
-	return IntegrationIdentification{
+func identification(orderID string) Identification {
+	return Identification{
 		// long format, internal ID
 		Id:                     fmt.Sprintf("order-%s", orderID),
 		CustomerPrintedOrderId: orderID,
@@ -120,13 +120,13 @@ func orderDate() time.Time {
 	return time.Date(2019, 1, 1, 0, 0, 0, 0, time.UTC)
 }
 
-func emptyOrderReturns() []IntegrationReturnOrder {
-	return []IntegrationReturnOrder{}
+func emptyOrderReturns() []ReturnOrder {
+	return []ReturnOrder{}
 }
 
 // calculateTotals, given the order line items and shipping,
 // calculates the totals (tax, total) and returns the order
-func calculateTotals(order *IntegrationOrder) *IntegrationOrder {
+func calculateTotals(order *Order) *Order {
 	totalCustomer := float64(0)
 	totalShop := float64(0)
 	totalTaxCustomer := float64(0)
@@ -142,23 +142,23 @@ func calculateTotals(order *IntegrationOrder) *IntegrationOrder {
 	totalTaxCustomer += order.Shipping.Taxes.AmountCustomer.Amount
 	totalTaxShop += order.Shipping.Taxes.AmountShop.Amount
 
-	order.TotalAmount = IntegrationOrderTotalAmount{
-		AmountShop: IntegrationMultiMoneyAmountShop{
+	order.TotalAmount = OrderTotalAmount{
+		AmountShop: MultiMoneyAmountShop{
 			Amount:   decimal.NewFromFloat(totalShop).RoundBank(2).InexactFloat64(),
 			Currency: CurrencyShop,
 		},
-		AmountCustomer: IntegrationMultiMoneyAmountCustomer{
+		AmountCustomer: MultiMoneyAmountCustomer{
 			Amount:   decimal.NewFromFloat(totalShop).RoundBank(2).InexactFloat64(),
 			Currency: CurrencyCustomer,
 		},
 	}
 
-	order.TotalTaxes = IntegrationOrderTotalTaxes{
-		AmountShop: IntegrationMultiMoneyAmountShop{
+	order.TotalTaxes = OrderTotalTaxes{
+		AmountShop: MultiMoneyAmountShop{
 			Amount:   decimal.NewFromFloat(totalTaxShop).RoundBank(2).InexactFloat64(),
 			Currency: CurrencyShop,
 		},
-		AmountCustomer: IntegrationMultiMoneyAmountCustomer{
+		AmountCustomer: MultiMoneyAmountCustomer{
 			Amount:   decimal.NewFromFloat(totalTaxCustomer).RoundBank(2).InexactFloat64(),
 			Currency: CurrencyCustomer,
 		},
@@ -166,20 +166,20 @@ func calculateTotals(order *IntegrationOrder) *IntegrationOrder {
 	return order
 }
 
-func fulfillOrder(order *IntegrationOrder) *IntegrationOrder {
-	fOrder := IntegrationFulfillmentOrder{
+func fulfillOrder(order *Order) *Order {
+	fOrder := FulfillmentOrder{
 		LocationId:   tools.RandomString(10),
 		Date:         orderDate(),
-		Fulfillments: []IntegrationFulfillment{},
+		Fulfillments: []Fulfillment{},
 	}
 	for _, li := range order.LineItems {
 		fOrder.Fulfillments = append(fOrder.Fulfillments,
-			IntegrationFulfillment{
+			Fulfillment{
 				LineItemId: li.Id,
 				Quantity:   li.Quantity,
 			},
 		)
 	}
-	order.FulfillmentOrders = []IntegrationFulfillmentOrder{fOrder}
+	order.FulfillmentOrders = []FulfillmentOrder{fOrder}
 	return order
 }

@@ -47,6 +47,6 @@ func (s *IntegrationApiService) AddNoteToOrder(ctx context.Context, orderID stri
 	return Response(200, nil), nil
 }
 
-func (s *IntegrationApiService) CreateOrUpdateReturn(context.Context, string, IntegrationReturnRequest) (ImplResponse, error) {
+func (s *IntegrationApiService) CreateOrUpdateReturn(context.Context, string, ReturnRequest) (ImplResponse, error) {
 	return Response(200, nil), nil
 }
