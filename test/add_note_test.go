@@ -49,7 +49,6 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 
 	t.Run("ADDNOTE03", func(t *testing.T) {
 		resp, err := c.Do("POST", test.UrlPattern, nonExistingOrderVars(), noteBody)
-		println(resp.Request.URL.String())
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 404, resp.StatusCode)
