@@ -27,59 +27,19 @@ func sunglassesLineItem() LineItem {
 	total := decimal.NewFromFloat(subtotal - discounts + taxes).RoundBank(2).InexactFloat64()
 
 	return LineItem{
+		Id:       "lineitem1",
+		Name:     sunglassesProductName,
 		Quantity: int32(decQuantity.IntPart()),
-		UnitPrice: LineItemUnitPrice{
-			AmountShop: MultiMoneyAmountShop{
-				Amount:   unitPrice,
-				Currency: sunglassesCurrency,
-			},
-			AmountCustomer: MultiMoneyAmountCustomer{
-				Amount:   unitPrice,
-				Currency: sunglassesCurrency,
-			},
-		},
-		Subtotal: LineItemSubtotal{
-			AmountShop: MultiMoneyAmountShop{
-				Amount:   subtotal,
-				Currency: sunglassesCurrency,
-			},
-			AmountCustomer: MultiMoneyAmountCustomer{
-				Amount:   subtotal,
-				Currency: sunglassesCurrency,
-			},
-		},
-		TotalDiscounts: LineItemTotalDiscounts{
-			AmountShop: MultiMoneyAmountShop{
-				Amount:   discounts,
-				Currency: sunglassesCurrency,
-			},
-			AmountCustomer: MultiMoneyAmountCustomer{
-				Amount:   discounts,
-				Currency: sunglassesCurrency,
-			},
-		},
-		TotalTaxes: LineItemTotalTaxes{
-			AmountShop: MultiMoneyAmountShop{
-				Amount:   taxes,
-				Currency: sunglassesCurrency,
-			},
-			AmountCustomer: MultiMoneyAmountCustomer{
-				Amount:   taxes,
-				Currency: sunglassesCurrency,
-			},
-		},
-		Total: LineItemTotal{
-			AmountShop: MultiMoneyAmountShop{
-				Amount:   total,
-				Currency: sunglassesCurrency,
-			},
-			AmountCustomer: MultiMoneyAmountCustomer{
-				Amount:   total,
-				Currency: sunglassesCurrency,
-			},
-		},
-		Id:      "lineitem1",
-		Name:    sunglassesProductName,
+		UnitPrice: NewMultiMoney(unitPrice, sunglassesCurrency,
+			unitPrice, sunglassesCurrency),
+		Subtotal: NewMultiMoney(subtotal, sunglassesCurrency,
+			subtotal, sunglassesCurrency),
+		TotalDiscounts: NewMultiMoney(discounts, sunglassesCurrency,
+			discounts, sunglassesCurrency),
+		TotalTaxes: NewMultiMoney(taxes, sunglassesCurrency,
+			taxes, sunglassesCurrency),
+		Total: NewMultiMoney(total, sunglassesCurrency,
+			total, sunglassesCurrency),
 		Product: sunglassesProduct(),
 	}
 }

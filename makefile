@@ -91,9 +91,13 @@ openapi-generator-srv:
 	--git-repo-id=integration/server --git-user-id=itsrever \
 	--ignore-file-override=/local/.openapi-generator-ignore \
 	--inline-schema-name-mappings \
-		Shipping_taxes=multi_money,Shipping_amount=multi_money \
+		Shipping_taxes=multi_money,Shipping_amount=multi_money,\
+Order_shipping_address=address,Order_billing_address=address,\
+Order_total_taxes=multi_money,Order_total_amount=multi_money,\
+LineItem_subtotal=multi_money,LineItem_total=multi_money,\
+LineItem_total_discounts=multi_money,LineItem_total_taxes=multi_money,\
+LineItem_unit_price=multi_money \
     -o /local/${SERVER_PATH}
-
 
 gen-go-server: download-openapi openapi-generator-srv openapi-to-json clean-server update-libs
 

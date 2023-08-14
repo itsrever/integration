@@ -26,15 +26,15 @@ type LineItem struct {
 	// number of items of the same product and variant
 	Quantity int32 `json:"quantity"`
 
-	Subtotal LineItemSubtotal `json:"subtotal"`
+	Subtotal MultiMoney `json:"subtotal"`
 
-	Total LineItemTotal `json:"total"`
+	Total MultiMoney `json:"total"`
 
-	TotalDiscounts LineItemTotalDiscounts `json:"total_discounts"`
+	TotalDiscounts MultiMoney `json:"total_discounts"`
 
-	TotalTaxes LineItemTotalTaxes `json:"total_taxes"`
+	TotalTaxes MultiMoney `json:"total_taxes"`
 
-	UnitPrice LineItemUnitPrice `json:"unit_price"`
+	UnitPrice MultiMoney `json:"unit_price"`
 
 	// Variant ID of the product. The same Product ID can have different variants but they  must be listed in a different line item. A Variant can be the size: S, M, L, XL, etc. Only one variant ia allowed at the moment (one dimension). The `variant_id` must exist in the `variants` array of the `product` object.
 	VariantId string `json:"variant_id,omitempty"`
@@ -68,19 +68,19 @@ func AssertLineItemRequired(obj LineItem) error {
 	if err := AssertProductRequired(obj.Product); err != nil {
 		return err
 	}
-	if err := AssertLineItemSubtotalRequired(obj.Subtotal); err != nil {
+	if err := AssertMultiMoneyRequired(obj.Subtotal); err != nil {
 		return err
 	}
-	if err := AssertLineItemTotalRequired(obj.Total); err != nil {
+	if err := AssertMultiMoneyRequired(obj.Total); err != nil {
 		return err
 	}
-	if err := AssertLineItemTotalDiscountsRequired(obj.TotalDiscounts); err != nil {
+	if err := AssertMultiMoneyRequired(obj.TotalDiscounts); err != nil {
 		return err
 	}
-	if err := AssertLineItemTotalTaxesRequired(obj.TotalTaxes); err != nil {
+	if err := AssertMultiMoneyRequired(obj.TotalTaxes); err != nil {
 		return err
 	}
-	if err := AssertLineItemUnitPriceRequired(obj.UnitPrice); err != nil {
+	if err := AssertMultiMoneyRequired(obj.UnitPrice); err != nil {
 		return err
 	}
 	return nil
