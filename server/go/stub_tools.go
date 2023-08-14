@@ -64,7 +64,7 @@ func payOrder(order *Order) *Order {
 
 // billingAddress returns an arbitrary billing address
 func billingAddress() Address {
-	return billingAddress()
+	return shippingAddress()
 }
 
 // shippingAddress returns an arbitrary shipping address
