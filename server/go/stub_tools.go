@@ -63,25 +63,13 @@ func payOrder(order *Order) *Order {
 }
 
 // billingAddress returns an arbitrary billing address
-func billingAddress() OrderBillingAddress {
-	return OrderBillingAddress{
-		FirstName:     "John",
-		LastName:      "Doe",
-		AddressLine1:  "1234 Main Street",
-		City:          "Anytown",
-		Postcode:      "123456",
-		Phone:         "555-123-4567",
-		StateProvince: "California",
-		Country:       "United States",
-		CountryCode:   "US",
-		Email:         customerEmail,
-		Company:       "Test Company",
-	}
+func billingAddress() Address {
+	return shippingAddress()
 }
 
 // shippingAddress returns an arbitrary shipping address
-func shippingAddress() OrderShippingAddress {
-	return OrderShippingAddress{
+func shippingAddress() Address {
+	return Address{
 		FirstName:     "John",
 		LastName:      "Doe",
 		AddressLine1:  "1234 Main Street",
@@ -142,27 +130,18 @@ func calculateTotals(order *Order) *Order {
 	totalTaxCustomer += order.Shipping.Taxes.AmountCustomer.Amount
 	totalTaxShop += order.Shipping.Taxes.AmountShop.Amount
 
-	order.TotalAmount = OrderTotalAmount{
-		AmountShop: MultiMoneyAmountShop{
-			Amount:   decimal.NewFromFloat(totalShop).RoundBank(2).InexactFloat64(),
-			Currency: CurrencyShop,
-		},
-		AmountCustomer: MultiMoneyAmountCustomer{
-			Amount:   decimal.NewFromFloat(totalShop).RoundBank(2).InexactFloat64(),
-			Currency: CurrencyCustomer,
-		},
-	}
+	order.TotalAmount = NewMultiMoney(
+		decimal.NewFromFloat(totalShop).RoundBank(2).InexactFloat64(),
+		CurrencyShop,
+		decimal.NewFromFloat(totalCustomer).RoundBank(2).InexactFloat64(),
+		CurrencyCustomer)
 
-	order.TotalTaxes = OrderTotalTaxes{
-		AmountShop: MultiMoneyAmountShop{
-			Amount:   decimal.NewFromFloat(totalTaxShop).RoundBank(2).InexactFloat64(),
-			Currency: CurrencyShop,
-		},
-		AmountCustomer: MultiMoneyAmountCustomer{
-			Amount:   decimal.NewFromFloat(totalTaxCustomer).RoundBank(2).InexactFloat64(),
-			Currency: CurrencyCustomer,
-		},
-	}
+	order.TotalTaxes = NewMultiMoney(
+		decimal.NewFromFloat(totalTaxShop).RoundBank(2).InexactFloat64(),
+		CurrencyShop,
+		decimal.NewFromFloat(totalTaxCustomer).RoundBank(2).InexactFloat64(),
+		CurrencyCustomer)
+
 	return order
 }
 

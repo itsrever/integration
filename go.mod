@@ -1,10 +1,10 @@
 module github.com/itsrever/integration
 
-go 1.19
+go 1.20
 
 require (
 	github.com/gorilla/mux v1.8.0
-	github.com/santhosh-tekuri/jsonschema/v5 v5.3.0
+	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.8.4
 )

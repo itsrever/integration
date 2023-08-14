@@ -9,7 +9,7 @@
 
 package server
 
-// MultiMoney - Total amount charged as shipping costs. Taxes are included. Can be zero. 
+// MultiMoney - unit price of a single item (product as listed, no discounts, no taxes, quantity = 1)
 type MultiMoney struct {
 
 	AmountShop MultiMoneyAmountShop `json:"amount_shop"`

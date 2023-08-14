@@ -9,7 +9,7 @@
 
 package server
 
-// Address - Generic address used in many scenarios
+// Address - Address for invoicing (not shipping, though it can be the same) 
 type Address struct {
 
 	// Main address line. Usually the street and number. Should not be larger than 15 characters

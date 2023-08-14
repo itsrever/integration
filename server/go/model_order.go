@@ -22,9 +22,9 @@ type Order struct {
 	// Indicates if the taxes should be displayed as included in the total amount of the order or separated 
 	TaxesIncluded bool `json:"taxes_included"`
 
-	TotalAmount OrderTotalAmount `json:"total_amount"`
+	TotalAmount MultiMoney `json:"total_amount"`
 
-	TotalTaxes OrderTotalTaxes `json:"total_taxes"`
+	TotalTaxes MultiMoney `json:"total_taxes"`
 
 	// List of fulfillment orders per items or groups of items in the order. 
 	FulfillmentOrders []FulfillmentOrder `json:"fulfillment_orders"`
@@ -46,9 +46,9 @@ type Order struct {
 	// List of items in the order. It should only include products or services,  not shipping costs. When working with international orders, the customer currency and shop currency might be different. As REVER supports multicurrency, 2 currencies  can be specified per `line_item`. However, all of the `line_items` must have the same shop and  customer currency.  
 	LineItems []LineItem `json:"line_items"`
 
-	ShippingAddress OrderShippingAddress `json:"shipping_address"`
+	ShippingAddress Address `json:"shipping_address"`
 
-	BillingAddress OrderBillingAddress `json:"billing_address"`
+	BillingAddress Address `json:"billing_address"`
 
 	// List of notes added to the order. The notes are ordered by date, the most recent one first. They can include orders from the customer or from other third-parties, like REVER. 
 	Notes []Note `json:"notes,omitempty"`
@@ -76,10 +76,10 @@ func AssertOrderRequired(obj Order) error {
 		}
 	}
 
-	if err := AssertOrderTotalAmountRequired(obj.TotalAmount); err != nil {
+	if err := AssertMultiMoneyRequired(obj.TotalAmount); err != nil {
 		return err
 	}
-	if err := AssertOrderTotalTaxesRequired(obj.TotalTaxes); err != nil {
+	if err := AssertMultiMoneyRequired(obj.TotalTaxes); err != nil {
 		return err
 	}
 	for _, el := range obj.FulfillmentOrders {
@@ -114,10 +114,10 @@ func AssertOrderRequired(obj Order) error {
 			return err
 		}
 	}
-	if err := AssertOrderShippingAddressRequired(obj.ShippingAddress); err != nil {
+	if err := AssertAddressRequired(obj.ShippingAddress); err != nil {
 		return err
 	}
-	if err := AssertOrderBillingAddressRequired(obj.BillingAddress); err != nil {
+	if err := AssertAddressRequired(obj.BillingAddress); err != nil {
 		return err
 	}
 	for _, el := range obj.Notes {
