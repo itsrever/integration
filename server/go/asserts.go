@@ -134,6 +134,7 @@ func assertAddress(t *testing.T, address *Address) {
 	assert.NotEmpty(t, address.AddressLine1, "address line 1 is empty")
 	assert.NotEmpty(t, address.City, "address city is empty")
 	assert.NotEmpty(t, address.Country, "address country is empty")
+	assert.NotEmpty(t, address.CountryCode, "address country code is empty")
 	assert.NotEmpty(t, address.FirstName, "address first_name is empty")
 	assert.NotEmpty(t, address.Postcode, "address postal code is empty")
 	assertIsUpperCase(t, address.CountryCode, "address country code should be uppercase")
