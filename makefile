@@ -107,3 +107,10 @@ install-openapi-schema-to-json-schema:
 
 openapi-to-json: install-openapi-schema-to-json-schema
 	npx ytoj --resolve-refs --input ${OPENAPI_LOCAL} --output ${JSON_SCHEMA}
+
+##############################
+# MOCK SERVER PUBLISHING     #
+##############################
+
+docker-server:
+	docker build -t itsrever/integration-server:latest -f server/Dockerfile .
