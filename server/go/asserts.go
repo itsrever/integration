@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -15,6 +16,8 @@ func AssertSanity(t *testing.T, order *Order) {
 	assertIsFulfilled(t, order)
 	assertIsPaid(t, order)
 	assertCustomer(t, order)
+	assertAddress(t, &order.ShippingAddress)
+	assertAddress(t, &order.BillingAddress)
 	assertAmountsDoMatch(t, order)
 	assertSameCurrencies(t, order)
 }
@@ -125,6 +128,19 @@ func assertCustomer(t *testing.T, order *Order) {
 	assert.NotNil(t, order.Customer, "missing customer data")
 	assert.NotEmpty(t, order.Customer.Email, "missing customer email")
 	assert.NotEmpty(t, order.Customer.FirstName, "the customer first name is empty")
+}
+
+func assertAddress(t *testing.T, address *Address) {
+	assert.NotEmpty(t, address.AddressLine1, "address line 1 is empty")
+	assert.NotEmpty(t, address.City, "address city is empty")
+	assert.NotEmpty(t, address.Country, "address country is empty")
+	assert.NotEmpty(t, address.FirstName, "address first_name is empty")
+	assert.NotEmpty(t, address.Postcode, "address postal code is empty")
+	assertIsUpperCase(t, address.CountryCode, "address country code should be uppercase")
+}
+
+func assertIsUpperCase(t *testing.T, str, msg string) {
+	assert.Equal(t, strings.ToUpper(str), str, msg)
 }
 
 func assertHasProduct(t *testing.T, lineItem *LineItem) {
