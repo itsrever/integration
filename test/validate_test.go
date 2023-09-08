@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"testing"
 
-	server "github.com/itsrever/integration/server/go"
 	"github.com/stretchr/testify/require"
+
+	server "github.com/itsrever/integration/server/go"
 )
 
 const schemaLocation = "./schema.json"

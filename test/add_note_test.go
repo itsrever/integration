@@ -3,10 +3,11 @@ package test
 import (
 	"testing"
 
-	server "github.com/itsrever/integration/server/go"
-	"github.com/itsrever/integration/tools"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	server "github.com/itsrever/integration/server/go"
+	"github.com/itsrever/integration/tools"
 )
 
 func Test_Add_Note_Into_Order(t *testing.T) {

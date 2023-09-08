@@ -6,7 +6,8 @@ CLIENT_PATH=client
 SERVER_PATH=server
 EXEC_FILE=rever-server-integration
 APP_NAME=testing
-
+# Go source files, ignore vendor directory
+SRC := $(shell find . -type f -name '*.go' -not -path "./vendor/*" -not -path "./server/go/*")
 ##############################
 # TESTING					 #
 ##############################
@@ -114,3 +115,22 @@ openapi-to-json: install-openapi-schema-to-json-schema
 
 docker-server:
 	docker build -t itsrever/integration-server:latest -f server/Dockerfile .
+
+
+install-goimports:
+	go install golang.org/x/tools/cmd/goimports@latest
+
+format: install-goimports
+	@gofmt -l -w $(SRC)
+	@goimports -w -e -local github.com/itsrever/integration $(SRC)
+	
+install-lint-ubuntu:
+	echo Installing yamlint golangci-lint...
+	sudo curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b $(go env GOPATH)/bin v1.50.1
+	golangci-lint --version
+
+install-lint-macos:
+	brew install golangci-lint
+	
+lint: format
+	@golangci-lint -v --timeout=600s --skip-dirs=docs run 
