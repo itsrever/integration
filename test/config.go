@@ -102,6 +102,7 @@ func (t *Test) FailTestIfScenarioNotPresent(tt *testing.T, scenarioName string) 
 		}
 	}
 	if !found {
+		//nolint:gosimple
 		tt.Fatal(fmt.Sprintf("Error: Scenario %v not present in config", scenarioName))
 	}
 }

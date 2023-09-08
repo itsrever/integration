@@ -9,7 +9,7 @@ type Note struct {
 
 type Manager interface {
 	// AddNoteToOrder adds a note to an order
-	AddNoteToOrder(orderID string, note string) error
+	AddNoteToOrder(orderID, note string) error
 	// GetNotesFromOrder returns all notes from an order
 	GetNotesFromOrder(orderID string) ([]Note, error)
 }
@@ -30,7 +30,7 @@ func New() *manager {
 	return singleton
 }
 
-func (m *manager) AddNoteToOrder(orderID string, note string) {
+func (m *manager) AddNoteToOrder(orderID, note string) {
 	curr := m.GetNotesFromOrder(orderID)
 	curr = append(curr, Note{
 		Text: note,

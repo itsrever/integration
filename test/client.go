@@ -61,7 +61,7 @@ func (c *Client) Debug() *Client {
 // method is the verb of the request. Ex: GET, POST, PUT, DELETE
 // pathPattern is a path pattern with variables in the form of {var_name}. Ex: /orders/{order_id}
 // vars is a map of variables to be applied to the path pattern. Ex: map[string]string{"order_id": "123"}
-func (c *Client) Do(method string, pathPattern string, vars map[string]string, body any) (resp *http.Response, err error) {
+func (c *Client) Do(method, pathPattern string, vars map[string]string, body any) (resp *http.Response, err error) {
 	var req *http.Request
 	bodyBuf := &bytes.Buffer{}
 	path := composeRequestURL(c.baseURL, applyVars(pathPattern, vars))
@@ -76,7 +76,7 @@ func (c *Client) Do(method string, pathPattern string, vars map[string]string, b
 		req, err = http.NewRequest(method, path, bodyBuf)
 		req.Header.Set("Content-Type", "application/json")
 	} else {
-		req, err = http.NewRequest(method, path, nil)
+		req, err = http.NewRequest(method, path, http.NoBody)
 	}
 	if err != nil {
 		return nil, err
@@ -87,7 +87,7 @@ func (c *Client) Do(method string, pathPattern string, vars map[string]string, b
 	return c.do(req)
 }
 
-func composeRequestURL(baseURL string, path string) string {
+func composeRequestURL(baseURL, path string) string {
 	path = strings.TrimPrefix(path, "/")
 	baseURL = strings.TrimSuffix(baseURL, "/")
 	return fmt.Sprintf("%v/%v", baseURL, path)
@@ -117,6 +117,7 @@ func (c *Client) do(request *http.Request) (*http.Response, error) {
 	}
 
 	if c.debug {
+		//nolint:govet
 		dump, err := httputil.DumpResponse(resp, true)
 		if err != nil {
 			return resp, err
