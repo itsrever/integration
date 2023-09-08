@@ -132,7 +132,7 @@ issues:
       linters:
         - unparam
       text: always receives
-       - path: server/go
+    - path: server/go
       linters:
         - "*"
      # Excludes in test files like--> literal copies lock value from.... 
