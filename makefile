@@ -7,7 +7,7 @@ SERVER_PATH=server
 EXEC_FILE=rever-server-integration
 APP_NAME=testing
 # Go source files, ignore vendor directory
-SRC := $(shell find . -type f -name '*.go' -not -path "./vendor/*")
+SRC := $(shell find . -type f -name '*.go' -not -path "./vendor/*" -not -path "./server/go/*")
 ##############################
 # TESTING					 #
 ##############################
@@ -122,7 +122,7 @@ install-goimports:
 
 format: install-goimports
 	@gofmt -l -w $(SRC)
-	@goimports -w -e -local github.com/itsrever/integration server
+	@goimports -w -e -local github.com/itsrever/integration $(SRC)
 	
 install-lint-ubuntu:
 	echo Installing yamlint golangci-lint...
