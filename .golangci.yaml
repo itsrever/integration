@@ -152,5 +152,6 @@ run:
     - internal/cache
     - internal/renameio
     - internal/robustio
+    - server/go
   modules-download-mode: vendor
 
