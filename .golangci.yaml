@@ -127,16 +127,14 @@ issues:
         - gomnd
         - funlen
         - lll
-    # Fixtures normally have a lot of magic numbers
-    - path: pkg/fixtures/
-      linters:
-        - gomnd
     # Excludes in files like--> addReviewRequestFor2Items` - `processId` always receives `testProcessID` (`"PID"`)
     - path: go
       linters:
         - unparam
       text: always receives
-
+       - path: server/go
+      linters:
+        - "*"
      # Excludes in test files like--> literal copies lock value from.... 
     - path: _test.go
       linters:
