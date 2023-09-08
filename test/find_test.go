@@ -7,9 +7,10 @@ import (
 	"strings"
 	"testing"
 
-	server "github.com/itsrever/integration/server/go"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
+	server "github.com/itsrever/integration/server/go"
 )
 
 func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
