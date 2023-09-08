@@ -122,7 +122,7 @@ install-goimports:
 
 format: install-goimports
 	@gofmt -l -w $(SRC)
-	@goimports -w -e -local github.com/itsrever/resource-infra cmd pkg
+	@goimports -w -e -local github.com/itsrever/integration cmd pkg
 	
 install-lint-ubuntu:
 	echo Installing yamlint golangci-lint...
