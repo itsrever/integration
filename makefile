@@ -6,7 +6,8 @@ CLIENT_PATH=client
 SERVER_PATH=server
 EXEC_FILE=rever-server-integration
 APP_NAME=testing
-
+# Go source files, ignore vendor directory
+SRC := $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 ##############################
 # TESTING					 #
 ##############################
