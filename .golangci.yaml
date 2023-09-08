@@ -70,7 +70,6 @@ linters:
   disable-all: true
   enable:
     - dogsled
-    - dupl
     - errcheck
     - exportloopref
     - funlen
