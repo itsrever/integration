@@ -1555,6 +1555,12 @@
                 "description": "Number of items from that line item being returned. Can be a positive or negative number. If negative, the previous return operation is totally or partially reverted.",
                 "type": "integer",
                 "example": 1
+              },
+              "returnStatus":{
+                "description": "Status of the return",
+                "type":"array",
+                "enum": ["accepted", "rejected"],
+                "examples": ["accepted"]
               }
             }
           }

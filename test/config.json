@@ -28,6 +28,16 @@
                     "customer_printed_order_id": "simple_order_1"
                 }
             ]
+        },
+        {
+            "method":"CreateOrUpdateReturn",
+            "url_pattern": "/integration/orders/{customer_printed_order_id}/return",
+            "scenarios": [
+                {
+                    "name": "CREATERETURN001",
+                    "customer_printed_order_id": "simple_order_1"
+                }
+            ]
         }
     ]
 }
