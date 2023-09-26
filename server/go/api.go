@@ -21,7 +21,8 @@ import (
 // pass the data to a IntegrationApiServicer to perform the required actions, then write the service results to the http response.
 type IntegrationApiRouter interface { 
 	AddNoteToOrder(http.ResponseWriter, *http.Request)
-	CreateOrUpdateReturn(http.ResponseWriter, *http.Request)
+	CreateRefund(http.ResponseWriter, *http.Request)
+	CreateReturn(http.ResponseWriter, *http.Request)
 	FindOrderByCustomerPrintedOrderId(http.ResponseWriter, *http.Request)
 }
 
@@ -32,6 +33,7 @@ type IntegrationApiRouter interface {
 // and updated with the logic required for the API.
 type IntegrationApiServicer interface { 
 	AddNoteToOrder(context.Context, string, AddNoteToOrderRequest) (ImplResponse, error)
-	CreateOrUpdateReturn(context.Context, string, ReturnRequest) (ImplResponse, error)
+	CreateRefund(context.Context, string, RefundRequest) (ImplResponse, error)
+	CreateReturn(context.Context, string, ReturnRequest) (ImplResponse, error)
 	FindOrderByCustomerPrintedOrderId(context.Context, string) (ImplResponse, error)
 }
