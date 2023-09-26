@@ -57,10 +57,16 @@ func (c *IntegrationApiController) Routes() Routes {
 			c.AddNoteToOrder,
 		},
 		{
-			"CreateOrUpdateReturn",
-			strings.ToUpper("Put"),
+			"CreateRefund",
+			strings.ToUpper("Post"),
+			"/integration/orders/{customer_printed_order_id}/refund",
+			c.CreateRefund,
+		},
+		{
+			"CreateReturn",
+			strings.ToUpper("Post"),
 			"/integration/orders/{customer_printed_order_id}/return",
-			c.CreateOrUpdateReturn,
+			c.CreateReturn,
 		},
 		{
 			"FindOrderByCustomerPrintedOrderId",
@@ -98,8 +104,35 @@ func (c *IntegrationApiController) AddNoteToOrder(w http.ResponseWriter, r *http
 
 }
 
-// CreateOrUpdateReturn - Creates or updates the returned items of an existing order
-func (c *IntegrationApiController) CreateOrUpdateReturn(w http.ResponseWriter, r *http.Request) {
+// CreateRefund - Creates a refund for an existing order
+func (c *IntegrationApiController) CreateRefund(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	customerPrintedOrderIdParam := params["customer_printed_order_id"]
+	
+	refundRequestParam := RefundRequest{}
+	d := json.NewDecoder(r.Body)
+	d.DisallowUnknownFields()
+	if err := d.Decode(&refundRequestParam); err != nil {
+		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
+		return
+	}
+	if err := AssertRefundRequestRequired(refundRequestParam); err != nil {
+		c.errorHandler(w, r, err, nil)
+		return
+	}
+	result, err := c.service.CreateRefund(r.Context(), customerPrintedOrderIdParam, refundRequestParam)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
+
+}
+
+// CreateReturn - Creates return in the ecommerce portal for an existing order
+func (c *IntegrationApiController) CreateReturn(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	customerPrintedOrderIdParam := params["customer_printed_order_id"]
 	
@@ -114,7 +147,7 @@ func (c *IntegrationApiController) CreateOrUpdateReturn(w http.ResponseWriter, r
 		c.errorHandler(w, r, err, nil)
 		return
 	}
-	result, err := c.service.CreateOrUpdateReturn(r.Context(), customerPrintedOrderIdParam, returnRequestParam)
+	result, err := c.service.CreateReturn(r.Context(), customerPrintedOrderIdParam, returnRequestParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

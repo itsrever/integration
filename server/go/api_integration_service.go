@@ -50,3 +50,10 @@ func (s *IntegrationApiService) AddNoteToOrder(ctx context.Context, orderID stri
 func (s *IntegrationApiService) CreateOrUpdateReturn(context.Context, string, ReturnRequest) (ImplResponse, error) {
 	return Response(200, nil), nil
 }
+
+func (s *IntegrationApiService) CreateReturn(context.Context, string, ReturnRequest) (ImplResponse, error) {
+	return Response(200, nil), nil
+}
+func (s *IntegrationApiService) CreateRefund(context.Context, string, RefundRequest) (ImplResponse, error) {
+	return Response(200, nil), nil
+}
