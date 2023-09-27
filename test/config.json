@@ -28,6 +28,11 @@
                     "customer_printed_order_id": "simple_order_1"
                 }
             ]
+        },
+        {
+            "method":"CreateRefund",
+            "url_pattern": "/integration/orders/{customer_printed_order_id}/refund",
+            "scenarios": []
         }
     ]
 }
