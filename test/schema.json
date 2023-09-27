@@ -296,7 +296,7 @@
                 "description": "Date when the refund was executed\n",
                 "type": "string",
                 "format": "date-time",
-                "example": "executed manually by admin"
+                "example": "2021-01-01T00:00:00.000Z"
               },
               "refund_id": {
                 "description": "Unique identifier of the refund order in the e-commerce\n",

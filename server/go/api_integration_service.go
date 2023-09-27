@@ -58,3 +58,10 @@ func (s *IntegrationApiService) CreateOrUpdateReturn(ctx context.Context, orderI
 	payload := getReturnResponse()
 	return Response(200, payload), nil
 }
+
+func (s *IntegrationApiService) CreateReturn(context.Context, string, ReturnRequest) (ImplResponse, error) {
+	return Response(200, nil), nil
+}
+func (s *IntegrationApiService) CreateRefund(context.Context, string, RefundRequest) (ImplResponse, error) {
+	return Response(200, nil), nil
+}
