@@ -60,7 +60,7 @@ func Test_Create_Refund(t *testing.T) {
 		require.NotNil(t, resp)
 		require.Equal(t, 200, resp.StatusCode)
 
-		// recover the order and see that the note has been added
+		// recover the order and see that the refund has been added
 		resp, err = c.Do("GET", testFindOrder.UrlPattern, scenario.Vars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
