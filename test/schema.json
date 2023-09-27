@@ -1473,7 +1473,8 @@
             "type": "object",
             "required": [
               "line_item_id",
-              "quantity"
+              "quantity",
+              "return_status"
             ],
             "properties": {
               "line_item_id": {
@@ -1482,9 +1483,23 @@
                 "example": "line_item_01"
               },
               "quantity": {
-                "description": "Number of items from that line item being returned. Can be a positive or negative number. If negative, the previous return operation is totally or partially reverted.",
+                "description": "Number of items from that line item being returned. It should be positive integer.",
                 "type": "integer",
-                "example": 1
+                "example": 1,
+                "minimum": 1
+              },
+              "return_status": {
+                "properties": {
+                  "return_status": {
+                    "description": "Status of the return which could be set to accepted or rejected by the ecommerce after the review.",
+                    "type": "string",
+                    "enum": [
+                      "accepted = accepted",
+                      "rejected = rejected"
+                    ],
+                    "example": "accepted"
+                  }
+                }
               }
             }
           }
@@ -1502,18 +1517,159 @@
           "type": "string"
         }
       }
+    },
+    "refundRequest": {
+      "description": "Payload for the method CreateRefund.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "items": {
+          "description": "List of items to be refunded.",
+          "type": "array",
+          "items": {
+            "description": "Items from an order being to be refunded.",
+            "type": "object",
+            "required": [
+              "line_item_id",
+              "quantity",
+              "amount"
+            ],
+            "properties": {
+              "line_item_id": {
+                "type": "string",
+                "description": "The unique identifier for the line item in the order."
+              },
+              "quantity": {
+                "type": "integer",
+                "description": "The quantity of the item to be refunded.",
+                "minimum": 1
+              },
+              "amount": {
+                "description": "The total amount to be refunded for this line item.",
+                "allOf": [
+                  {
+                    "description": "Model for an amount plus the currency in which it is expressed.\n",
+                    "type": "object",
+                    "required": [
+                      "amount",
+                      "currency"
+                    ],
+                    "properties": {
+                      "amount": {
+                        "description": "amount (optionally with decimals), without currency symbol and thousands separator",
+                        "type": "number",
+                        "format": "double",
+                        "example": 123.45
+                      },
+                      "currency": {
+                        "description": "three-letter code as ISO 4217 currency code. \nExamples: EUR, USD, JPY, GBP...\nThe currency must be supported by REVER.\n",
+                        "type": "string",
+                        "example": "EUR"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "refundResponse": {
+      "description": "Items from an order being to be refunded.",
+      "type": "object",
+      "required": [
+        "refund_id",
+        "items"
+      ],
+      "properties": {
+        "refund_id": {
+          "type": "string",
+          "description": "The unique identifier for the refund in the e-commerce."
+        },
+        "transaction_id": {
+          "type": "string",
+          "description": "The unique identifier for the transaction in the e-commerce."
+        },
+        "items": {
+          "description": "List of items to be refunded.",
+          "type": "array",
+          "items": {
+            "description": "Items from an order being to be refunded.",
+            "type": "object",
+            "required": [
+              "line_item_id",
+              "quantity",
+              "amount"
+            ],
+            "properties": {
+              "line_item_id": {
+                "type": "string",
+                "description": "The unique identifier for the line item in the order."
+              },
+              "quantity": {
+                "type": "integer",
+                "description": "The quantity of the item to be refunded.",
+                "minimum": 1
+              },
+              "amount": {
+                "description": "The total amount to be refunded for this line item.",
+                "allOf": [
+                  {
+                    "description": "Model for an amount plus the currency in which it is expressed.\n",
+                    "type": "object",
+                    "required": [
+                      "amount",
+                      "currency"
+                    ],
+                    "properties": {
+                      "amount": {
+                        "description": "amount (optionally with decimals), without currency symbol and thousands separator",
+                        "type": "number",
+                        "format": "double",
+                        "example": 123.45
+                      },
+                      "currency": {
+                        "description": "three-letter code as ISO 4217 currency code. \nExamples: EUR, USD, JPY, GBP...\nThe currency must be supported by REVER.\n",
+                        "type": "string",
+                        "example": "EUR"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
     }
   },
   "required": [
     "schemaVersion"
   ],
   "definitions": {
+    "ReturnStatus": {
+      "properties": {
+        "return_status": {
+          "description": "Status of the return which could be set to accepted or rejected by the ecommerce after the review.",
+          "type": "string",
+          "enum": [
+            "accepted = accepted",
+            "rejected = rejected"
+          ],
+          "example": "accepted"
+        }
+      }
+    },
     "ReturnRequestItem": {
       "description": "Items from an order being marked as returned",
       "type": "object",
       "required": [
         "line_item_id",
-        "quantity"
+        "quantity",
+        "return_status"
       ],
       "properties": {
         "line_item_id": {
@@ -1522,9 +1678,23 @@
           "example": "line_item_01"
         },
         "quantity": {
-          "description": "Number of items from that line item being returned. Can be a positive or negative number. If negative, the previous return operation is totally or partially reverted.",
+          "description": "Number of items from that line item being returned. It should be positive integer.",
           "type": "integer",
-          "example": 1
+          "example": 1,
+          "minimum": 1
+        },
+        "return_status": {
+          "properties": {
+            "return_status": {
+              "description": "Status of the return which could be set to accepted or rejected by the ecommerce after the review.",
+              "type": "string",
+              "enum": [
+                "accepted = accepted",
+                "rejected = rejected"
+              ],
+              "example": "accepted"
+            }
+          }
         }
       }
     },
@@ -1543,7 +1713,8 @@
             "type": "object",
             "required": [
               "line_item_id",
-              "quantity"
+              "quantity",
+              "return_status"
             ],
             "properties": {
               "line_item_id": {
@@ -1552,15 +1723,23 @@
                 "example": "line_item_01"
               },
               "quantity": {
-                "description": "Number of items from that line item being returned. Can be a positive or negative number. If negative, the previous return operation is totally or partially reverted.",
+                "description": "Number of items from that line item being returned. It should be positive integer.",
                 "type": "integer",
-                "example": 1
+                "example": 1,
+                "minimum": 1
               },
-              "returnStatus":{
-                "description": "Status of the return",
-                "type":"array",
-                "enum": ["accepted", "rejected"],
-                "examples": ["accepted"]
+              "return_status": {
+                "properties": {
+                  "return_status": {
+                    "description": "Status of the return which could be set to accepted or rejected by the ecommerce after the review.",
+                    "type": "string",
+                    "enum": [
+                      "accepted = accepted",
+                      "rejected = rejected"
+                    ],
+                    "example": "accepted"
+                  }
+                }
               }
             }
           }
@@ -1934,7 +2113,7 @@
                 "description": "Date when the refund was executed\n",
                 "type": "string",
                 "format": "date-time",
-                "example": "executed manually by admin"
+                "example": "2021-01-01T00:00:00.000Z"
               },
               "refund_id": {
                 "description": "Unique identifier of the refund order in the e-commerce\n",
@@ -3372,7 +3551,7 @@
           "description": "Date when the refund was executed\n",
           "type": "string",
           "format": "date-time",
-          "example": "executed manually by admin"
+          "example": "2021-01-01T00:00:00.000Z"
         },
         "refund_id": {
           "description": "Unique identifier of the refund order in the e-commerce\n",
@@ -3473,6 +3652,179 @@
           "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
           "type": "integer",
           "example": 1
+        }
+      }
+    },
+    "RefundRequest": {
+      "description": "Payload for the method CreateRefund.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "items": {
+          "description": "List of items to be refunded.",
+          "type": "array",
+          "items": {
+            "description": "Items from an order being to be refunded.",
+            "type": "object",
+            "required": [
+              "line_item_id",
+              "quantity",
+              "amount"
+            ],
+            "properties": {
+              "line_item_id": {
+                "type": "string",
+                "description": "The unique identifier for the line item in the order."
+              },
+              "quantity": {
+                "type": "integer",
+                "description": "The quantity of the item to be refunded.",
+                "minimum": 1
+              },
+              "amount": {
+                "description": "The total amount to be refunded for this line item.",
+                "allOf": [
+                  {
+                    "description": "Model for an amount plus the currency in which it is expressed.\n",
+                    "type": "object",
+                    "required": [
+                      "amount",
+                      "currency"
+                    ],
+                    "properties": {
+                      "amount": {
+                        "description": "amount (optionally with decimals), without currency symbol and thousands separator",
+                        "type": "number",
+                        "format": "double",
+                        "example": 123.45
+                      },
+                      "currency": {
+                        "description": "three-letter code as ISO 4217 currency code. \nExamples: EUR, USD, JPY, GBP...\nThe currency must be supported by REVER.\n",
+                        "type": "string",
+                        "example": "EUR"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "RefundRequestItem": {
+      "description": "Items from an order being to be refunded.",
+      "type": "object",
+      "required": [
+        "line_item_id",
+        "quantity",
+        "amount"
+      ],
+      "properties": {
+        "line_item_id": {
+          "type": "string",
+          "description": "The unique identifier for the line item in the order."
+        },
+        "quantity": {
+          "type": "integer",
+          "description": "The quantity of the item to be refunded.",
+          "minimum": 1
+        },
+        "amount": {
+          "description": "The total amount to be refunded for this line item.",
+          "allOf": [
+            {
+              "description": "Model for an amount plus the currency in which it is expressed.\n",
+              "type": "object",
+              "required": [
+                "amount",
+                "currency"
+              ],
+              "properties": {
+                "amount": {
+                  "description": "amount (optionally with decimals), without currency symbol and thousands separator",
+                  "type": "number",
+                  "format": "double",
+                  "example": 123.45
+                },
+                "currency": {
+                  "description": "three-letter code as ISO 4217 currency code. \nExamples: EUR, USD, JPY, GBP...\nThe currency must be supported by REVER.\n",
+                  "type": "string",
+                  "example": "EUR"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "RefundResponse": {
+      "description": "Items from an order being to be refunded.",
+      "type": "object",
+      "required": [
+        "refund_id",
+        "items"
+      ],
+      "properties": {
+        "refund_id": {
+          "type": "string",
+          "description": "The unique identifier for the refund in the e-commerce."
+        },
+        "transaction_id": {
+          "type": "string",
+          "description": "The unique identifier for the transaction in the e-commerce."
+        },
+        "items": {
+          "description": "List of items to be refunded.",
+          "type": "array",
+          "items": {
+            "description": "Items from an order being to be refunded.",
+            "type": "object",
+            "required": [
+              "line_item_id",
+              "quantity",
+              "amount"
+            ],
+            "properties": {
+              "line_item_id": {
+                "type": "string",
+                "description": "The unique identifier for the line item in the order."
+              },
+              "quantity": {
+                "type": "integer",
+                "description": "The quantity of the item to be refunded.",
+                "minimum": 1
+              },
+              "amount": {
+                "description": "The total amount to be refunded for this line item.",
+                "allOf": [
+                  {
+                    "description": "Model for an amount plus the currency in which it is expressed.\n",
+                    "type": "object",
+                    "required": [
+                      "amount",
+                      "currency"
+                    ],
+                    "properties": {
+                      "amount": {
+                        "description": "amount (optionally with decimals), without currency symbol and thousands separator",
+                        "type": "number",
+                        "format": "double",
+                        "example": 123.45
+                      },
+                      "currency": {
+                        "description": "three-letter code as ISO 4217 currency code. \nExamples: EUR, USD, JPY, GBP...\nThe currency must be supported by REVER.\n",
+                        "type": "string",
+                        "example": "EUR"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
         }
       }
     },

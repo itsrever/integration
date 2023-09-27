@@ -42,6 +42,37 @@ func Test_Create_Return(t *testing.T) {
 		returnId,err := getReturnIdfromResponseBody(body)
 		assert.Equal(t, RETURN_ID, returnId)
 	})
+
+	t.Run("CREATERETURN002", func(t *testing.T) {
+		resp, err := c.WithNoAuth().Do("PUT", test.UrlPattern, nonExistingOrder(), returnRequest)
+		require.NoError(t, err)
+		require.NotNil(t, resp)
+		require.Equal(t, 401, resp.StatusCode)
+	})
+
+	t.Run("CREATERETURN003", func(t *testing.T) {
+		resp, err := c.WithAuth(&AuthenticationInfo{
+			HeaderName: cfg.Auth.HeaderName,
+			ApiKey:     "invalid-api-key",
+		}).Do("PUT", test.UrlPattern, nonExistingOrderVars(), returnRequest)
+		require.NoError(t, err)
+		require.NotNil(t, resp)
+		require.Equal(t, 401, resp.StatusCode)
+	})
+
+	t.Run("CREATERETURN004", func(t *testing.T) {
+		resp, err := c.Do("PUT", test.UrlPattern, nonExistingOrderVars(), nil)
+		require.NoError(t, err)
+		require.NotNil(t, resp)
+		require.Equal(t, 400, resp.StatusCode)
+	})
+
+	t.Run("CREATERETURN005", func(t *testing.T) {
+		resp, err := c.Do("PUT", test.UrlPattern, nonExistingOrderVars(), returnRequest)
+		require.NoError(t, err)
+		require.NotNil(t, resp)
+		require.Equal(t, 404, resp.StatusCode)
+	})
 }
 
 func getBodyFromResponse(t *testing.T, resp *http.Response) []byte {
@@ -55,4 +86,10 @@ func getReturnIdfromResponseBody(body []byte) (string, error) {
 	var responseMap map[string]string
 	err := json.Unmarshal(body, &responseMap)
 	return responseMap["return_id"], err
+}
+
+func nonExistingOrder() map[string]string {
+	return map[string]string{
+		"customer_printed_order_id": "non-existing-order",
+	}
 }
