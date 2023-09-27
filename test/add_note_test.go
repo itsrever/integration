@@ -56,7 +56,7 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 	})
 
 	t.Run("ADDNOTE04", func(t *testing.T) {
-		test.SkipTestIfScenarioNotPresent(t, testName(t))
+		test.FailTestIfScenarioNotPresent(t, testName(t))
 		scenario := test.Scenario(testName(t))
 		resp, err := c.Do("POST", test.UrlPattern, scenario.Vars(), noteBody)
 		require.NoError(t, err)
