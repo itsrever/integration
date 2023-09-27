@@ -102,6 +102,7 @@ func assertRefundInsideOrder(t *testing.T, order *server.Order, refundBody serve
 	assertItemsFromRefund(t, order, order.Refunds, refundBody)
 }
 
+//nolint:unparam
 func assertRefundOrder(t *testing.T, order *server.Order, refunds []server.RefundOrder) {
 	for _, refund := range refunds {
 		assert.NotEmpty(t, refund.RefundId, "Refund ID should not be empty")
@@ -113,6 +114,7 @@ func assertRefundOrder(t *testing.T, order *server.Order, refunds []server.Refun
 	}
 }
 
+//nolint:unparam
 func assertItemsFromRefund(t *testing.T, order *server.Order, items []server.RefundOrder, itemsPayload server.RefundRequest) {
 	for i, refund := range items {
 		assert.NotEmpty(t, refund.Refunds, "Refunds should not be empty")
