@@ -1670,6 +1670,19 @@
           }
         }
       }
+    },
+    "refundError": {
+      "description": "Error response for the method CreateRefund.",
+      "type": "object",
+      "required": [
+        "error"
+      ],
+      "properties": {
+        "error": {
+          "description": "The error message.",
+          "type": "string"
+        }
+      }
     }
   },
   "required": [
@@ -3861,6 +3874,19 @@
               }
             }
           ]
+        }
+      }
+    },
+    "RefundError": {
+      "description": "Error response for the method CreateRefund.",
+      "type": "object",
+      "required": [
+        "error"
+      ],
+      "properties": {
+        "error": {
+          "description": "The error message.",
+          "type": "string"
         }
       }
     },
