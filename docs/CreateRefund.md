@@ -12,6 +12,7 @@ The implementation of this method **must** support the following scenarios:
 | CREATEREFUND01 | 401 | The requests contains an invalid authentication header |
 | CREATEREFUND02 | 400 | The `customer_printed_order_id` is empty |
 | CREATEREFUND03 | 404 | The `customer_printed_order_id` is not empty but not found in the integration |
+| CREATEREFUND05 | 406 | The refund is not possible for the given order|
 | ... | 200 | .... |
 
 The implementation of this method **might** support the following scenarios:
