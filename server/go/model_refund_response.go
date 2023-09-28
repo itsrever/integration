@@ -26,7 +26,7 @@ type RefundResponse struct {
 func AssertRefundResponseRequired(obj RefundResponse) error {
 	elements := map[string]interface{}{
 		"refund_id": obj.RefundId,
-		"items":     obj.Items,
+		"items": obj.Items,
 	}
 	for name, el := range elements {
 		if isZero := IsZeroValue(el); isZero {
