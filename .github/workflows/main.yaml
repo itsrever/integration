@@ -28,7 +28,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.20.7
+          go-version: 1.21
 
       - name: Run tests
         run: make unit-test-ci
@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v2
         with:
-          go-version: '1.19.0'
+          go-version: '1.21'
       - name: Set up gotestfmt
         run: go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
       - name: Install golang-ci-lint
