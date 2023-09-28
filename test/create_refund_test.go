@@ -75,6 +75,7 @@ func Test_Create_Refund(t *testing.T) {
 	})
 
 	t.Run("CREATEREFUND05", func(t *testing.T) {
+		test.SkipTestIfScenarioNotPresent(t, testName(t))
 		scenario := test.Scenario(testName(t))
 		resp, err := c.Do("POST", test.UrlPattern, scenario.Vars(), refundBody)
 		require.NoError(t, err)
