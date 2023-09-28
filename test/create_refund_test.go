@@ -73,6 +73,15 @@ func Test_Create_Refund(t *testing.T) {
 		server.AssertSanity(t, order)
 		assertRefundInsideOrder(t, order, refundBody)
 	})
+
+	t.Run("CREATEREFUND05", func(t *testing.T) {
+		test.SkipTestIfScenarioNotPresent(t, testName(t))
+		scenario := test.Scenario(testName(t))
+		resp, err := c.Do("POST", test.UrlPattern, scenario.Vars(), refundBody)
+		require.NoError(t, err)
+		require.NotNil(t, resp)
+		require.Equal(t, 406, resp.StatusCode)
+	})
 }
 
 func refundBody() server.RefundRequest {
