@@ -25,9 +25,9 @@ func Test_Create_Return(t *testing.T) {
 	returnRequest := server.ReturnRequest{
 		Returns: []server.ReturnRequestItem{
 			{
-				LineItemId:   "testing1",
-				Quantity:    1,
-				Status: server.Status{Status: "APPROVED"},
+				LineItemId: "testing1",
+				Quantity:   1,
+				Status:     server.Status{Status: "APPROVED"},
 			},
 		},
 	}
@@ -39,7 +39,7 @@ func Test_Create_Return(t *testing.T) {
 		require.NotNil(t, resp)
 		require.Equal(t, 200, resp.StatusCode)
 		body := getBodyFromResponse(t, resp)
-		returnId,err := getReturnIdfromResponseBody(body)
+		returnId, err := getReturnIdfromResponseBody(body)
 		assert.Equal(t, RETURN_ID, returnId)
 	})
 
