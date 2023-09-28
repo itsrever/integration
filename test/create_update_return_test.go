@@ -21,20 +21,20 @@ func Test_Create_Return(t *testing.T) {
 	if cfg.Debug {
 		c = c.Debug()
 	}
-	test := cfg.Test("CreateOrUpdateReturn")
+	test := cfg.Test("CreateReturn")
 	returnRequest := server.ReturnRequest{
 		Returns: []server.ReturnRequestItem{
 			{
-				LineItemId: "testing1",
-				Quantity : 1,
-				
+				LineItemId:   "testing1",
+				Quantity:    1,
+				Status: server.Status{Status: "APPROVED"},
 			},
 		},
 	}
 
 	t.Run("CREATERETURN001", func(t *testing.T) {
 		scenario := test.Scenario(testName(t))
-		resp, err := c.Do("PUT", test.UrlPattern, scenario.Vars(), returnRequest)
+		resp, err := c.Do("POST", test.UrlPattern, scenario.Vars(), returnRequest)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 200, resp.StatusCode)
@@ -44,7 +44,7 @@ func Test_Create_Return(t *testing.T) {
 	})
 
 	t.Run("CREATERETURN002", func(t *testing.T) {
-		resp, err := c.WithNoAuth().Do("PUT", test.UrlPattern, nonExistingOrder(), returnRequest)
+		resp, err := c.WithNoAuth().Do("POST", test.UrlPattern, nonExistingOrder(), returnRequest)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 401, resp.StatusCode)
@@ -54,21 +54,21 @@ func Test_Create_Return(t *testing.T) {
 		resp, err := c.WithAuth(&AuthenticationInfo{
 			HeaderName: cfg.Auth.HeaderName,
 			ApiKey:     "invalid-api-key",
-		}).Do("PUT", test.UrlPattern, nonExistingOrderVars(), returnRequest)
+		}).Do("POST", test.UrlPattern, nonExistingOrderVars(), returnRequest)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 401, resp.StatusCode)
 	})
 
 	t.Run("CREATERETURN004", func(t *testing.T) {
-		resp, err := c.Do("PUT", test.UrlPattern, nonExistingOrderVars(), nil)
+		resp, err := c.Do("POST", test.UrlPattern, nonExistingOrderVars(), nil)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 400, resp.StatusCode)
 	})
 
 	t.Run("CREATERETURN005", func(t *testing.T) {
-		resp, err := c.Do("PUT", test.UrlPattern, nonExistingOrderVars(), returnRequest)
+		resp, err := c.Do("POST", test.UrlPattern, nonExistingOrderVars(), returnRequest)
 		require.NoError(t, err)
 		require.NotNil(t, resp)
 		require.Equal(t, 404, resp.StatusCode)

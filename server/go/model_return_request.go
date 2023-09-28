@@ -9,7 +9,7 @@
 
 package server
 
-// ReturnRequest - Payload for the method CreateOrUpdateReturn.
+// ReturnRequest - Payload for the method CreateReturn.
 type ReturnRequest struct {
 
 	// List of items to mark (or unmark) as returned. Can't be empty.

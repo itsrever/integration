@@ -30,7 +30,7 @@
             ]
         },
         {
-            "method":"CreateOrUpdateReturn",
+            "method":"CreateReturn",
             "url_pattern": "/integration/orders/{customer_printed_order_id}/return",
             "scenarios": [
                 {
