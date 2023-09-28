@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM golang:1.21
+FROM golang:1.20-alpine AS build_base
 
 # Set the Current Working Directory inside the container
 WORKDIR /rever
