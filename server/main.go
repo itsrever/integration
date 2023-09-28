@@ -14,12 +14,14 @@ import (
 	"net/http"
 
 	server "github.com/itsrever/integration/server/go"
+	"github.com/itsrever/integration/server/refund"
 )
 
 func main() {
 	log.Printf("Server started")
 
-	IntegrationApiService := server.NewIntegrationApiService()
+	refundManager := refund.New()
+	IntegrationApiService := server.NewIntegrationApiService(refundManager)
 	IntegrationApiController := server.NewIntegrationApiController(IntegrationApiService)
 
 	router := server.NewRouter(IntegrationApiController)

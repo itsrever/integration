@@ -1,7 +1,10 @@
 package server
 
 import (
+	"time"
+
 	"github.com/itsrever/integration/server/notes"
+	"github.com/itsrever/integration/server/refund"
 )
 
 const CurrencyUSD = "USD"
@@ -38,6 +41,14 @@ func FindOrderFor(id string) *Order {
 	return order
 }
 
+func FindOrderWithRefunds(id string, refunds refund.Refund) *Order {
+	order := responsesByID()[id]
+	if order != nil {
+		order.Refunds = toRefundOrder(refunds.Items)
+	}
+	return order
+}
+
 func toNotes(notes []notes.Note) []Note {
 	var Notes []Note
 	for _, note := range notes {
@@ -48,4 +59,39 @@ func toNotes(notes []notes.Note) []Note {
 		})
 	}
 	return Notes
+}
+
+func toRefundOrder(items []refund.RefundRequestItem) []RefundOrder {
+	return []RefundOrder{
+		{
+			Refunds:     toRefund(items),
+			Description: "Refund for order",
+			Amount: RefundOrderAmount{
+				Amount:   calculateItemsTotalAmount(items),
+				Currency: CurrencyShop,
+			},
+			Date:          time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC),
+			RefundId:      "refund_id",
+			TransactionId: "transaction_id",
+		},
+	}
+}
+
+func toRefund(items []refund.RefundRequestItem) []Refund {
+	var Refunds []Refund
+	for _, item := range items {
+		Refunds = append(Refunds, Refund{
+			LineItemId: item.LineItemId,
+			Quantity:   item.Quantity,
+		})
+	}
+	return Refunds
+}
+
+func calculateItemsTotalAmount(items []refund.RefundRequestItem) float64 {
+	var totalAmount float64
+	for _, item := range items {
+		totalAmount += item.Amount.Amount
+	}
+	return totalAmount
 }
