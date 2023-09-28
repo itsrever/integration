@@ -17,6 +17,8 @@ type Return struct {
 
 	// Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.
 	Quantity int32 `json:"quantity"`
+
+	Status Status `json:"status"`
 }
 
 // AssertReturnRequired checks if the required fields are not zero-ed
@@ -24,6 +26,7 @@ func AssertReturnRequired(obj Return) error {
 	elements := map[string]interface{}{
 		"line_item_id": obj.LineItemId,
 		"quantity": obj.Quantity,
+		"status": obj.Status,
 	}
 	for name, el := range elements {
 		if isZero := IsZeroValue(el); isZero {
@@ -31,6 +34,9 @@ func AssertReturnRequired(obj Return) error {
 		}
 	}
 
+	if err := AssertStatusRequired(obj.Status); err != nil {
+		return err
+	}
 	return nil
 }
 

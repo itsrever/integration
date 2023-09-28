@@ -256,7 +256,8 @@
                   "type": "object",
                   "required": [
                     "line_item_id",
-                    "quantity"
+                    "quantity",
+                    "status"
                   ],
                   "properties": {
                     "line_item_id": {
@@ -268,6 +269,25 @@
                       "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
                       "type": "integer",
                       "example": 1
+                    },
+                    "status": {
+                      "properties": {
+                        "status": {
+                          "description": "Status of the return which could be set to accepted, rejected or missing by the ecommerce after the review.",
+                          "type": "string",
+                          "enum": [
+                            "APPROVED",
+                            "REJECTED",
+                            "MISSING"
+                          ],
+                          "x-enumDescriptions": {
+                            "APPROVED": "The return is accepted by the ecommerce.",
+                            "REJECTED": "The return is rejected by the ecommerce.",
+                            "MISSING": "The line item is missing."
+                          },
+                          "example": "accepted"
+                        }
+                      }
                     }
                   }
                 }
@@ -1459,7 +1479,7 @@
       }
     },
     "returnRequest": {
-      "description": "Payload for the method CreateOrUpdateReturn.",
+      "description": "Payload for the method CreateReturn.",
       "type": "object",
       "required": [
         "returns"
@@ -1474,7 +1494,7 @@
             "required": [
               "line_item_id",
               "quantity",
-              "return_status"
+              "status"
             ],
             "properties": {
               "line_item_id": {
@@ -1488,15 +1508,21 @@
                 "example": 1,
                 "minimum": 1
               },
-              "return_status": {
+              "status": {
                 "properties": {
-                  "return_status": {
-                    "description": "Status of the return which could be set to accepted or rejected by the ecommerce after the review.",
+                  "status": {
+                    "description": "Status of the return which could be set to accepted, rejected or missing by the ecommerce after the review.",
                     "type": "string",
                     "enum": [
-                      "accepted = accepted",
-                      "rejected = rejected"
+                      "APPROVED",
+                      "REJECTED",
+                      "MISSING"
                     ],
+                    "x-enumDescriptions": {
+                      "APPROVED": "The return is accepted by the ecommerce.",
+                      "REJECTED": "The return is rejected by the ecommerce.",
+                      "MISSING": "The line item is missing."
+                    },
                     "example": "accepted"
                   }
                 }
@@ -1650,15 +1676,21 @@
     "schemaVersion"
   ],
   "definitions": {
-    "ReturnStatus": {
+    "Status": {
       "properties": {
-        "return_status": {
-          "description": "Status of the return which could be set to accepted or rejected by the ecommerce after the review.",
+        "status": {
+          "description": "Status of the return which could be set to accepted, rejected or missing by the ecommerce after the review.",
           "type": "string",
           "enum": [
-            "accepted = accepted",
-            "rejected = rejected"
+            "APPROVED",
+            "REJECTED",
+            "MISSING"
           ],
+          "x-enumDescriptions": {
+            "APPROVED": "The return is accepted by the ecommerce.",
+            "REJECTED": "The return is rejected by the ecommerce.",
+            "MISSING": "The line item is missing."
+          },
           "example": "accepted"
         }
       }
@@ -1669,7 +1701,7 @@
       "required": [
         "line_item_id",
         "quantity",
-        "return_status"
+        "status"
       ],
       "properties": {
         "line_item_id": {
@@ -1683,15 +1715,21 @@
           "example": 1,
           "minimum": 1
         },
-        "return_status": {
+        "status": {
           "properties": {
-            "return_status": {
-              "description": "Status of the return which could be set to accepted or rejected by the ecommerce after the review.",
+            "status": {
+              "description": "Status of the return which could be set to accepted, rejected or missing by the ecommerce after the review.",
               "type": "string",
               "enum": [
-                "accepted = accepted",
-                "rejected = rejected"
+                "APPROVED",
+                "REJECTED",
+                "MISSING"
               ],
+              "x-enumDescriptions": {
+                "APPROVED": "The return is accepted by the ecommerce.",
+                "REJECTED": "The return is rejected by the ecommerce.",
+                "MISSING": "The line item is missing."
+              },
               "example": "accepted"
             }
           }
@@ -1699,7 +1737,7 @@
       }
     },
     "ReturnRequest": {
-      "description": "Payload for the method CreateOrUpdateReturn.",
+      "description": "Payload for the method CreateReturn.",
       "type": "object",
       "required": [
         "returns"
@@ -1714,7 +1752,7 @@
             "required": [
               "line_item_id",
               "quantity",
-              "return_status"
+              "status"
             ],
             "properties": {
               "line_item_id": {
@@ -1728,15 +1766,21 @@
                 "example": 1,
                 "minimum": 1
               },
-              "return_status": {
+              "status": {
                 "properties": {
-                  "return_status": {
-                    "description": "Status of the return which could be set to accepted or rejected by the ecommerce after the review.",
+                  "status": {
+                    "description": "Status of the return which could be set to accepted, rejected or missing by the ecommerce after the review.",
                     "type": "string",
                     "enum": [
-                      "accepted = accepted",
-                      "rejected = rejected"
+                      "APPROVED",
+                      "REJECTED",
+                      "MISSING"
                     ],
+                    "x-enumDescriptions": {
+                      "APPROVED": "The return is accepted by the ecommerce.",
+                      "REJECTED": "The return is rejected by the ecommerce.",
+                      "MISSING": "The line item is missing."
+                    },
                     "example": "accepted"
                   }
                 }
@@ -2073,7 +2117,8 @@
                   "type": "object",
                   "required": [
                     "line_item_id",
-                    "quantity"
+                    "quantity",
+                    "status"
                   ],
                   "properties": {
                     "line_item_id": {
@@ -2085,6 +2130,25 @@
                       "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
                       "type": "integer",
                       "example": 1
+                    },
+                    "status": {
+                      "properties": {
+                        "status": {
+                          "description": "Status of the return which could be set to accepted, rejected or missing by the ecommerce after the review.",
+                          "type": "string",
+                          "enum": [
+                            "APPROVED",
+                            "REJECTED",
+                            "MISSING"
+                          ],
+                          "x-enumDescriptions": {
+                            "APPROVED": "The return is accepted by the ecommerce.",
+                            "REJECTED": "The return is rejected by the ecommerce.",
+                            "MISSING": "The line item is missing."
+                          },
+                          "example": "accepted"
+                        }
+                      }
                     }
                   }
                 }
@@ -3515,7 +3579,8 @@
             "type": "object",
             "required": [
               "line_item_id",
-              "quantity"
+              "quantity",
+              "status"
             ],
             "properties": {
               "line_item_id": {
@@ -3527,6 +3592,25 @@
                 "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
                 "type": "integer",
                 "example": 1
+              },
+              "status": {
+                "properties": {
+                  "status": {
+                    "description": "Status of the return which could be set to accepted, rejected or missing by the ecommerce after the review.",
+                    "type": "string",
+                    "enum": [
+                      "APPROVED",
+                      "REJECTED",
+                      "MISSING"
+                    ],
+                    "x-enumDescriptions": {
+                      "APPROVED": "The return is accepted by the ecommerce.",
+                      "REJECTED": "The return is rejected by the ecommerce.",
+                      "MISSING": "The line item is missing."
+                    },
+                    "example": "accepted"
+                  }
+                }
               }
             }
           }
@@ -3620,7 +3704,8 @@
       "type": "object",
       "required": [
         "line_item_id",
-        "quantity"
+        "quantity",
+        "status"
       ],
       "properties": {
         "line_item_id": {
@@ -3632,6 +3717,25 @@
           "description": "Number of products returned. The sum of quantities per `line_item_id` must match the total quantity of the line item.",
           "type": "integer",
           "example": 1
+        },
+        "status": {
+          "properties": {
+            "status": {
+              "description": "Status of the return which could be set to accepted, rejected or missing by the ecommerce after the review.",
+              "type": "string",
+              "enum": [
+                "APPROVED",
+                "REJECTED",
+                "MISSING"
+              ],
+              "x-enumDescriptions": {
+                "APPROVED": "The return is accepted by the ecommerce.",
+                "REJECTED": "The return is rejected by the ecommerce.",
+                "MISSING": "The line item is missing."
+              },
+              "example": "accepted"
+            }
+          }
         }
       }
     },

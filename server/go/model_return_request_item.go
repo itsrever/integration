@@ -18,7 +18,7 @@ type ReturnRequestItem struct {
 	// Number of items from that line item being returned. It should be positive integer.
 	Quantity int32 `json:"quantity"`
 
-	ReturnStatus ReturnStatus `json:"return_status"`
+	Status Status `json:"status"`
 }
 
 // AssertReturnRequestItemRequired checks if the required fields are not zero-ed
@@ -26,7 +26,7 @@ func AssertReturnRequestItemRequired(obj ReturnRequestItem) error {
 	elements := map[string]interface{}{
 		"line_item_id": obj.LineItemId,
 		"quantity": obj.Quantity,
-		"return_status": obj.ReturnStatus,
+		"status": obj.Status,
 	}
 	for name, el := range elements {
 		if isZero := IsZeroValue(el); isZero {
@@ -34,7 +34,7 @@ func AssertReturnRequestItemRequired(obj ReturnRequestItem) error {
 		}
 	}
 
-	if err := AssertReturnStatusRequired(obj.ReturnStatus); err != nil {
+	if err := AssertStatusRequired(obj.Status); err != nil {
 		return err
 	}
 	return nil

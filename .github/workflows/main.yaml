@@ -28,7 +28,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.20.7
+          go-version: 1.21.1
 
       - name: Run tests
         run: make unit-test-ci
@@ -41,7 +41,7 @@ jobs:
           go-version: '1.19.0'
       - name: Set up gotestfmt
         run: go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
-      - name: Install golang-ci-lint
+      - name: Install golang-ci-lint  
         run: make install-lint-ubuntu
       - name: Install go-imports 
         run: go install golang.org/x/tools/cmd/goimports@latest
