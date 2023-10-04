@@ -37,8 +37,21 @@ func FindOrderFor(id string) *Order {
 	order := responsesByID()[id]
 	if order != nil {
 		order.Notes = toNotes(notes.New().GetNotesFromOrder(id))
+		getReturnResponse(order, generateReturns())
 	}
 	return order
+}
+
+func generateReturns() []ReturnRequestItem {
+	return []ReturnRequestItem{
+		{
+			LineItemId: "line_item_id",
+			Quantity:   1,
+			Status: Status{
+				Status: "APPROVED",
+			},
+		},
+	}
 }
 
 func FindOrderWithRefunds(id string, refunds refund.Refund) *Order {
