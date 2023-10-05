@@ -175,3 +175,5 @@ curl --header "x-rever-api-key:valid-api-key" "https://server-yn4mmnsfqa-ey.a.ru
 * [AddNoteToOrder](./docs/AddNoteToOrder.md)
 * [CreateRefund](./docs/CreateRefund.md)
 * [CreateReturn](./docs/CreateReturn.md)
+* [UpdateReturn](./docs/UpdateReturn.md)
+

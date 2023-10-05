@@ -14,8 +14,6 @@ import (
 	"net/http"
 )
 
-
-
 // IntegrationApiRouter defines the required methods for binding the api requests to a responses for the IntegrationApi
 // The IntegrationApiRouter implementation should parse necessary information from the http request,
 // pass the data to a IntegrationApiServicer to perform the required actions, then write the service results to the http response.
@@ -35,5 +33,6 @@ type IntegrationApiServicer interface {
 	AddNoteToOrder(context.Context, string, AddNoteToOrderRequest) (ImplResponse, error)
 	CreateRefund(context.Context, string, RefundRequest) (ImplResponse, error)
 	CreateReturn(context.Context, string, ReturnRequest) (ImplResponse, error)
+	UpdateReturn(context.Context, string, string, ReturnRequest) (ImplResponse, error)
 	FindOrderByCustomerPrintedOrderId(context.Context, string) (ImplResponse, error)
 }
