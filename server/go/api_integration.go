@@ -74,6 +74,12 @@ func (c *IntegrationApiController) Routes() Routes {
 			"/integration/orders/find",
 			c.FindOrderByCustomerPrintedOrderId,
 		},
+		{
+			"UpdateReturn",
+			strings.ToUpper("Put"),
+			"/integration/orders/{customer_printed_order_id}/{return_id}/return",
+			c.UpdateReturn,
+		},
 	}
 }
 
@@ -148,6 +154,33 @@ func (c *IntegrationApiController) CreateReturn(w http.ResponseWriter, r *http.R
 		return
 	}
 	result, err := c.service.CreateReturn(r.Context(), customerPrintedOrderIdParam, returnRequestParam)
+	// If an error occurred, encode the error with the status code
+	if err != nil {
+		c.errorHandler(w, r, err, &result)
+		return
+	}
+	// If no error, encode the body and the result code
+	EncodeJSONResponse(result.Body, &result.Code, w)
+
+}
+
+func (c *IntegrationApiController) UpdateReturn(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	customerPrintedOrderIdParam := params["customer_printed_order_id"]
+	returnId := params["return_id"]
+	
+	returnRequestParam := ReturnRequest{}
+	d := json.NewDecoder(r.Body)
+	d.DisallowUnknownFields()
+	if err := d.Decode(&returnRequestParam); err != nil {
+		c.errorHandler(w, r, &ParsingError{Err: err}, nil)
+		return
+	}
+	if err := AssertReturnRequestRequired(returnRequestParam); err != nil {
+		c.errorHandler(w, r, err, nil)
+		return
+	}
+	result, err := c.service.UpdateReturn(r.Context(), customerPrintedOrderIdParam, returnId, returnRequestParam)
 	// If an error occurred, encode the error with the status code
 	if err != nil {
 		c.errorHandler(w, r, err, &result)

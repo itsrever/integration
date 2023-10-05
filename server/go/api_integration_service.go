@@ -63,6 +63,18 @@ func (s *IntegrationApiService) CreateReturn(ctx context.Context, orderID string
 	return Response(200, payload), nil
 }
 
+func (s *IntegrationApiService) UpdateReturn(ctx context.Context, orderID string, returnID string, 
+							req ReturnRequest) (ImplResponse, error) {
+	if orderID == "" || len(req.Returns) == 0  || returnID == "" {
+		return Response(400, nil), nil
+	}
+	order := FindOrderFor(orderID)
+	if order == nil || order.Returns[0].ReturnId != returnID {
+		return Response(404, nil), nil
+	}
+	return Response(200, nil), nil
+}
+
 func (s *IntegrationApiService) CreateRefund(ctx context.Context, orderID string, req RefundRequest) (ImplResponse, error) {
 	if orderID == "" || req.Items == nil {
 		return Response(400, nil), nil

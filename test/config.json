@@ -48,6 +48,17 @@
                     "customer_printed_order_id": "simple_order_1"
                 }
             ]
+        },
+        {
+            "method":"UpdateReturn",
+            "url_pattern": "/integration/orders/{customer_printed_order_id}/{return_id}/return",
+            "scenarios": [
+                {
+                    "name": "UPDATERETURN001",
+                    "customer_printed_order_id": "simple_order_1",
+                    "return_id": "return-1"
+                }
+            ]
         }
     ]
 }

@@ -34,6 +34,7 @@ type Scenario struct {
 	Name                   string `json:"name"`
 	CustomerPrintedOrderId string `json:"customer_printed_order_id"`
 	OrderID                string `json:"order_id"`
+	ReturnID			   string `json:"return_id"`
 }
 
 func configFromEnv() (*Config, error) {
@@ -111,5 +112,6 @@ func (s *Scenario) Vars() map[string]string {
 	return map[string]string{
 		"customer_printed_order_id": s.CustomerPrintedOrderId,
 		"order_id":                  s.OrderID,
+		"return_id":                 s.ReturnID,
 	}
 }
