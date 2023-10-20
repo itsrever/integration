@@ -22,6 +22,9 @@ func Test_Create_Return(t *testing.T) {
 		c = c.Debug()
 	}
 	test := cfg.Test("CreateReturn")
+	if test == nil {
+		t.Skip("Test CreateReturn not found. Skiping...")
+	}
 	returnRequest := server.ReturnRequest{
 		Returns: []server.ReturnRequestItem{
 			{
