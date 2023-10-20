@@ -18,6 +18,9 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 		c = c.Debug()
 	}
 	test := cfg.Test("AddNoteToOrder")
+	if test == nil {
+		t.Skip("Test AddNoteToOrder not found. Skiping...")
+	}
 	testFindOrder := cfg.Test("FindOrderByCustomerOrderPrintedId")
 	val, err := NewJsonValidator(schemaLocation)
 	require.NoError(t, err)

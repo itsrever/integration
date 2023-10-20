@@ -17,6 +17,9 @@ func Test_Create_Refund(t *testing.T) {
 		c = c.Debug()
 	}
 	test := cfg.Test("CreateRefund")
+	if test == nil {
+		t.Skip("Test CreateRefund not found. Skiping...")
+	}
 	testFindOrder := cfg.Test("FindOrderByCustomerOrderPrintedId")
 	val, err := NewJsonValidator(schemaLocation)
 	require.NoError(t, err)
