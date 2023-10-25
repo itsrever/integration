@@ -148,9 +148,7 @@ func assertHasProduct(t *testing.T, lineItem *LineItem) {
 	assert.NotEmpty(t, lineItem.Product, "missing product data")
 	assert.NotEmpty(t, lineItem.Product.Id, "missing product id")
 	assert.NotEmpty(t, lineItem.Product.Name, "missing product name")
-	assert.NotEmpty(t, lineItem.Product.Description, "missing product description")
-	assert.Greater(t, len(lineItem.Product.Images), 0,
-		"missing product image")
+	assert.NotEmpty(t, lineItem.Product.UnitPrice, "missing product unit price")
 }
 
 func assertNoVariants(t *testing.T, lineItem *LineItem) {
@@ -163,7 +161,7 @@ func assertAmountsDoMatch(t *testing.T, order *Order) {
 
 	for _, lineItem := range order.LineItems {
 		totalCustomerLine := lineItem.Subtotal.AmountCustomer.Amount +
-			lineItem.TotalTaxes.AmountCustomer.Amount - lineItem.TotalDiscounts.AmountCustomer.Amount
+			(lineItem.TotalTaxes.AmountCustomer.Amount - lineItem.TotalDiscounts.AmountCustomer.Amount)
 		assert.Equal(t, lineItem.Total.AmountCustomer.Amount, totalCustomerLine,
 			"line item customer total amount does not match ")
 		totalAmountCustomer += totalCustomerLine
@@ -172,15 +170,15 @@ func assertAmountsDoMatch(t *testing.T, order *Order) {
 
 	for _, lineItem := range order.LineItems {
 		totalShopLine := lineItem.Subtotal.AmountShop.Amount +
-			lineItem.TotalTaxes.AmountShop.Amount - lineItem.TotalDiscounts.AmountShop.Amount
+			(lineItem.TotalTaxes.AmountShop.Amount - lineItem.TotalDiscounts.AmountShop.Amount)
 		assert.Equal(t, lineItem.Total.AmountShop.Amount, totalShopLine,
 			"line item shop total amount does not match ")
 		totalAmountShop += totalShopLine
 		totalTaxShop += lineItem.TotalTaxes.AmountShop.Amount
 	}
 
-	totalAmountShop += order.Shipping.Amount.AmountShop.Amount
-	totalAmountCustomer += order.Shipping.Amount.AmountCustomer.Amount
+	totalAmountShop += order.Shipping.Amount.AmountShop.Amount + order.Shipping.Taxes.AmountShop.Amount
+	totalAmountCustomer += order.Shipping.Amount.AmountCustomer.Amount + order.Shipping.Taxes.AmountCustomer.Amount
 
 	assert.Equal(t, totalAmountCustomer, order.TotalAmount.AmountCustomer.Amount,
 		"order total customer amount does not match")
