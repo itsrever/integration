@@ -125,9 +125,9 @@ func calculateTotals(order *Order) *Order {
 		totalTaxCustomer += li.TotalTaxes.AmountCustomer.Amount
 		totalTaxShop += li.TotalTaxes.AmountShop.Amount
 	}
-	totalCustomer += order.Shipping.Amount.AmountCustomer.Amount
-	totalShop += order.Shipping.Amount.AmountShop.Amount
-	totalTaxCustomer += order.Shipping.Taxes.AmountCustomer.Amount
+	totalCustomer += order.Shipping.Amount.AmountCustomer.Amount + order.Shipping.Taxes.AmountCustomer.Amount
+	totalShop += order.Shipping.Amount.AmountShop.Amount + order.Shipping.Taxes.AmountShop.Amount
+	totalTaxCustomer += order.Shipping.Taxes.AmountCustomer.Amount  
 	totalTaxShop += order.Shipping.Taxes.AmountShop.Amount
 
 	order.TotalAmount = NewMultiMoney(
