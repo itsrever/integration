@@ -15,6 +15,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/itsrever/integration/server/auth/apikey"
+	"github.com/itsrever/integration/server/auth/oauth2"
 	server "github.com/itsrever/integration/server/go"
 	"github.com/itsrever/integration/server/refund"
 )
@@ -38,26 +40,20 @@ func main() {
 
 	log.Printf("Using auth: %v...", *authFlagPtr)
 	if *authFlagPtr == "oauth2" {
-		log.Printf("OAuth2 not implemented yet...")
-		return
+		oauth2.Setup(router, &oauth2.Config{
+			ID:     "1234567890",
+			Secret: "abcdefghij",
+			Domain: fmt.Sprintf("http://localhost:%v", *portFlagPtr),
+		})
 	} else {
-		router.Use(apiKeyAuthMiddleware)
+		apikey.Setup(router, &apikey.Config{
+			HeaderName:  "X-API-KEY",
+			ApiKeyValue: "1234567890",
+		})
 	}
 
 	log.Printf("Start listening on %v...", *portFlagPtr)
 
 	//nolint:gosec
 	log.Fatal(http.ListenAndServe(":8080", router))
-}
-
-func apiKeyAuthMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		apiKey := r.Header.Get("x-rever-api-key")
-		//nolint:gosec
-		if apiKey != "valid-api-key" {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
-			return
-		}
-		next.ServeHTTP(w, r)
-	})
 }

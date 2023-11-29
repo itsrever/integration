@@ -28,7 +28,13 @@ unit-test-start-server:
 	sleep 2
 	go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt
 
-unit-test-kill-server:
+unit-test-kill-server: kill-dev-server
+
+start-dev-server-oauth:
+	go build -o ./bin/${EXEC_FILE} server/main.go
+	./bin/${EXEC_FILE} --auth=oauth2 & 
+
+kill-dev-server:
 	pkill -9 -f ${EXEC_FILE}
 
 unit-test-ci: install-gotestfmt unit-test
