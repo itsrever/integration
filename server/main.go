@@ -10,6 +10,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
 
@@ -18,14 +19,28 @@ import (
 )
 
 func main() {
-	log.Printf("Server started")
+	log.Printf("Reading config...")
+	authFlagPtr := flag.String("auth", "api-key", "Authentication method (api-key | oauth2)")
+	portFlagPtr := flag.Int("port", 8080, "The TCP port to listen on. Default is 8080")
+
+	flag.Parse()
+	log.Printf("Server starting...")
 
 	refundManager := refund.New()
 	IntegrationApiService := server.NewIntegrationApiService(refundManager)
 	IntegrationApiController := server.NewIntegrationApiController(IntegrationApiService)
 
 	router := server.NewRouter(IntegrationApiController)
-	router.Use(apiKeyAuthMiddleware)
+
+	log.Printf("Using auth: %v...", *authFlagPtr)
+	if *authFlagPtr == "oauth2" {
+		log.Printf("OAuth2 not implemented yet...")
+		return
+	} else {
+		router.Use(apiKeyAuthMiddleware)
+	}
+
+	log.Printf("Start listening on %v...", *portFlagPtr)
 
 	//nolint:gosec
 	log.Fatal(http.ListenAndServe(":8080", router))

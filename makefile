@@ -16,10 +16,20 @@ install-gotestfmt:
 	go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 
 unit-test: 
-	go build -o ./bin/${EXEC_FILE} server/main.go 
-	./bin/${EXEC_FILE} &
+	 $(MAKE) unit-test-start-server; \
+	 e=$$?; \
+	 $(MAKE) unit-test-kill-server; \
+	 echo "Exit code: $$e"; \
+	 exit $$e;
+
+unit-test-start-server:
+	go build -o ./bin/${EXEC_FILE} server/main.go
+	./bin/${EXEC_FILE} & 
 	sleep 2
-	(go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt) || pkill -9  ${EXEC_FILE}
+	go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt
+
+unit-test-kill-server:
+	pkill -9 -f ${EXEC_FILE}
 
 unit-test-ci: install-gotestfmt unit-test
 

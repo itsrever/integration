@@ -35,9 +35,9 @@ If all of the test go well, you will see something like this:
   ...
 ```
 
- If a test fails, you will see the reason why it fails.
+If a test fails, you will see the reason why it fails.
 
-```
+``` text
   ❌ Test_FindOrderByCustomerOrderPrintedId/FIND04 (0s)
      Error:  Not equal: 
                 expected: 404
@@ -73,6 +73,7 @@ Please note the 'auth' parameter is optional, having the default value of 'api-k
 Per each endpoint of the integration, below the `tests` section you will have to configure the specific tests and pass the values that matches the scenarios. For example, for the scenario `FIND04` you will need to set the value of `customer_order_printed_id` that matches the described scenario in your platform.
 
 Some test scenarios are optional. If you don't implement them, then do not add a configuration for them.
+
 As an example, with this json, the optional tests `FIND05` won't be executed:
 
 ``` json
@@ -120,6 +121,7 @@ Please refer to the [config.json](./test/config.json) file for a complete exampl
     ]
 }
 ```
+
 > **FIND05**: Valid order with multiple `line_items`, referring products/services **with variants**. Implement this case if your e-commerce supports products and variants...
 
 Please refer to the [config.json](./test/config.json) file for a complete example. All of the supported tests are listed in the section [Methods included in the testing](#methods-included-in-the-testing).
@@ -138,6 +140,7 @@ Please refer to the [config.json](./test/config.json) file for a complete exampl
 ```
 
 > **FIND06**: Add a note to an order given the `order_id` and the `note` to be added.
+
 ``` json
 {
     "method":"AddNoteToOrder",
@@ -150,6 +153,7 @@ Please refer to the [config.json](./test/config.json) file for a complete exampl
     ]
 }
 ```
+
 ### Running the docker container
 
 The docker container is available in the [Docker Hub](https://hub.docker.com/r/itsrever/testing). 
@@ -174,12 +178,13 @@ docker run --rm -v "${PWD}/sample/config.macos.json:/rever/test/config.json" \
     --network="host" \
     itsrever/testing:latest
 ````
+
 ## Deploying the dummy implementation
 
 The commands can be tested against the mock server:
-    
+
 ``` bash
-curl --header "x-rever-api-key:valid-api-key" "https://server-yn4mmnsfqa-ey.a.run.app/integration/orders/find?customer_printed_order_id=simple_order_1" 
+curl --header "x-rever-api-key:valid-api-key" "https://server-tsem47dtaa-ey.a.run.app/integration/orders/find?customer_printed_order_id=simple_order_1" 
 ```
 
 ## Methods included in the testing
