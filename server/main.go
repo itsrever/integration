@@ -11,6 +11,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -18,10 +19,13 @@ import (
 	"github.com/itsrever/integration/server/refund"
 )
 
+const defaultPort = 8080
+
 func main() {
 	log.Printf("Reading config...")
 	authFlagPtr := flag.String("auth", "api-key", "Authentication method (api-key | oauth2)")
-	portFlagPtr := flag.Int("port", 8080, "The TCP port to listen on. Default is 8080")
+	portFlagPtr := flag.Int("port", defaultPort,
+		fmt.Sprintf("The TCP port to listen on. Default is %v", defaultPort))
 
 	flag.Parse()
 	log.Printf("Server starting...")
