@@ -47,7 +47,7 @@ If all of the test go well, you will see something like this:
 
 ### Configuring the integration
 
-The [config.json](./test/config.json) file contains a global section, independent of any endpoint. The mimimum configuration is setting where your API lives and how to pass the authentication token. For a development server, an example is:
+The [config.json](./test/config.json) file contains a global section, independent of any endpoint. The minimum configuration is setting where your API lives and what authentication needs to be used. For the development server and using an API Key is:
 
 ``` json
     "base_url": "http://localhost:8080",
@@ -56,6 +56,19 @@ The [config.json](./test/config.json) file contains a global section, independen
         "api_key": "valid-api-key"
     },
 ```
+
+For using OAuth2 with the client credential flow:
+
+``` json
+    "base_url": "http://localhost:8080",
+    "auth": {
+        "auth": "oauth2",
+        "client_id": "client_id",
+        "client_secret": "client_secret"
+    },
+```
+
+Please note the 'auth' parameter is optional, having the default value of 'api-key'.
 
 Per each endpoint of the integration, below the `tests` section you will have to configure the specific tests and pass the values that matches the scenarios. For example, for the scenario `FIND04` you will need to set the value of `customer_order_printed_id` that matches the described scenario in your platform.
 
