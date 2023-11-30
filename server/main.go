@@ -47,8 +47,8 @@ func main() {
 		})
 	} else {
 		apikey.Setup(router, &apikey.Config{
-			HeaderName:  "X-API-KEY",
-			ApiKeyValue: "1234567890",
+			HeaderName:  "x-rever-api-key",
+			ApiKeyValue: "valid-api-key",
 		})
 	}
 
