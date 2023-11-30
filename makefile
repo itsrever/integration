@@ -15,14 +15,21 @@ SRC := $(shell find . -type f -name '*.go' -not -path "./vendor/*" -not -path ".
 install-gotestfmt:
 	go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 
-unit-test: 
-	 $(MAKE) unit-test-start-server; \
+unit-test: unit-test-apikey
+
+unit-test-apikey:
+	 $(MAKE) unit-test-start-server-apikey; \
 	 e=$$?; \
 	 $(MAKE) unit-test-kill-server; \
-	 echo "Exit code: $$e"; \
 	 exit $$e;
 
-unit-test-start-server:
+unit-test-oauth:
+	 $(MAKE) unit-test-start-server-oauth; \
+	 e=$$?; \
+	 $(MAKE) unit-test-kill-server; \
+	 exit $$e;
+
+unit-test-start-server-apikey:
 	go build -o ./bin/${EXEC_FILE} server/main.go
 	./bin/${EXEC_FILE} & 
 	sleep 2
@@ -30,14 +37,16 @@ unit-test-start-server:
 
 unit-test-kill-server: kill-dev-server
 
-start-dev-server-oauth:
+unit-test-start-server-oauth:
 	go build -o ./bin/${EXEC_FILE} server/main.go
 	./bin/${EXEC_FILE} --auth=oauth2 & 
+	sleep 2
+	TEST_CONFIG="config_oauth.json" go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt
 
 kill-dev-server:
 	pkill -9 -f ${EXEC_FILE}
 
-unit-test-ci: install-gotestfmt unit-test
+unit-test-ci: install-gotestfmt unit-test-apikey unit-test-oauth
 
 with-docker-test-linux:
 	go build -o ./bin/${EXEC_FILE} server/main.go 

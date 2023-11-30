@@ -24,3 +24,17 @@ func TestComposeURL(t *testing.T) {
 	assert.Equal(t, composeRequestURL("http://localhost:8080/", "orders/123"), "http://localhost:8080/orders/123")
 	assert.Equal(t, composeRequestURL("http://localhost:8080", "orders/123"), "http://localhost:8080/orders/123")
 }
+
+func clientFromConfig(cfg *Config) *Client {
+	c := NewClient(cfg.BaseURL)
+	if cfg.ApiKeyAuth != nil {
+		c = c.WithAuth(cfg.ApiKeyAuth)
+	}
+	if cfg.OAuth2Info != nil {
+		c = c.WithOAuth2(cfg.OAuth2Info)
+	}
+	if cfg.Debug {
+		c = c.Debug()
+	}
+	return c
+}

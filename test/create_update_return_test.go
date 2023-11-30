@@ -17,10 +17,7 @@ const RETURN_ID = "return-1"
 func Test_Create_Return(t *testing.T) {
 	cfg, err := configFromEnv()
 	require.NoError(t, err)
-	c := NewClient(cfg.BaseURL).WithAuth(cfg.Auth)
-	if cfg.Debug {
-		c = c.Debug()
-	}
+	c := clientFromConfig(cfg)
 	test := cfg.Test("CreateReturn")
 	if test == nil {
 		t.Skip("Test CreateReturn not found. Skiping...")
@@ -55,7 +52,7 @@ func Test_Create_Return(t *testing.T) {
 
 	t.Run("CREATERETURN003", func(t *testing.T) {
 		resp, err := c.WithAuth(&ApiKeyAuthInfo{
-			HeaderName: cfg.Auth.HeaderName,
+			HeaderName: cfg.ApiKeyAuth.HeaderName,
 			ApiKey:     "invalid-api-key",
 		}).Do("POST", test.UrlPattern, nonExistingOrderVars(), returnRequest)
 		require.NoError(t, err)

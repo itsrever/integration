@@ -2,6 +2,7 @@ package test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,6 +10,8 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"strings"
+
+	"golang.org/x/oauth2/clientcredentials"
 )
 
 // Client is a very generic http client for making requests to url patterns
@@ -33,7 +36,7 @@ func NewClient(baseURL string) *Client {
 func (c *Client) WithAuth(auth *ApiKeyAuthInfo) *Client {
 	return &Client{
 		baseURL:    c.baseURL,
-		client:     c.client,
+		client:     &http.Client{},
 		apiKeyAuth: auth,
 		oAuth2Info: nil,
 		debug:      c.debug,
@@ -42,9 +45,16 @@ func (c *Client) WithAuth(auth *ApiKeyAuthInfo) *Client {
 
 // WithOAuth2 sets up OAuth2 authentication information to the client
 func (c *Client) WithOAuth2(auth *OAuth2Info) *Client {
+	cfg := clientcredentials.Config{
+		ClientID:     auth.ClientID,
+		ClientSecret: auth.ClientSecret,
+		TokenURL:     auth.TokenUrl,
+		Scopes:       auth.Scopes,
+	}
+
 	return &Client{
 		baseURL:    c.baseURL,
-		client:     c.client,
+		client:     cfg.Client(context.Background()),
 		oAuth2Info: auth,
 		apiKeyAuth: nil,
 		debug:      c.debug,
@@ -54,7 +64,7 @@ func (c *Client) WithOAuth2(auth *OAuth2Info) *Client {
 func (c *Client) WithNoAuth() *Client {
 	return &Client{
 		baseURL:    c.baseURL,
-		client:     c.client,
+		client:     &http.Client{},
 		apiKeyAuth: nil,
 		oAuth2Info: nil,
 		debug:      c.debug,

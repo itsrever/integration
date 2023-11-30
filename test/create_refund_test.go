@@ -12,10 +12,7 @@ import (
 func Test_Create_Refund(t *testing.T) {
 	cfg, err := configFromEnv()
 	require.NoError(t, err)
-	c := NewClient(cfg.BaseURL).WithAuth(cfg.Auth)
-	if cfg.Debug {
-		c = c.Debug()
-	}
+	c := clientFromConfig(cfg)
 	test := cfg.Test("CreateRefund")
 	if test == nil {
 		t.Skip("Test CreateRefund not found. Skiping...")
@@ -35,7 +32,7 @@ func Test_Create_Refund(t *testing.T) {
 
 	t.Run("CREATEREFUND01", func(t *testing.T) {
 		resp, err := c.WithAuth(&ApiKeyAuthInfo{
-			HeaderName: cfg.Auth.HeaderName,
+			HeaderName: cfg.ApiKeyAuth.HeaderName,
 			ApiKey:     "invalid-api-key",
 		}).Do("POST", test.UrlPattern, nonExistingOrderVars(), refundBody)
 		require.NoError(t, err)

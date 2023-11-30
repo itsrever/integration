@@ -1,0 +1,38 @@
+{
+    "base_url": "http://localhost:8080",
+    "oauth2": {
+        "client_id": "1234567890",
+        "client_secret": "abcdefghij",
+        "token_url":"http://localhost:8080/token",
+        "scopes": [
+            "read",
+            "write"
+        ]
+    },
+    "tests": [
+        {
+            "method":"FindOrderByCustomerOrderPrintedId",
+            "url_pattern": "/integration/orders/find?customer_printed_order_id={customer_printed_order_id}",
+            "scenarios": [
+                {
+                    "name": "FIND04",
+                    "customer_printed_order_id": "simple_order_1"
+                },
+                {
+                    "name": "FIND05",
+                    "customer_printed_order_id": "simple_order_2"
+                }
+            ]
+        },
+        {
+            "method":"AddNoteToOrder",
+            "url_pattern": "/integration/orders/{customer_printed_order_id}/note",
+            "scenarios": [
+                {
+                    "name": "ADDNOTE04",
+                    "customer_printed_order_id": "simple_order_1"
+                }
+            ]
+        }
+    ]
+}
