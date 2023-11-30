@@ -57,18 +57,16 @@ The [config.json](./test/config.json) file contains a global section, independen
     },
 ```
 
-For using OAuth2 with the client credential flow:
+For using OAuth2 with the client credential flow (two-legged), the configuration is:
 
 ``` json
     "base_url": "http://localhost:8080",
-    "auth": {
-        "auth": "oauth2",
+    "oauth2": {
         "client_id": "client_id",
-        "client_secret": "client_secret"
+        "client_secret": "client_secret",
+        "token_url": "https://your-oauth2-server/token"
     },
 ```
-
-Please note the 'auth' parameter is optional, having the default value of 'api-key'.
 
 Per each endpoint of the integration, below the `tests` section you will have to configure the specific tests and pass the values that matches the scenarios. For example, for the scenario `FIND04` you will need to set the value of `customer_order_printed_id` that matches the described scenario in your platform.
 
