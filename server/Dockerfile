@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM golang:1.20-alpine AS build_base
+FROM golang:1.21-alpine AS build_base
 RUN apk add --no-cache git
 
 # Set the Current Working Directory inside the container
