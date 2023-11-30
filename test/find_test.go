@@ -32,7 +32,7 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 	})
 
 	t.Run("FIND01", func(t *testing.T) {
-		resp, err := c.WithAuth(&AuthenticationInfo{
+		resp, err := c.WithAuth(&ApiKeyAuthInfo{
 			HeaderName: cfg.Auth.HeaderName,
 			ApiKey:     "invalid-api-key",
 		}).Do("GET", test.UrlPattern, emptyVars(), nil)

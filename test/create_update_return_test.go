@@ -54,7 +54,7 @@ func Test_Create_Return(t *testing.T) {
 	})
 
 	t.Run("CREATERETURN003", func(t *testing.T) {
-		resp, err := c.WithAuth(&AuthenticationInfo{
+		resp, err := c.WithAuth(&ApiKeyAuthInfo{
 			HeaderName: cfg.Auth.HeaderName,
 			ApiKey:     "invalid-api-key",
 		}).Do("POST", test.UrlPattern, nonExistingOrderVars(), returnRequest)
