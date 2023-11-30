@@ -142,7 +142,7 @@ format: install-goimports
 	
 install-lint-ubuntu:
 	echo Installing yamlint golangci-lint...
-	sudo curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b $(go env GOPATH)/bin v1.50.1
+	sudo curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b $(go env GOPATH)/bin v1.55.2
 	golangci-lint --version
 
 install-lint-macos:
