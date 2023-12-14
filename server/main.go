@@ -10,35 +10,50 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"log"
 	"net/http"
 
+	"github.com/itsrever/integration/server/auth/apikey"
+	"github.com/itsrever/integration/server/auth/oauth2"
 	server "github.com/itsrever/integration/server/go"
 	"github.com/itsrever/integration/server/refund"
 )
 
+const defaultPort = 8080
+
 func main() {
-	log.Printf("Server started")
+	log.Printf("Reading config...")
+	authFlagPtr := flag.String("auth", "api-key", "Authentication method (api-key | oauth2)")
+	portFlagPtr := flag.Int("port", defaultPort,
+		fmt.Sprintf("The TCP port to listen on. Default is %v", defaultPort))
+
+	flag.Parse()
+	log.Printf("Server starting...")
 
 	refundManager := refund.New()
 	IntegrationApiService := server.NewIntegrationApiService(refundManager)
 	IntegrationApiController := server.NewIntegrationApiController(IntegrationApiService)
 
 	router := server.NewRouter(IntegrationApiController)
-	router.Use(apiKeyAuthMiddleware)
+
+	log.Printf("Using auth: %v...", *authFlagPtr)
+	if *authFlagPtr == "oauth2" {
+		oauth2.Setup(router, &oauth2.Config{
+			ID:     "1234567890",
+			Secret: "abcdefghij",
+			Domain: fmt.Sprintf("http://localhost:%v", *portFlagPtr),
+		})
+	} else {
+		apikey.Setup(router, &apikey.Config{
+			HeaderName:  "x-rever-api-key",
+			ApiKeyValue: "valid-api-key",
+		})
+	}
+
+	log.Printf("Start listening on %v...", *portFlagPtr)
 
 	//nolint:gosec
 	log.Fatal(http.ListenAndServe(":8080", router))
-}
-
-func apiKeyAuthMiddleware(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		apiKey := r.Header.Get("x-rever-api-key")
-		//nolint:gosec
-		if apiKey != "valid-api-key" {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
-			return
-		}
-		next.ServeHTTP(w, r)
-	})
 }

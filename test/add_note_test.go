@@ -13,13 +13,10 @@ import (
 func Test_Add_Note_Into_Order(t *testing.T) {
 	cfg, err := configFromEnv()
 	require.NoError(t, err)
-	c := NewClient(cfg.BaseURL).WithAuth(cfg.Auth)
-	if cfg.Debug {
-		c = c.Debug()
-	}
+	c := clientFromConfig(cfg)
 	test := cfg.Test("AddNoteToOrder")
 	if test == nil {
-		t.Skip("Test AddNoteToOrder not found. Skiping...")
+		t.Skip("Test AddNoteToOrder not found. Skipping...")
 	}
 	testFindOrder := cfg.Test("FindOrderByCustomerOrderPrintedId")
 	val, err := NewJsonValidator(schemaLocation)
@@ -36,8 +33,11 @@ func Test_Add_Note_Into_Order(t *testing.T) {
 	})
 
 	t.Run("ADDNOTE01", func(t *testing.T) {
-		resp, err := c.WithAuth(&AuthenticationInfo{
-			HeaderName: cfg.Auth.HeaderName,
+		if cfg.ApiKeyAuth == nil {
+			t.Skip("Skipping ADDNOTE01 because Api Key Auth is not set")
+		}
+		resp, err := c.WithAuth(&ApiKeyAuthInfo{
+			HeaderName: cfg.ApiKeyAuth.HeaderName,
 			ApiKey:     "invalid-api-key",
 		}).Do("POST", test.UrlPattern, nonExistingOrderVars(), noteBody)
 		require.NoError(t, err)

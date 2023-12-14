@@ -15,13 +15,38 @@ SRC := $(shell find . -type f -name '*.go' -not -path "./vendor/*" -not -path ".
 install-gotestfmt:
 	go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 
-unit-test: 
-	go build -o ./bin/${EXEC_FILE} server/main.go 
-	./bin/${EXEC_FILE} &
-	sleep 2
-	(go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt) || pkill -9  ${EXEC_FILE}
+unit-test: unit-test-apikey
 
-unit-test-ci: install-gotestfmt unit-test
+unit-test-apikey:
+	 $(MAKE) unit-test-start-server-apikey; \
+	 e=$$?; \
+	 $(MAKE) unit-test-kill-server; \
+	 exit $$e;
+
+unit-test-oauth:
+	 $(MAKE) unit-test-start-server-oauth; \
+	 e=$$?; \
+	 $(MAKE) unit-test-kill-server; \
+	 exit $$e;
+
+unit-test-start-server-apikey:
+	go build -o ./bin/${EXEC_FILE} server/main.go
+	./bin/${EXEC_FILE} & 
+	sleep 2
+	go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt
+
+unit-test-kill-server: kill-dev-server
+
+unit-test-start-server-oauth:
+	go build -o ./bin/${EXEC_FILE} server/main.go
+	./bin/${EXEC_FILE} --auth=oauth2 & 
+	sleep 2
+	TEST_CONFIG="config_oauth.json" go test -json -v ./test/... 2>&1 | tee /tmp/gotest.log | gotestfmt
+
+kill-dev-server:
+	pkill -9 -f ${EXEC_FILE}
+
+unit-test-ci: install-gotestfmt unit-test-apikey unit-test-oauth
 
 with-docker-test-linux:
 	go build -o ./bin/${EXEC_FILE} server/main.go 
@@ -126,7 +151,7 @@ format: install-goimports
 	
 install-lint-ubuntu:
 	echo Installing yamlint golangci-lint...
-	sudo curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b $(go env GOPATH)/bin v1.50.1
+	sudo curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b $(go env GOPATH)/bin v1.55.2
 	golangci-lint --version
 
 install-lint-macos:

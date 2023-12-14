@@ -11,17 +11,30 @@ import (
 type Config struct {
 	// BaseURL is the host or host + fixed part of the path (for every method)
 	BaseURL string `json:"base_url"`
-	// Auth is the authentication information (api key only for now)
-	Auth *AuthenticationInfo `json:"auth"`
+	// ApiKeyAuth is the authentication information for Api Key authentication
+	ApiKeyAuth *ApiKeyAuthInfo `json:"auth"`
+	// OAuth2Info is the authentication information for OAuth2 authentication
+	OAuth2Info *OAuth2Info `json:"oauth2"`
 	// Tests is the configuration of tests to run
 	Tests []Test `json:"tests"`
 	// Debug the requests/responses
 	Debug bool `json:"debug"`
 }
 
-type AuthenticationInfo struct {
+// ApiKeyAuthInfo is the configuration for API key authentication
+type ApiKeyAuthInfo struct {
 	HeaderName string `json:"header"`
 	ApiKey     string `json:"api_key"`
+}
+
+// OAuth2Info is the configuration for OAuth2 authentication
+type OAuth2Info struct {
+	ClientID     string `json:"client_id"`
+	ClientSecret string `json:"client_secret"`
+	// Url or Path in where the API is serving the OAuth2 token generation endpoint
+	TokenUrl  string   `json:"token_url"`
+	Scopes    []string `json:"scopes"`
+	GrantType string   `json:"grant_type"`
 }
 
 type Test struct {

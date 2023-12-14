@@ -16,10 +16,7 @@ import (
 func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 	cfg, err := configFromEnv()
 	require.NoError(t, err)
-	c := NewClient(cfg.BaseURL).WithAuth(cfg.Auth)
-	if cfg.Debug {
-		c = c.Debug()
-	}
+	c := clientFromConfig(cfg)
 	val, err := NewJsonValidator(schemaLocation)
 	require.NoError(t, err)
 	test := cfg.Test("FindOrderByCustomerOrderPrintedId")
@@ -32,8 +29,11 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 	})
 
 	t.Run("FIND01", func(t *testing.T) {
-		resp, err := c.WithAuth(&AuthenticationInfo{
-			HeaderName: cfg.Auth.HeaderName,
+		if cfg.ApiKeyAuth == nil {
+			t.Skip("Skipping FIND01 because Api Key Auth is not set")
+		}
+		resp, err := c.WithAuth(&ApiKeyAuthInfo{
+			HeaderName: cfg.ApiKeyAuth.HeaderName,
 			ApiKey:     "invalid-api-key",
 		}).Do("GET", test.UrlPattern, emptyVars(), nil)
 		require.NoError(t, err)
@@ -86,6 +86,16 @@ func Test_FindOrderByCustomerOrderPrintedId(t *testing.T) {
 		server.AssertOrderWithVariants(t, order)
 		assert.Equal(t, scenario.Vars()["customer_printed_order_id"], order.Identification.CustomerPrintedOrderId,
 			"the customer printed order id does not match")
+	})
+
+	t.Run("FIND06", func(t *testing.T) {
+		if cfg.OAuth2Info == nil {
+			t.Skip("Skipping FIND06 because OAuth2 is not set")
+		}
+		currOAuth2Info := *cfg.OAuth2Info
+		currOAuth2Info.ClientID = "invalid"
+		_, err := c.WithOAuth2(&currOAuth2Info).Do("GET", test.UrlPattern, emptyVars(), nil)
+		require.Error(t, err)
 	})
 }
 
