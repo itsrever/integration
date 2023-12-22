@@ -14,4 +14,4 @@ ENV TEST_CONFIG=/rever/test/config.json
 RUN go install github.com/gotesttools/gotestfmt/v2/cmd/gotestfmt@latest
 
 # Run the tests agains the config file 
-ENTRYPOINT ["make", "in-docker-test"]
+CMD ["make", "in-docker-test"]
