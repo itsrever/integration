@@ -1,3 +1,4 @@
 # Put in here the files that are implemented after auto-generating the code
+
 **/api_integration_service.go
 **/main.go

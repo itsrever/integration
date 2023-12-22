@@ -1,8 +1,8 @@
 # REVER integration testing framework
 
-This framework aims to help integrators to develop an [integration with REVER](https://api.byrever.com/v1/docs/#implementing-your-own-integration). It consist in a set of testing scenarios that you can run against your implementation (in your own CI, makefile, testing framework....) to reduce the feedback loop. In that way, the output of the tests will help you to identify the integration issues and fix them before going live, and what's more important, before waiting REVER development team to verify it.
+This framework aims to help integrators to develop an [integration with REVER](https://api.byrever.com/v1/docs/#implementing-your-own-integration). It consists in a set of testing scenarios that you can run against your implementation (in your own CI, makefile, testing framework....) to reduce the feedback loop. This way, the output of the tests will help you identify and fix integration issues before going live, without waiting for the REVER engineering team to verify it.
 
-Any feedback is welcomed. Please open an issue or a PR if you find any bug or you want to suggest any improvement. The REVER development team will be releasing versions when the integration contract changes, so you can pin your integration to a specific version of this framework.
+Any feedback is welcome. Please open an issue or a PR if you find any bug or you want to suggest any improvement. The REVER team will be releasing versions when the integration contract changes, so you can pin your integration to a specific version of this framework.
 
 ## How it works
 
@@ -14,14 +14,14 @@ The framework consists of:
 * A dummy implementation of the API that you can use to test the framework, in Go. You can use it as a reference to implement your own integration.
 * A [sample configuration file](./test/config.json) that you can use to configure the testing scenarios and adapt to your implementation
 
-The steps execute the suite of tests are:
+The steps to execute the suite of tests are:
 
 * Configure your integration as in the [config.json](./test/config.json) file. You can configure it against a development server or the production environment. Just put the correct URLs in the file
 * Start your development server. Any language or framework is ok. This step is not necessary if your implementation is already running.
 * Run the docker container with your configuration. This will run the testing scenarios against your implementation and will output the results in the console.
 * Stop your development server.
 
-If all of the test go well, you will see something like this:
+If all of the tests go well, you will see something like this:
 
 ``` bash
 📦 REVER integration testing framework
@@ -68,11 +68,11 @@ For using OAuth2 with the client credential flow (two-legged), the configuration
     },
 ```
 
-Per each endpoint of the integration, below the `tests` section you will have to configure the specific tests and pass the values that matches the scenarios. For example, for the scenario `FIND04` you will need to set the value of `customer_order_printed_id` that matches the described scenario in your platform.
+For each endpoint of the integration, under the tests section, you will need to configure the specific tests and pass the values that match the scenarios. For example, for the scenario `FIND04` you will need to set the value of `customer_order_printed_id` that matches the described scenario in your platform.
 
 Some test scenarios are optional. If you don't implement them, then do not add a configuration for them.
 
-As an example, with this json, the optional tests `FIND05` won't be executed:
+For example, with this JSON, the optional test `FIND05` won't be executed:
 
 ``` json
 {
@@ -154,10 +154,10 @@ Please refer to the [config.json](./test/config.json) file for a complete exampl
 
 ### Running the docker container
 
-The docker container is available in the [Docker Hub](https://hub.docker.com/r/itsrever/testing). 
+The docker container is available in the [Docker Hub](https://hub.docker.com/r/itsrever/testing).
 You can run it with the following command:
 
-``` bash
+```bash
 docker run --rm -v "/path/to/your/config.json:/rever/test/config.json" \
     --network="host" \
     itsrever/testing:latest
@@ -167,19 +167,38 @@ Please note the `/path/to/your/config.json` must be an absolute path.
 
 ### Running the docker container against localhost (local dev server)
 
-If you're running your API locally (`localhost`), the docker container needs to access the `host` network. This is because the container needs to access your API running in the host machine. You can do it with the `--network="host"` option. In linux that should be it. If you're running macos or windows, you will need modify the URL of your api in the `config.json` file like in the [macos config file sample](./test/config.mac.json) or [windows config file sample](./test/config.win.json).
+If you're running your API locally (`localhost`), the docker container needs to access the `host` network. This is because the container needs to access your API running in the host machine. You can do it with the `--network="host"` option. In linux that should be it. If you're running MacOS or Windows, you will need modify the URL of your api in the `config.json` file like in the [macos config file sample](./test/config.mac.json) or [Windows config file sample](./test/config.win.json).
 
 Then, you can specify this file to docker:
 
-```` bash
+````bash
 docker run --rm -v "${PWD}/sample/config.macos.json:/rever/test/config.json" \
     --network="host" \
     itsrever/testing:latest
 ````
 
+#### Running a specific test
+
+The run command can be overridden to only run a specific test. Here is an example. Replace TestMyFunction with whatever test you need. For example Test_FindOrderByCustomerOrderPrintedId/FIND03
+
+```bash
+
+docker run --rm -v "${PWD}/sample/config.macos.json:/rever/test/config.json" \
+    --network="host" \
+    itsrever/testing:latest go test -run TestMyFunction ./test/... -json -v 2>&1 | tee /tmp/gotest.log | gotestfmt 
+```
+
+#### Developing Locally
+
+This is a Go project, another way to run it is by opening it in your favorite editor. To make this simpler we've included a devcontainer definition.
+
+For more info on how to setup the devcontainer and VSCode please look at https://code.visualstudio.com/docs/devcontainers/create-dev-container#_set-up-a-folder-to-run-in-a-container. Only VSCode with the devcontainer extension along with Docker is needed to setup the editor.
+
+Once you install and launch the project you can run and debug specific tests whenever needed.
+
 ## Deploying the dummy implementation
 
-The commands can be tested against the mock server:
+The commands can be tested using a mock server::
 
 ``` bash
 curl --header "x-rever-api-key:valid-api-key" "https://server-tsem47dtaa-ey.a.run.app/integration/orders/find?customer_printed_order_id=simple_order_1" 
